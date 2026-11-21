@@ -270,11 +270,31 @@ position:absolute;top:3.2%;left:0;right:0;
 text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(--sub);
 }
 .storage-name b{color:var(--ink)}
-#shelves{
-position:absolute;left:6%;right:6%;top:10.5%;bottom:26.5%;
-overflow-y:auto;overscroll-behavior:contain;padding:4px 2px;
+#storageTabs{
+position:absolute;top:7.4%;left:0;right:0;z-index:2;
+display:flex;justify-content:center;gap:7px;padding:0 4%;
 }
+#storageTabs button{
+font:inherit;font-size:12px;font-weight:800;letter-spacing:.08em;
+padding:6px 13px;border-radius:999px;cursor:pointer;
+background:#fff;color:var(--ink);border:2px solid rgba(43,36,48,.22);
+transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease;
+}
+#storageTabs button:active{transform:scale(.94)}
+#storageTabs button.on{background:var(--pink);border-color:var(--pink);color:#fff}
+#shelves{
+position:absolute;left:6%;right:6%;top:13.8%;bottom:26.5%;
+overflow-y:auto;overscroll-behavior:contain;padding:10px 2px 4px;
+}
+.sec-head{
+font-size:11px;letter-spacing:.24em;color:var(--sub);font-weight:800;
+margin:2px 0 10px 2px;
+}
+.sec-head b{color:var(--pink)}
+.storage-sec{margin-bottom:9%}
+.storage-sec:last-child{margin-bottom:2%}
 .shelf{margin-bottom:8.5%}
+.storage-sec .shelf:last-child{margin-bottom:0}
 .shelf:last-child{margin-bottom:2%}
 .shelf-items{display:flex;justify-content:center;align-items:flex-end;gap:5%}
 .shelf-board{
@@ -284,17 +304,64 @@ box-shadow:0 3px 7px rgba(43,36,48,.16);
 }
 .work{width:29%;display:block;text-decoration:none;transition:transform .18s ease}
 .work:active{transform:scale(.96)}
-.work .wframe{
-display:block;background:#fff;padding:4px;border-radius:9px;
-box-shadow:0 4px 13px rgba(43,36,48,.14);
+/* --- 作品を「物」の形に --- */
+.obj3d{
+position:relative;display:block;z-index:0;
+box-shadow:0 10px 13px -8px rgba(43,36,48,.5);
 }
-.work .wframe img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:6px}
-.work .wface{
-aspect-ratio:4/3;border-radius:6px;position:relative;
+.obj3d .cover{display:block;position:relative;z-index:1;overflow:hidden}
+.obj3d .cover img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.obj3d .wface{
+aspect-ratio:4/3;position:relative;
 display:flex;align-items:flex-end;padding:9px;overflow:hidden;color:#fff;
 }
-.work .wface svg{position:absolute;right:8px;top:8px;opacity:.9}
-.work .wface .fttl{font-size:13px;font-weight:800;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
+.obj3d .wface svg{position:absolute;right:8px;top:8px;opacity:.9}
+.obj3d .wface .fttl{font-size:13px;font-weight:800;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
+/* ゲーム：パッケージケース（左に背、濃色の筐体） */
+.o-game{
+background:linear-gradient(160deg,#3d3d4e,#23232f);
+padding:6px 6px 6px 15px;border-radius:5px 9px 9px 5px;
+}
+.o-game::before{
+content:"";position:absolute;left:6px;top:5px;bottom:5px;width:3px;border-radius:2px;
+background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.12));
+}
+.o-game::after{
+content:"";position:absolute;right:2px;top:4px;bottom:4px;width:2px;border-radius:2px;
+background:rgba(255,255,255,.16);
+}
+.o-game .cover{border-radius:3px 6px 6px 3px}
+/* 曲：CDケース（盤が上から覗く、透明プラケース） */
+.o-cd{background:transparent;box-shadow:none}
+.o-cd .disc{
+position:absolute;z-index:0;top:-11%;right:-4%;width:54%;aspect-ratio:1;border-radius:50%;
+background:radial-gradient(circle,#fdfdff 0 16%,#cfcfe0 17% 30%,#f6f6fa 31% 52%,#c2c2d2 53% 74%,#ececf2 75% 100%);
+box-shadow:0 2px 6px rgba(43,36,48,.25),inset 0 0 0 2px rgba(255,255,255,.5);
+}
+.o-cd .cover{
+background:rgba(255,255,255,.92);border:1.5px solid rgba(43,36,48,.2);
+padding:4px;border-radius:7px;
+box-shadow:0 10px 13px -8px rgba(43,36,48,.5),inset 0 1px 0 rgba(255,255,255,.9);
+}
+.o-cd .cover img{border-radius:4px}
+.o-cd .cover::after{
+content:"";position:absolute;inset:0;border-radius:7px;pointer-events:none;
+background:linear-gradient(115deg,transparent 55%,rgba(255,255,255,.35) 72%,transparent 88%);
+}
+/* サイト：本・アルバム（背表紙＋小口の紙） */
+.o-book{
+background:linear-gradient(90deg,#7c4f30,#9c663d 22%,#8a5836);
+padding:6px 8px 6px 16px;border-radius:4px 8px 8px 4px;
+}
+.o-book::before{
+content:"";position:absolute;left:5px;top:5px;bottom:5px;width:2px;border-radius:2px;
+background:linear-gradient(rgba(255,215,150,.85),rgba(255,215,150,.35));
+}
+.o-book::after{
+content:"";position:absolute;right:2px;top:5px;bottom:5px;width:4px;border-radius:1px;
+background:repeating-linear-gradient(to right,#fdfaf2 0 1px,#ddd3bd 1px 2px);
+}
+.o-book .cover{border-radius:2px 5px 5px 2px}
 .work .wttl{display:block;text-align:center;font-size:12px;font-weight:800;letter-spacing:.02em;margin-top:8px;line-height:1.35}
 .work .wtag{display:flex;justify-content:center;margin-top:5px}
 #storageDoor{
@@ -508,6 +575,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <div id="storageView" aria-hidden="true">
 <div id="storageStage">
 <div class="storage-name">さきやの <b>作品置き場</b></div>
+<div id="storageTabs" aria-label="カテゴリ"></div>
 <div id="shelves"></div>
 <button id="storageDoor" type="button" aria-label="部屋にもどる">
 <img src="assets/parts/door-front.webp" alt="">
@@ -1090,33 +1158,93 @@ if (p && p.catch) p.catch(stopSun);
 /* ---------- 作品置き場 ---------- */
 var storageView = document.getElementById('storageView');
 var storageOpen = false, pushedStorage = false;
-/* 作品リスト：ここに1件足すと棚に増える */
+/* 作品リスト：ここに1件足すと、物の形・カテゴリ・最新欄まで自動で付く
+   cat: game=ゲームケース / music=CDケース / site=本・アルバム
+   featured: true で「おすすめ」欄入り / date: 'YYYY-MM-DD' があれば最新欄は日付順、無ければ並び順（後ろ＝新しい） */
 var WORKS = [
-{title:'ちょうどいい湯かげん', kind:'ゲーム', tag:'', href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
-{title:'カニ飛ばし', kind:'ゲーム', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'assets/parts/work-kani.webp'},
-{title:'EBI KANI?', kind:'ゲーム', tag:'', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
-{title:'そばにいて', kind:'曲・MV', tag:'pink', href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
-{title:'空っぽの愛', kind:'曲', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
-{title:'1周年記念サイト', kind:'サイト', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'}
+{title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
+{title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'assets/parts/work-kani.webp'},
+{title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
+{title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
+{title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
+{title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'}
 ];
 var KANI_SVG = '<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>';
-(function renderWorks(){
-var html = '';
-for (var i = 0; i < WORKS.length; i += 3){
-html += '<div class="shelf"><div class="shelf-items">';
-WORKS.slice(i, i + 3).forEach(function(w){
+var CAT_LABEL = {game:'ゲーム', music:'曲・MV', site:'サイト'};
+var CAT_ORDER = ['game', 'music', 'site'];
+var KIND_TO_CAT = {'ゲーム':'game', '曲・MV':'music', '曲':'music', 'サイト':'site'};
+function catOf(w){ return w.cat || KIND_TO_CAT[w.kind] || 'game'; }
+var CAT_FORM = {game:'game', music:'cd', site:'book'};
+function workHTML(w){
+var cat = catOf(w);
+var form = CAT_FORM[cat] || 'game';
 var face = w.img
 ? '<img src="' + w.img + '" alt="" loading="lazy" decoding="async">'
-: '<div class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></div>';
-html += '<a class="work" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
-+ '<span class="wframe">' + face + '</span>'
+: '<span class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></span>';
+var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
+return '<a class="work" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
++ '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>'
 + '<span class="wttl">' + w.title + '</span>'
 + '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span></a>';
-});
-html += '</div><div class="shelf-board"></div></div>';
 }
-document.getElementById('shelves').innerHTML = html;
-})();
+function shelvesHTML(list){
+var html = '';
+for (var i = 0; i < list.length; i += 3){
+html += '<div class="shelf"><div class="shelf-items">'
++ list.slice(i, i + 3).map(workHTML).join('')
++ '</div><div class="shelf-board"></div></div>';
+}
+return html;
+}
+function sectionHTML(label, list){
+return '<div class="storage-sec"><div class="sec-head">' + label + '</div>' + shelvesHTML(list) + '</div>';
+}
+function latestWorks(){
+var arr = WORKS.map(function(w, i){ return {w:w, i:i}; });
+arr.sort(function(a, b){
+var da = a.w.date || '', db = b.w.date || '';
+if (da && db) return da < db ? 1 : (da > db ? -1 : b.i - a.i);
+if (da) return -1;
+if (db) return 1;
+return b.i - a.i;
+});
+return arr.slice(0, 3).map(function(x){ return x.w; });
+}
+var curCat = 'all';
+var shelvesEl = document.getElementById('shelves');
+var tabsEl = document.getElementById('storageTabs');
+function renderTabs(){
+var cats = CAT_ORDER.filter(function(c){
+return WORKS.some(function(w){ return catOf(w) === c; });
+});
+var html = '<button type="button" data-cat="all"' + (curCat === 'all' ? ' class="on"' : '') + '>全部</button>';
+cats.forEach(function(c){
+html += '<button type="button" data-cat="' + c + '"' + (curCat === c ? ' class="on"' : '') + '>' + CAT_LABEL[c] + '</button>';
+});
+tabsEl.innerHTML = html;
+}
+function renderStorage(){
+var html = '';
+if (curCat === 'all'){
+var feat = WORKS.filter(function(w){ return w.featured; });
+if (feat.length) html += sectionHTML('<b>おすすめ</b>', feat);
+html += sectionHTML('<b>最新</b>', latestWorks());
+html += sectionHTML('ぜんぶの作品', WORKS);
+} else {
+var list = WORKS.filter(function(w){ return catOf(w) === curCat; });
+html += sectionHTML(CAT_LABEL[curCat] || curCat, list);
+}
+shelvesEl.innerHTML = html;
+shelvesEl.scrollTop = 0;
+renderTabs();
+}
+tabsEl.addEventListener('click', function(e){
+var btn = e.target.closest ? e.target.closest('button[data-cat]') : null;
+if (!btn) return;
+curCat = btn.getAttribute('data-cat');
+renderStorage();
+});
+renderStorage();
 function showStorage(){
 if (storageOpen) return;
 storageOpen = true;
