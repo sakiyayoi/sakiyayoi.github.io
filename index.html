@@ -1,214 +1,582 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffeef5">
-  <meta name="description" content="面白×イケボVTuber、八乙女さきやの公式サイト。Mirrativの配信、YouTubeの切り抜き、自作ゲーム「カニ飛ばし」の入口。">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="ja_JP">
-  <meta property="og:site_name" content="八乙女さきや 公式サイト">
-  <meta property="og:title" content="八乙女さきや｜面白×イケボVTuber">
-  <meta property="og:description" content="いい声で、よく笑う。配信・動画・ゲームの入口はこちら。">
-  <meta property="og:url" content="https://sakiyayoi.github.io/">
-  <meta property="og:image" content="https://sakiyayoi.github.io/assets/img/og.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="八乙女さきや｜面白×イケボVTuber">
-  <meta name="twitter:description" content="いい声で、よく笑う。配信・動画・ゲームの入口はこちら。">
-  <meta name="twitter:image" content="https://sakiyayoi.github.io/assets/img/og.jpg">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-512.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon-192.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <title>八乙女さきや｜面白×イケボVTuber 公式サイト</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>八乙女さきや</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff2e88'/%3E%3C/svg%3E">
+<style>
+:root{
+--pink:#ff2e88;
+--purple:#8b3dff;
+--ink:#2b2430;
+--sub:#8a8296;
+--paper:#fffdfd;
+--line:#f0e6ef;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+background:var(--paper);
+color:var(--ink);
+overflow:hidden;
+}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
+a{color:inherit}
+
+/* ---------- 玄関 ---------- */
+#gate{
+position:fixed;inset:0;z-index:30;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+background:var(--paper);
+transition:opacity.55s ease, transform.55s ease;
+}
+#gate.gone{opacity:0;transform:scale(1.06);pointer-events:none}
+#gate .name{font-size:15px;letter-spacing:.55em;color:var(--sub);text-indent:.55em}
+#gate .name b{display:block;font-size:34px;letter-spacing:.14em;color:var(--ink);font-weight:800;margin-top:10px;text-indent:.14em}
+#gate .name b .p{color:var(--pink)}
+#enterBtn{
+min-width:168px;min-height:56px;padding:14px 34px;
+border-radius:999px;border:2px solid var(--ink);
+font-size:17px;font-weight:700;letter-spacing:.3em;text-indent:.3em;
+transition:transform.18s ease, background.18s ease, color.18s ease;
+}
+#enterBtn:active{transform:scale(.94);background:var(--pink);border-color:var(--pink);color:#fff}
+
+/* ---------- 部屋 ---------- */
+#room{
+position:fixed;inset:0;
+opacity:0;transform:scale(.965);
+transition:opacity.55s ease, transform.55s ease;
+pointer-events:none;
+}
+#room.on{opacity:1;transform:scale(1);pointer-events:auto}
+#stage{
+position:absolute;left:50%;top:50%;
+transform:translate(-50%,-50%);
+width:min(100vw, calc(100dvh * 0.7544));
+aspect-ratio:1376 / 1824;
+background:url('assets/parts/room-bg.webp') center / 100% 100% no-repeat;
+}
+.room-name{
+position:absolute;top:3.2%;left:0;right:0;
+text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(--sub);
+}
+.room-name b{color:var(--ink)}
+
+/* ---------- ヒーロースライダー（壁のポスター） ---------- */
+#hero{position:absolute;left:5.5%;top:9%;width:63%;z-index:2}
+.hero-frame{
+position:relative;background:#fff;padding:5px;border-radius:14px;
+box-shadow:0 8px 24px rgba(139,61,255,.16), 0 2px 6px rgba(43,36,48,.08);
+}
+.hero-view{overflow:hidden;border-radius:9px;touch-action:pan-y}
+.hero-track{display:flex;transition:transform .48s cubic-bezier(.32,1.1,.4,1)}
+.hero-slide{position:relative;flex:0 0 100%;aspect-ratio:3/2;display:block;background:#f3eefc;-webkit-user-drag:none}
+.hero-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.hero-slide.s-song{background:#221e4d}
+.hero-slide.s-song img{object-fit:contain}
+.hero-cap{
+position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:7px;
+background:rgba(255,255,255,.93);border-radius:99px;padding:3px 12px 3px 3px;
+box-shadow:0 2px 8px rgba(43,36,48,.18);
+}
+.hero-cap .tag{font-size:10px}
+.hero-cap .hero-ttl{font-size:13px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.hero-arrow{
+position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+}
+.hero-arrow::after{
+content:'';position:absolute;width:34px;height:34px;border-radius:50%;
+background:rgba(255,255,255,.88);box-shadow:0 2px 8px rgba(43,36,48,.22);
+}
+.hero-arrow span{position:relative;z-index:1;font-size:21px;font-weight:800;color:var(--ink);line-height:1;margin-top:-2px}
+.hero-arrow.prev{left:0}
+.hero-arrow.next{right:0}
+.hero-arrow:active::after{background:var(--pink)}
+.hero-arrow:active span{color:#fff}
+.hero-dots{display:flex;justify-content:center;margin-top:5px}
+.hero-dots button{width:28px;height:20px;display:flex;align-items:center;justify-content:center}
+.hero-dots button::after{
+content:'';width:7px;height:7px;border-radius:99px;background:#e0d0ea;
+transition:width .3s ease, background .3s ease;
+}
+.hero-dots button.on::after{width:17px;background:var(--pink)}
+
+.obj{
+position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;
+padding:6px;border-radius:20px;
+transition:transform.22s cubic-bezier(.34,1.56,.64,1);
+}
+.obj:active{transform:scale(.93)}
+.obj::after,#chara::after{content:'';position:absolute;inset:-10px}
+.obj .lbl{font-size:11px;letter-spacing:.18em;color:var(--sub);font-weight:700}
+.obj img{display:block;width:100%;pointer-events:none}
+.obj .ring{
+position:absolute;inset:2px;border-radius:20px;border:2px solid var(--pink);
+opacity:.38;pointer-events:none;
+}
+.obj.highlight .ring{animation:pulse 1.15s ease-in-out 3}
+.obj.tour .ring{animation:pulse 1.05s ease-in-out 1}
+@keyframes pulse{0%,100%{opacity:0;transform:scale(.96)}50%{opacity:.95;transform:scale(1.04)}}
+
+#obj-tv{left:6.5%;bottom:24%;width:24%}
+#obj-game{left:18%;bottom:13.5%;width:26%}
+#obj-desk{left:37%;bottom:24%;width:36%}
+#obj-speaker{left:60%;bottom:37.5%;width:13%;z-index:3}
+
+#plant{
+position:absolute;left:32.5%;bottom:24%;width:5.5%;
+pointer-events:none;z-index:1;
+}
+#plant img{display:block;width:100%}
+
+#chara{
+position:absolute;right:1.5%;bottom:9%;
+width:24%;padding:6px;border-radius:22px;z-index:4;
+transition:transform.22s cubic-bezier(.34,1.56,.64,1);
+}
+#chara:active{transform:scale(.92)}
+#chara img{width:100%;display:block}
+#chara .ring{position:absolute;inset:0;border-radius:22px;border:2px solid var(--purple);opacity:.38;pointer-events:none}
+#chara.highlight .ring{animation:pulse 1.15s ease-in-out 3}
+#chara.tour .ring{animation:pulse 1.05s ease-in-out 1}
+
+/* ---------- パネル ---------- */
+#scrim{
+position:fixed;inset:0;z-index:40;background:rgba(43,36,48,.16);
+opacity:0;pointer-events:none;transition:opacity.3s ease;
+}
+#scrim.on{opacity:1;pointer-events:auto}
+.panel{
+position:fixed;left:0;right:0;bottom:0;z-index:50;
+max-height:82dvh;overflow-y:auto;overscroll-behavior:contain;
+background:#fff;border-radius:26px 26px 0 0;
+box-shadow:0 -12px 44px rgba(139,61,255,.13);
+padding:14px 20px calc(22px + env(safe-area-inset-bottom));
+transform:translateY(105%);opacity:.4;
+transition:transform.42s cubic-bezier(.32,1.25,.4,1), opacity.3s ease;
+visibility:hidden;
+}
+.panel.on{transform:translateY(0);opacity:1;visibility:visible}
+.panel .grab{width:42px;height:5px;border-radius:99px;background:var(--line);margin:0 auto 14px}
+.panel h2{font-size:13px;letter-spacing:.3em;color:var(--sub);margin-bottom:14px;font-weight:700}
+.panel h2 b{color:var(--ink);font-size:16px;letter-spacing:.08em}
+.closeBtn{
+position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;
+font-size:19px;color:var(--sub);display:flex;align-items:center;justify-content:center;
+}
+.closeBtn:active{background:var(--line)}
+
+/* 実物カード */
+.card{
+display:block;text-decoration:none;border:1.5px solid var(--line);border-radius:18px;
+overflow:hidden;margin-bottom:12px;background:#fff;
+transition:transform.18s ease;
+}
+.card:active{transform:scale(.975)}
+.card .face{
+height:104px;position:relative;display:flex;align-items:flex-end;padding:12px;
+color:#fff;overflow:hidden;
+}
+.card .face svg{position:absolute;right:10px;top:10px;opacity:.9}
+.card .face .ttl{font-size:19px;font-weight:800;letter-spacing:.04em;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
+.card .meta{display:flex;align-items:center;gap:8px;padding:10px 12px}
+.tag{
+font-size:11px;font-weight:800;letter-spacing:.12em;color:#fff;
+background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
+}
+.tag.pink{background:var(--pink)}
+.tag.dark{background:var(--ink)}
+.card .meta .go{margin-left:auto;font-size:12px;color:var(--sub);font-weight:700;white-space:nowrap}
+.face.f-live{background:linear-gradient(120deg,var(--pink),var(--purple))}
+.face.f-yt{background:linear-gradient(120deg,#ff5c39,#ff2e88)}
+.face.f-song{background:linear-gradient(120deg,var(--purple),#5b8cff)}
+.face.f-yu{background:linear-gradient(120deg,#39c2ff,#8b3dff)}
+.face.f-kani{background:linear-gradient(120deg,#ff2e88,#ff9a3d)}
+.face.f-ebi{background:linear-gradient(120deg,#8b3dff,#ff2e88)}
+
+.mini-link{
+display:flex;align-items:center;gap:10px;text-decoration:none;
+min-height:52px;padding:10px 4px;border-bottom:1px solid var(--line);
+font-size:15px;font-weight:700;
+}
+.mini-link .go{margin-left:auto;color:var(--sub);font-size:12px}
+.mini-link:active{color:var(--pink)}
+
+.facts{list-style:none}
+.facts li{
+display:flex;gap:10px;align-items:baseline;padding:9px 2px;
+border-bottom:1px solid var(--line);font-size:15px;
+}
+.facts li:last-child{border-bottom:none}
+.facts .k{font-size:11px;letter-spacing:.14em;color:var(--sub);font-weight:800;white-space:nowrap;min-width:74px}
+.note{font-size:12px;color:var(--sub);line-height:1.7;margin-top:6px}
+
+/* プロフィール */
+.prof-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.prof-head .thumb{
+flex:none;width:78px;height:92px;border-radius:20px;
+background:linear-gradient(150deg,#ffeef6,#f1eaff);
+display:flex;align-items:flex-end;justify-content:center;overflow:hidden;
+}
+.prof-head .thumb img{width:88%;display:block}
+.prof-name{font-size:21px;font-weight:800;letter-spacing:.06em}
+.prof-name span{color:var(--pink)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.chip{
+font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1;
+padding:7px 12px;border-radius:99px;white-space:nowrap;
+background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
+}
+.chip.purple{background:#f2ecff;color:#6d28d9;border-color:#dcc8ff}
+.chip.dark{background:#f3f0f5;color:var(--ink);border-color:#e2dbe8}
+.facts a{color:var(--pink);font-weight:700;text-decoration:none}
+.facts a:active{text-decoration:underline}
+.likes{margin-top:14px}
+.likes .ttl{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin-bottom:2px}
+
+@media (prefers-reduced-motion: reduce){
+*,*::before,*::after{transition:none!important;animation:none!important}
+#gate.gone{display:none}
+.panel{transform:none;opacity:0}
+.panel.on{opacity:1}
+}
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#main">本文へ移動</a>
 
-  <header class="site-header">
-    <a class="site-logo" href="./">八乙女さきや</a>
-    <nav class="site-nav" aria-label="このサイトの案内">
-      <a href="#profile">プロフィール</a>
-      <a href="#watch">みる</a>
-      <a href="#play">あそぶ</a>
-      <a href="#hoikuen">保育園</a>
-      <a href="#style">スタイル</a>
-      <a href="#voice">ボイス</a>
-      <a href="guidelines.html">ガイドライン</a>
-    </nav>
-  </header>
+<!-- 玄関 -->
+<div id="gate">
+<div class="name">八乙女<b>さき<span class="p">や</span></b></div>
+<button id="enterBtn" type="button">入る</button>
+</div>
 
-  <main id="main">
-    <!-- ファーストビュー -->
-    <section class="hero" aria-labelledby="sakiya-name">
-      <div class="hero-visual">
-        <picture>
-          <source media="(max-width: 760px)" srcset="assets/img/kv-sp.webp" width="1376" height="1824">
-          <img src="assets/img/kv-wide.webp" width="2736" height="912" alt="ピンクの短髪に細い眼鏡をかけ、コントローラーを掲げる八乙女さきや。赤いカニがキラキラの軌跡を描いて飛んでいる。" fetchpriority="high">
-        </picture>
-        <span class="sparkle sparkle-1" aria-hidden="true">✦</span>
-        <span class="sparkle sparkle-2" aria-hidden="true">✦</span>
-        <span class="sparkle sparkle-3" aria-hidden="true">✦</span>
-      </div>
-      <div class="hero-body">
-        <p class="hero-role">面白×イケボ VTuber</p>
-        <h1 class="hero-name" id="sakiya-name">八乙女さきや</h1>
-        <p class="hero-reading">やおとめ さきや ／ YAOTOME SAKIYA</p>
-        <p class="hero-character">天使と悪魔の少年</p>
-        <p class="hero-lead">いい声で、よく笑う。</p>
-        <p class="hero-sub">雑談とゲーム配信。ゲームも作っています。</p>
-        <div class="hero-actions">
-          <a class="btn-main" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener noreferrer">今すぐカニを飛ばす</a>
-          <a class="btn-sub" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener noreferrer">配信を観る（Mirrativ）</a>
-        </div>
-      </div>
-      <dl class="setting-strip" aria-label="設定シート">
-        <div><dt>見た目</dt><dd>ピンクの短髪×細い眼鏡×黒ベスト</dd></div>
-        <div><dt>声</dt><dd>イケボ</dd></div>
-        <div><dt>中身</dt><dd>制作オタク</dd></div>
-        <div><dt>相棒</dt><dd>カニ</dd></div>
-      </dl>
-    </section>
+<!-- 部屋 -->
+<main id="room" aria-hidden="true">
+<div id="stage">
+<div class="room-name"><b>八乙女さきや</b> の部屋</div>
 
-    <!-- プロフィール -->
-    <section class="section" id="profile" aria-labelledby="profile-heading">
-      <h2 class="section-heading"><span class="heading-no">01</span><span class="heading-en">PROFILE</span>プロフィール</h2>
-      <p class="section-lead">カニは飛ばすもの、鏡は叩き壊して会いに行くもの。</p>
-      <dl class="profile-sheet">
-        <div><dt>名前</dt><dd>八乙女さきや（やおとめ さきや）</dd></div>
-        <div><dt>正体</dt><dd>天使と悪魔の少年。女装男子。</dd></div>
-        <div><dt>見た目</dt><dd>ピンクの短い束髪に細い眼鏡、半目の赤い目とギザ歯。ピンクのボリュームスリーブシャツに黒のテーラード風ベストと黒ネクタイ、黒のアシンメロングスカート。右耳に白い羽、左耳に黒×ピンクの悪魔羽。</dd></div>
-        <div><dt>声</dt><dd>イケボ。看板は「面白×イケボ」。</dd></div>
-        <div><dt>中身</dt><dd>制作オタク。ゲームを作って、配信で遊ぶ。</dd></div>
-        <div><dt>相棒</dt><dd>カニ。飛ばすほう。</dd></div>
-        <div><dt>活動場所</dt><dd>配信は Mirrativ 主軸、YouTube は切り抜き中心。</dd></div>
-      </dl>
-    </section>
+<div id="hero" aria-label="ピックアップ">
+<div class="hero-frame" id="heroFrame">
+<div class="hero-view">
+<div class="hero-track" id="heroTrack">
+<a class="hero-slide s-song" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
+<img src="assets/parts/hero-song.webp" alt="" draggable="false">
+<span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
+</a>
+<a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
+<img src="assets/parts/hero-yukagen.webp" alt="" draggable="false">
+<span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">ちょうどいい湯かげん</span></span>
+</a>
+<a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
+<img src="assets/parts/hero-live.webp" alt="" draggable="false">
+<span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
+</a>
+</div>
+</div>
+<button class="hero-arrow prev" id="heroPrev" type="button" aria-label="前のポスター"><span>‹</span></button>
+<button class="hero-arrow next" id="heroNext" type="button" aria-label="次のポスター"><span>›</span></button>
+</div>
+<div class="hero-dots" id="heroDots">
+<button type="button" aria-label="ポスター1：そばにいて"></button>
+<button type="button" aria-label="ポスター2：ちょうどいい湯かげん"></button>
+<button type="button" aria-label="ポスター3：Mirrativ 配信"></button>
+</div>
+</div>
 
-    <!-- みる -->
-    <section class="section" id="watch" aria-labelledby="watch-heading">
-      <h2 class="section-heading"><span class="heading-no">02</span><span class="heading-en">WATCH</span>みる</h2>
-      <ul class="entry-rows">
-        <li>
-          <a class="entry-row" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener noreferrer">
-            <span class="entry-platform">Mirrativ</span>
-            <span class="entry-main"><span class="entry-title">配信を観る</span><span class="entry-desc">雑談とゲームの生配信はこちら。最新のお知らせもここ。</span></span>
-            <span class="entry-arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-        <li>
-          <a class="entry-row" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener noreferrer">
-            <span class="entry-platform">YouTube</span>
-            <span class="entry-main"><span class="entry-title">動画を観る</span><span class="entry-desc">配信の切り抜き Shorts が中心。面白いところだけ、ぎゅっと。</span></span>
-            <span class="entry-arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-      </ul>
+<button class="obj" id="obj-tv" type="button" data-panel="tv" aria-label="テレビ：配信と動画">
+<span class="ring"></span>
+<img src="assets/parts/tv.png" alt="">
+</button>
 
-      <div class="mv-feature">
-        <div class="mirror-frame">
-          <p class="mv-label">特集 ／ オリジナル曲</p>
-          <h3 class="mv-title">そばにいて</h3>
-          <p class="mv-copy">鏡の中の自分に恋して、叩き壊して会いに行く、狂気的なラブソング。</p>
-          <a class="btn-sub btn-on-mirror" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener noreferrer">YouTube で聴く ↗</a>
-        </div>
-      </div>
-    </section>
+<button class="obj" id="obj-game" type="button" data-panel="game" aria-label="ゲーム機：ゲーム">
+<span class="ring"></span>
+<img src="assets/parts/console.png" alt="">
+</button>
 
-    <!-- あそぶ -->
-    <section class="section section-play" id="play" aria-labelledby="play-heading">
-      <h2 class="section-heading"><span class="heading-no">03</span><span class="heading-en">PLAY</span>あそぶ</h2>
-      <div class="play-stage">
-        <h3 class="play-title">カニ飛ばし<span class="play-state">試遊版</span></h3>
-        <p class="play-copy">力をためて、カニを飛ばす。生簀から、ぶち抜こう。ブラウザでそのまま遊べます。</p>
-        <a class="btn-main" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener noreferrer">カニを飛ばしに行く</a>
-        <div class="tile-band" aria-hidden="true"></div>
-      </div>
-      <ul class="entry-rows">
-        <li>
-          <a class="entry-row" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener noreferrer">
-            <span class="entry-platform">ブラウザゲーム</span>
-            <span class="entry-main"><span class="entry-title">最高甲殻類裁判所 — EBI KANI?</span><span class="entry-desc">エビかカニかを裁く、ジョークゲーム。</span></span>
-            <span class="entry-arrow" aria-hidden="true">↗</span>
-          </a>
-        </li>
-      </ul>
+<div id="plant" aria-hidden="true">
+<img src="assets/parts/plant.png" alt="">
+</div>
 
-      <div class="crab-touch" aria-labelledby="crab-touch-heading">
-        <h3 id="crab-touch-heading" class="crab-touch-title">まずはここで、カニタッチ</h3>
-        <p class="crab-touch-copy">本番の前に、ここのカニで肩慣らし。タップするたび、ちょっと飛びます。</p>
-        <button class="crab-button" id="crabButton" type="button" aria-label="カニをタップして飛ばす">
-          <img src="assets/img/crab.webp" width="380" height="380" alt="">
-          <span class="crab-sparkle" aria-hidden="true">✦</span>
-        </button>
-        <p class="crab-status" aria-live="polite"><span id="crabMessage">カニは待っている。</span><br>
-        タッチ <span id="crabCount">0</span> 回 ／ 合計飛距離 <span id="crabMeters">0.0</span> m</p>
-        <p class="crab-touch-note">飛ばし足りない人は、上の「カニ飛ばし」本番へどうぞ。</p>
-      </div>
-    </section>
+<button class="obj" id="obj-desk" type="button" data-panel="desk" aria-label="机：作ったもの">
+<span class="ring"></span>
+<img src="assets/parts/desk.png" alt="">
+</button>
 
-    <!-- 八乙女保育園 -->
-    <section class="section" id="hoikuen" aria-labelledby="hoikuen-heading">
-      <h2 class="section-heading"><span class="heading-no">04</span><span class="heading-en">HOIKUEN</span>八乙女保育園</h2>
-      <p class="section-lead">八乙女保育園は、配信の居場所の愛称。来てくれたみんなが園児さんです。</p>
-      <h3 class="sub-heading">園の一日</h3>
-      <ul class="hoikuen-day">
-        <li><span class="hoikuen-time">登園</span><span>配信がはじまったら、まずは元気にあいさつ。</span></li>
-        <li><span class="hoikuen-time">あそび</span><span>ゲームと雑談の時間。カニも飛びます。</span></li>
-        <li><span class="hoikuen-time">おやつ</span><span>ミルクティー休憩をはさみます。</span></li>
-        <li><span class="hoikuen-time">おひるね</span><span>しません。作るものがあるので。</span></li>
-        <li><span class="hoikuen-time">降園</span><span>また次の配信で会いましょう。</span></li>
-      </ul>
-      <h3 class="sub-heading">園児さんの心得</h3>
-      <ol class="hoikuen-rules">
-        <li>あいさつは元気よく。</li>
-        <li>笑ったら、それが正解。</li>
-        <li>カニは大事なおともだち（飛ばすけど）。</li>
-        <li>困ったことがあったら、コメントで知らせる。</li>
-      </ol>
-    </section>
+<button class="obj" id="obj-speaker" type="button" data-panel="speaker" aria-label="スピーカー：曲">
+<span class="ring"></span>
+<img src="assets/parts/speaker.png" alt="">
+</button>
 
-    <!-- スタイル -->
-    <section class="section" id="style" aria-labelledby="style-heading">
-      <h2 class="section-heading"><span class="heading-no">05</span><span class="heading-en">STYLE</span>スタイル</h2>
-      <dl class="style-rows">
-        <div><dt>見た目</dt><dd>ピンクの短髪と細い眼鏡、黒ベストにアシンメロングスカート。右耳の白羽と左耳の悪魔羽が目印の、ダイナー兼バーのオーナー。</dd></div>
-        <div><dt>ギャップ</dt><dd>かわいい格好で、声はイケボ。甘い見た目で、やることは豪快（カニを飛ばす）。</dd></div>
-        <div><dt>約束</dt><dd>「面白い」を作って届けること。制作オタクの本気は、配信と作品で見せます。</dd></div>
-      </dl>
-    </section>
+<button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
+<span class="ring"></span>
+<img src="assets/parts/chara.png" alt="八乙女さきや ミニキャラ">
+</button>
+</div>
+</main>
 
-    <!-- ボイス -->
-    <section class="section" id="voice" aria-labelledby="voice-heading">
-      <h2 class="section-heading"><span class="heading-no">06</span><span class="heading-en">VOICE</span>ボイス</h2>
-      <div class="voice-block">
-        <h3>原声ボイス<span class="badge-soon">準備中</span></h3>
-        <p>本人の声のサンプルは準備中です。用意でき次第、ここで聴けるようにします。</p>
-      </div>
-      <div class="voice-block">
-        <h3>楽曲サンプル：「そばにいて」サビ</h3>
-        <audio controls preload="metadata" src="assets/audio/sobaniite-chorus.mp3">お使いのブラウザは音声再生に対応していません。</audio>
-        <p class="voice-note">※これは楽曲サンプルです（Suno で制作した音源からの抜粋）。原声ボイスとは別に置いています。</p>
-      </div>
-    </section>
+<div id="scrim"></div>
 
-    <!-- 予定 -->
-    <section class="section" id="schedule" aria-labelledby="schedule-heading">
-      <h2 class="section-heading"><span class="heading-no">07</span><span class="heading-en">SCHEDULE</span>予定</h2>
-      <p class="schedule-note">配信は不定期です。最新の予定とお知らせは、<a href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener noreferrer">Mirrativ のプロフィール</a>で案内しています。</p>
-      <a class="guide-band" href="guidelines.html">ガイドライン（ファンアート・切り抜き・生成AIについて）<span class="entry-arrow" aria-hidden="true">→</span></a>
-    </section>
-  </main>
+<!-- テレビ：面白い実物を先頭に -->
+<section class="panel" id="panel-tv" aria-label="配信と動画">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>テレビ ｜ <b>配信と動画</b></h2>
+<a class="card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
+<div class="face f-live">
+<svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="6" fill="#fff"/><path d="M7 8 a11 11 0 0 0 0 14 M23 8 a11 11 0 0 1 0 14" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+<span class="ttl">Mirrativ 配信</span>
+</div>
+<div class="meta"><span class="tag pink">配信</span><span>八乙女さきや の配信ページ</span><span class="go">ひらく →</span></div>
+</a>
+<a class="card" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">
+<div class="face f-yt">
+<svg width="30" height="30" viewBox="0 0 30 30"><path d="M11 8 L23 15 L11 22 Z" fill="#fff"/></svg>
+<span class="ttl">YouTube 動画</span>
+</div>
+<div class="meta"><span class="tag dark">動画</span><span>八乙女さきや</span><span class="go">ひらく →</span></div>
+</a>
+</section>
 
-  <footer class="site-footer">
-    <p class="footer-contact">お仕事のご相談は、sakiyayoi@muse.ai へお願いします。担当者が確認して返信します。</p>
-    <p class="footer-name">八乙女さきや</p>
-    <p class="footer-line">配信も、動画も、ゲームも。</p>
-    <p class="footer-copy">© 八乙女さきや</p>
-  </footer>
+<!-- ゲーム機：各ゲームを実物カードで -->
+<section class="panel" id="panel-game" aria-label="ゲーム">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>ゲーム機 ｜ <b>あそぶ</b></h2>
+<a class="card" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
+<div class="face f-yu">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 24 q5-4 10 0 t10 0 t6 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 16 q2-5 5-5 M19 13 q3-3 6-1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/></svg>
+<span class="ttl">ちょうどいい湯かげん</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>お湯の温度を合わせる</span><span class="go">あそぶ →</span></div>
+</a>
+<a class="card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<div class="face f-kani">
+<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
+<span class="ttl">カニ飛ばし</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>カニをぶっ飛ばす</span><span class="go">あそぶ →</span></div>
+</a>
+<a class="card" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
+<div class="face f-ebi">
+<svg width="34" height="34" viewBox="0 0 34 34"><text x="17" y="25" font-size="21" font-weight="800" fill="#fff" text-anchor="middle">?</text></svg>
+<span class="ttl">EBI KANI?</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>エビかカニか</span><span class="go">あそぶ →</span></div>
+</a>
+</section>
 
-  <script src="assets/js/main.js" defer></script>
+<!-- スピーカー：曲の面を先頭に -->
+<section class="panel" id="panel-speaker" aria-label="曲">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>スピーカー ｜ <b>きく</b></h2>
+<a class="card" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">
+<div class="face f-song" style="height:128px">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M13 26 V10 l14-3 v15" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="9.5" cy="26" r="4" fill="#fff"/><circle cx="23.5" cy="22" r="4" fill="#fff"/></svg>
+<span class="ttl">そばにいて</span>
+</div>
+<div class="meta"><span class="tag pink">曲・MV</span><span>ミュージックビデオ</span><span class="go">聴く →</span></div>
+</a>
+</section>
+
+<!-- 机：作ったものの広がり -->
+<section class="panel" id="panel-desk" aria-label="作ったもの">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>机 ｜ <b>作ったもの</b></h2>
+<a class="mini-link" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>ちょうどいい湯かげん<span class="go">→</span></a>
+<a class="mini-link" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>カニ飛ばし<span class="go">→</span></a>
+<a class="mini-link" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>EBI KANI?<span class="go">→</span></a>
+<a class="mini-link" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener"><span class="tag pink">曲</span>そばにいて（MV）<span class="go">→</span></a>
+<a class="mini-link" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener"><span class="tag dark">動画</span>YouTube の動画<span class="go">→</span></a>
+</section>
+
+<!-- ミニキャラ：プロフィール事実のみ -->
+<section class="panel" id="panel-profile" aria-label="プロフィール">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>さきや ｜ <b>プロフィール</b></h2>
+<div class="prof-head">
+<div class="thumb"><img src="assets/parts/chara.png" alt="八乙女さきや ミニキャラ"></div>
+<div>
+<div class="prof-name">八乙女<span>さきや</span></div>
+<div class="chips">
+<span class="chip">面白 × イケボ</span>
+<span class="chip purple">天使と悪魔の少年</span>
+<span class="chip purple">女装男子</span>
+<span class="chip dark">制作オタク</span>
+</div>
+</div>
+</div>
+<ul class="facts">
+<li><span class="k">おしごと</span>VTuber</li>
+<li><span class="k">配信</span><a href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ（ID：150564080）↗</a></li>
+<li><span class="k">動画</span><a href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube「八乙女さきや【公式】」↗</a></li>
+<li><span class="k">作ったもの</span>ゲーム3本・曲2本・動画、全部自分で作る</li>
+<li><span class="k">ゲーム</span>ちょうどいい湯かげん／カニ飛ばし／EBI KANI?</li>
+<li><span class="k">曲</span>そばにいて／空っぽの愛</li>
+<li><span class="k">いま</span>ミラティブ ロイヤル候補生に申請中</li>
+</ul>
+<div class="likes">
+<div class="ttl">すきなもの</div>
+<div class="chips">
+<span class="chip">ミルクティー（いちばん好き）</span>
+<span class="chip purple">ラーメン</span>
+<span class="chip purple">カツ丼</span>
+<span class="chip purple">寿司</span>
+</div>
+</div>
+</section>
+
+<script>
+(function(){
+"use strict";
+var gate = document.getElementById('gate');
+var room = document.getElementById('room');
+var scrim = document.getElementById('scrim');
+var entered = false;
+var PANELS = ['tv','game','speaker','desk','profile'];
+
+function panelEl(id){ return document.getElementById('panel-' + id);}
+
+function highlightTarget(){
+var from = new URLSearchParams(location.search).get('from');
+if (from === 'game') return document.getElementById('obj-game');
+if (from === 'live') return document.getElementById('obj-tv');
+return document.getElementById('chara');
+}
+
+function enter(){
+if (entered) return;
+entered = true;
+gate.classList.add('gone');
+gate.setAttribute('aria-hidden','true');
+setTimeout(function(){ gate.style.display = 'none';}, 650);
+room.classList.add('on');
+room.setAttribute('aria-hidden','false');
+// 入室直後：物が順に1回ずつ光って「触れる」ことを示す
+var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara'];
+tour.forEach(function(id, i){
+var el = document.getElementById(id);
+setTimeout(function(){ el.classList.add('tour');}, 800 + i * 430);
+setTimeout(function(){ el.classList.remove('tour');}, 800 + i * 430 + 1100);
+});
+var t = highlightTarget();
+var start = 800 + tour.length * 430 + 300;
+setTimeout(function(){ t.classList.add('highlight');}, start);
+setTimeout(function(){ t.classList.remove('highlight');}, start + 3600);
+}
+
+var pushedCount = 0;
+var lastPushedHash = '';
+function openPanel(id, push){
+PANELS.forEach(function(p){ panelEl(p).classList.toggle('on', p === id);});
+scrim.classList.add('on');
+if (push!== false && location.hash!== '#' + id){
+pushedCount++;
+lastPushedHash = '#' + id;
+location.hash = id;
+}
+}
+function closePanels(push){
+PANELS.forEach(function(p){ panelEl(p).classList.remove('on');});
+scrim.classList.remove('on');
+if (push === false) return;
+if (pushedCount > 0){
+var n = pushedCount;
+pushedCount = 0;
+lastPushedHash = '';
+history.go(-n);
+} else if (location.hash){
+history.replaceState(null, '', location.pathname + location.search);
+}
+}
+function syncFromHash(){
+var id = location.hash.replace('#','');
+if (location.hash!== lastPushedHash) pushedCount = 0;
+if (PANELS.indexOf(id) >= 0){
+if (!entered) enter();
+openPanel(id, false);
+} else {
+closePanels(false);
+}
+}
+
+/* ---------- ヒーロースライダー ---------- */
+var heroTrack = document.getElementById('heroTrack');
+var heroFrame = document.getElementById('heroFrame');
+var heroDots = document.querySelectorAll('#heroDots button');
+var HERO_N = 3;
+var heroIdx = 0;
+function heroGo(i){
+heroIdx = ((i % HERO_N) + HERO_N) % HERO_N;
+heroTrack.style.transform = 'translateX(' + (-heroIdx * 100) + '%)';
+heroDots.forEach(function(d, j){ d.classList.toggle('on', j === heroIdx);});
+}
+document.getElementById('heroPrev').addEventListener('click', function(){ heroGo(heroIdx - 1);});
+document.getElementById('heroNext').addEventListener('click', function(){ heroGo(heroIdx + 1);});
+heroDots.forEach(function(d, j){ d.addEventListener('click', function(){ heroGo(j);});});
+// スワイプ：横移動が大きければスライド切替、その後のクリック（リンク遷移）を1回止める
+var dragX = null, dragMoved = false, suppressUntil = 0;
+heroFrame.addEventListener('dragstart', function(e){ e.preventDefault();});
+heroFrame.addEventListener('pointerdown', function(e){
+if (e.target.closest('.hero-arrow')) return; // 矢印は通常のクリックに任せる
+dragX = e.clientX; dragMoved = false;
+// ※ setPointerCapture は使わない：捕捉すると click の宛先がフレームに変わり、スライドのリンクが開かなくなる
+});
+window.addEventListener('pointermove', function(e){
+if (dragX === null) return;
+if (Math.abs(e.clientX - dragX) > 10) dragMoved = true;
+});
+window.addEventListener('pointerup', function(e){
+if (dragX === null) return;
+var dx = e.clientX - dragX;
+dragX = null;
+if (dx <= -42) heroGo(heroIdx + 1);
+else if (dx >= 42) heroGo(heroIdx - 1);
+if (dragMoved) suppressUntil = Date.now() + 400; // 直後のクリックだけ止める（フレーム外で起きたクリックに残留させない）
+});
+window.addEventListener('pointercancel', function(){ dragX = null; dragMoved = false;});
+heroFrame.addEventListener('click', function(e){
+if (Date.now() < suppressUntil){ e.preventDefault(); e.stopPropagation(); suppressUntil = 0;}
+}, true);
+// 初期スライドは入口に合わせる（game→湯かげん、live→Mirrativ）
+(function(){
+var from = new URLSearchParams(location.search).get('from');
+heroGo(from === 'game' ? 1 : from === 'live' ? 2 : 0);
+})();
+
+document.getElementById('enterBtn').addEventListener('click', enter);
+document.querySelectorAll('[data-panel]').forEach(function(el){
+el.addEventListener('click', function(){ openPanel(el.getAttribute('data-panel'));});
+});
+document.querySelectorAll('[data-close]').forEach(function(el){
+el.addEventListener('click', function(){ closePanels();});
+});
+scrim.addEventListener('click', function(){ closePanels();});
+PANELS.forEach(function(p){
+var el = panelEl(p);
+var startY = null;
+el.addEventListener('touchstart', function(e){ startY = e.touches[0].clientY;}, {passive:true});
+el.addEventListener('touchend', function(e){
+if (startY === null) return;
+var dy = e.changedTouches[0].clientY - startY;
+startY = null;
+if (dy > 60 && el.scrollTop <= 0) closePanels();
+}, {passive:true});
+});
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closePanels();});
+window.addEventListener('hashchange', syncFromHash);
+
+// 初期状態：#hash があれば玄関を飛ばして部屋＋パネル、?enter=1 でも入室
+var params = new URLSearchParams(location.search);
+if (location.hash || params.get('enter') === '1') enter();
+syncFromHash();
+})();
+</script>
 </body>
 </html>
