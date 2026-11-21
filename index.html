@@ -10,11 +10,11 @@
 <meta property="og:title" content="八乙女さきや｜公式サイト">
 <meta property="og:description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
 <meta property="og:url" content="https://sakiyayoi.github.io/">
-<meta property="og:image" content="https://sakiyayoi.github.io/assets/parts/hero-song-real.webp">
+<meta property="og:image" content="https://sakiyayoi.github.io/assets/parts/chara-stand.webp">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="八乙女さきや｜公式サイト">
 <meta name="twitter:description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
-<meta name="twitter:image" content="https://sakiyayoi.github.io/assets/parts/hero-song-real.webp">
+<meta name="twitter:image" content="https://sakiyayoi.github.io/assets/parts/chara-stand.webp">
 <meta name="theme-color" content="#fffdfd">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff2e88'/%3E%3C/svg%3E">
 <style>
@@ -145,15 +145,30 @@ pointer-events:none;z-index:1;
 #plant img{display:block;width:100%}
 
 #chara{
-position:absolute;right:1.5%;bottom:9%;
-width:24%;padding:6px;border-radius:22px;z-index:4;
+position:absolute;left:58%;bottom:10.5%;
+width:16.5%;padding:5px;border-radius:22px;z-index:4;
 transition:transform.22s cubic-bezier(.34,1.56,.64,1);
 }
 #chara:active{transform:scale(.92)}
+#chara .bob{display:block}
+#chara.walking .bob{animation:bob .34s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.4deg)}50%{transform:translateY(-3.4%) rotate(1.4deg)}}
 #chara img{width:100%;display:block}
 #chara .ring{position:absolute;inset:0;border-radius:22px;border:2px solid var(--purple);opacity:.38;pointer-events:none}
 #chara.highlight .ring{animation:pulse 1.15s ease-in-out 3}
 #chara.tour .ring{animation:pulse 1.05s ease-in-out 1}
+
+#sunsun{
+position:absolute;right:2%;bottom:8.5%;
+width:15%;padding:5px;border-radius:20px;z-index:3;
+}
+#sunsun:active{transform:scale(.93)}
+#sunsun img{width:100%;display:block;pointer-events:none}
+#sunsun .ring{position:absolute;inset:0;border-radius:20px;border:2px solid var(--pink);opacity:.38;pointer-events:none}
+#sunsun.highlight .ring{animation:pulse 1.15s ease-in-out 3}
+#sunsun.tour .ring{animation:pulse 1.05s ease-in-out 1}
+#sunsun.talking{animation:squish .38s ease-in-out infinite}
+@keyframes squish{0%,100%{transform:scale(1,1)}30%{transform:scale(1.07,.9)}60%{transform:scale(.96,1.05)}}
 
 /* ---------- パネル ---------- */
 #scrim{
@@ -325,7 +340,12 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 
 <button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
 <span class="ring"></span>
-<img src="assets/parts/chara.webp" alt="八乙女さきや ミニキャラ">
+<span class="bob"><img src="assets/parts/chara-stand.webp" alt="八乙女さきや ミニキャラ"></span>
+</button>
+
+<button id="sunsun" type="button" aria-label="スンスン：押すと喋る">
+<span class="ring"></span>
+<img src="assets/parts/sunsun.webp" alt="ピンクのミニスンスン" loading="lazy" decoding="async">
 </button>
 </div>
 </main>
@@ -488,7 +508,7 @@ room.setAttribute('aria-hidden','false');
 // 入室直後：物が順に1回ずつ光って「触れる」ことを示す
 // 入口（?from=）がある時は、その対象をツアーの先頭にする（最初に光る物＝入口の物）
 var t = highlightTarget();
-var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara'];
+var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun'];
 var fromParam = new URLSearchParams(location.search).get('from');
 if (fromParam){
 tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
@@ -501,6 +521,7 @@ setTimeout(function(){ el.classList.remove('tour');}, 800 + i * 430 + 1100);
 var start = 800 + tour.length * 430 + 300;
 setTimeout(function(){ t.classList.add('highlight');}, start);
 setTimeout(function(){ t.classList.remove('highlight');}, start + 3600);
+startWalk();
 }
 
 var pushedCount = 0;
@@ -581,6 +602,65 @@ if (Date.now() < suppressUntil){ e.preventDefault(); e.stopPropagation(); suppre
 var from = new URLSearchParams(location.search).get('from');
 heroGo(from === 'game' ? 1 : from === 'live' ? 2 : 0);
 })();
+
+/* ---------- ミニキャラ歩行 ---------- */
+var charaEl = document.getElementById('chara');
+var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var walk = {x:58, min:2.5, max:57, dir:-1, mode:'idle', until:0, speed:5.2, last:0, started:false};
+function walkActive(){
+return entered && !reduceMotion && !document.hidden && !scrim.classList.contains('on');
+}
+function walkLoop(ts){
+requestAnimationFrame(walkLoop);
+if (!walk.last) walk.last = ts;
+var dt = Math.min(0.05, (ts - walk.last) / 1000);
+walk.last = ts;
+if (!walkActive()){ charaEl.classList.remove('walking'); return;}
+if (walk.mode === 'idle'){
+charaEl.classList.remove('walking');
+if (ts >= walk.until){
+walk.mode = 'walk';
+walk.dir = walk.x <= walk.min + 0.5 ? 1 : walk.x >= walk.max - 0.5 ? -1 : (Math.random() < 0.5 ? -1 : 1);
+}
+} else {
+charaEl.classList.add('walking');
+walk.x += walk.dir * walk.speed * dt;
+if (walk.x <= walk.min){ walk.x = walk.min; walk.mode = 'idle'; walk.until = ts + 2200 + Math.random() * 2200;}
+if (walk.x >= walk.max){ walk.x = walk.max; walk.mode = 'idle'; walk.until = ts + 2200 + Math.random() * 2200;}
+charaEl.style.left = walk.x + '%';
+}
+}
+function startWalk(){
+if (walk.started) return;
+walk.started = true;
+walk.until = performance.now() + 1400;
+requestAnimationFrame(walkLoop);
+}
+
+/* ---------- スンスン：押すと喋る ---------- */
+var sunsunBtn = document.getElementById('sunsun');
+var VOICES = ['assets/voice/sun-1.mp3','assets/voice/sun-2.mp3','assets/voice/sun-3.mp3','assets/voice/sun-4.mp3'];
+var sunAudio = null, lastVoice = -1;
+window.SUNSUN = {playing:false, src:'', el:null};
+function stopSun(){
+window.SUNSUN.playing = false;
+sunsunBtn.classList.remove('talking');
+}
+sunsunBtn.addEventListener('click', function(){
+var i = Math.floor(Math.random() * VOICES.length);
+if (VOICES.length > 1 && i === lastVoice) i = (i + 1) % VOICES.length;
+lastVoice = i;
+if (sunAudio){ sunAudio.pause();}
+sunAudio = new Audio(VOICES[i]);
+window.SUNSUN.src = VOICES[i];
+window.SUNSUN.el = sunAudio;
+window.SUNSUN.playing = true;
+sunsunBtn.classList.add('talking');
+sunAudio.addEventListener('ended', stopSun);
+sunAudio.addEventListener('error', stopSun);
+var p = sunAudio.play();
+if (p && p.catch) p.catch(stopSun);
+});
 
 document.getElementById('enterBtn').addEventListener('click', enter);
 document.querySelectorAll('[data-panel]').forEach(function(el){
