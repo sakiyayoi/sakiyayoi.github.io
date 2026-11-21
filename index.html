@@ -576,6 +576,30 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 .likes{margin-top:14px}
 .likes .ttl{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin-bottom:2px}
 
+/* プロフィール（名刺＋紹介） */
+.prof-yomi{font-size:12px;color:var(--sub);letter-spacing:.18em;font-weight:700;margin-top:3px}
+.prof-intro{font-size:14.5px;line-height:1.75;margin:4px 0 8px}
+.prof-sec{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin:16px 0 2px}
+.achv{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.prof-links{display:flex;gap:10px;margin-top:18px}
+.prof-links a{
+flex:1;display:flex;align-items:center;justify-content:center;
+min-height:50px;border-radius:14px;text-decoration:none;
+font-size:14px;font-weight:800;letter-spacing:.03em;
+transition:transform var(--t-press) var(--ease-out);
+}
+.prof-links a:active{transform:scale(.97)}
+.prof-links .pl-live{background:var(--pink);color:#fff}
+.prof-links .pl-yt{background:var(--ink);color:#fff}
+.prof-works{
+display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;
+min-height:52px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--line);
+background:#fff;font-size:14.5px;font-weight:800;color:var(--ink);text-align:left;cursor:pointer;
+transition:transform var(--t-press) var(--ease-out);
+}
+.prof-works:active{transform:scale(.98)}
+.prof-works .go{margin-left:auto;color:var(--sub);font-size:12px}
+
 @media (prefers-reduced-motion: reduce){
 *,*::before,*::after{transition:none!important;animation:none!important}
 #gate.gone{display:none}
@@ -788,7 +812,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <a class="mini-link" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="tag pink">曲</span>空っぽの愛<span class="go">→</span></a>
 </section>
 
-<!-- ミニキャラ：プロフィール事実のみ -->
+<!-- ミニキャラ：プロフィール（名刺＋紹介／事実のみ・出典は記念サイト年表とMirrativ） -->
 <section class="panel" id="panel-profile" aria-label="プロフィール">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
@@ -797,6 +821,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <div class="thumb"><img src="assets/parts/chara.webp" alt="八乙女さきや ミニキャラ" loading="lazy" decoding="async"></div>
 <div>
 <div class="prof-name">八乙女<span>さきや</span></div>
+<div class="prof-yomi">やおとめ さきや</div>
 <div class="chips">
 <span class="chip">面白 × イケボ</span>
 <span class="chip purple">天使と悪魔の少年</span>
@@ -805,15 +830,25 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 </div>
 </div>
 </div>
+<p class="prof-intro">VTuber。ゲーム・曲・動画を全部ひとりで作って、配信と投稿をしている。</p>
 <ul class="facts">
 <li><span class="k">おしごと</span>VTuber</li>
+<li><span class="k">配信開始</span>2025年8月24日（Mirrativ）</li>
 <li><span class="k">配信</span><a href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ（ID：150564080）↗</a></li>
 <li><span class="k">動画</span><a href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube「八乙女さきや【公式】」↗</a></li>
 <li><span class="k">作ったもの</span>ゲーム3本・曲2本・動画、全部自分で作る</li>
 <li><span class="k">ゲーム</span>ちょうどいい湯かげん／カニ飛ばし／EBI KANI?</li>
 <li><span class="k">曲</span><span><a href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">そばにいて</a>／<a href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener">空っぽの愛</a></span></li>
+<li><span class="k">記念</span><span>2026年8月、活動1周年。<a href="https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site" target="_blank" rel="noopener">1周年記念サイト↗</a></span></li>
 <li><span class="k">いま</span>ミラティブ ロイヤル候補生に申請中</li>
 </ul>
+<div class="prof-sec">実績（Mirrativ）</div>
+<div class="achv">
+<span class="chip">週デビューランク 1位</span>
+<span class="chip">月デビューランク 1位</span>
+<span class="chip purple">イケボ🌈 1位</span>
+<span class="chip purple">スタークラスB 達成</span>
+</div>
 <div class="likes">
 <div class="ttl">すきなもの</div>
 <div class="chips">
@@ -823,6 +858,11 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <span class="chip purple">寿司</span>
 </div>
 </div>
+<div class="prof-links">
+<a class="pl-live" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ ↗</a>
+<a class="pl-yt" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube ↗</a>
+</div>
+<button class="prof-works" id="profWorks" type="button">作品置き場へ（ゲーム・曲・記念サイト）<span class="go">→</span></button>
 </section>
 
 <script>
@@ -1557,6 +1597,8 @@ location.hash = 'storage';
 showStorage();
 }
 }
+/* プロフィールの「作品置き場へ」：パネルを閉じて置き場へ（遷移は hash 連動 syncFromHash に任せる） */
+document.getElementById('profWorks').addEventListener('click', function(){ goStorage(); });
 document.getElementById('storageDoor').addEventListener('click', function(){
 if (pushedStorage){
 pushedStorage = false;
