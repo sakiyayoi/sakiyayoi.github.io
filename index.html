@@ -145,12 +145,18 @@ pointer-events:none;z-index:1;
 #plant img{display:block;width:100%}
 
 #chara{
-position:absolute;left:58%;bottom:10.5%;
+position:absolute;left:44%;bottom:9%;
 width:16.5%;padding:5px;border-radius:22px;z-index:4;
-transition:transform.22s cubic-bezier(.34,1.56,.64,1);
+pointer-events:none;
 }
-#chara:active{transform:scale(.92)}
-#chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('assets/parts/chara-walk.webp');background-size:400% 100%;background-position:100% 0;background-repeat:no-repeat}
+#chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('assets/parts/chara-idle.webp');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;transform-origin:50% 100%}
+#chara .notes{position:absolute;left:0;right:0;top:-13%;height:0;opacity:0;transition:opacity .4s ease;pointer-events:none}
+#chara.music .notes{opacity:1}
+#chara .notes span{position:absolute;bottom:0;font-weight:800;line-height:1;animation:noteFloat 2.3s ease-in infinite}
+#chara .notes span:nth-child(1){left:14%;font-size:17px;color:var(--pink)}
+#chara .notes span:nth-child(2){left:52%;font-size:21px;color:var(--purple);animation-delay:.75s}
+#chara .notes span:nth-child(3){left:80%;font-size:15px;color:var(--pink);animation-delay:1.5s}
+@keyframes noteFloat{0%{transform:translateY(0) rotate(-7deg);opacity:0}18%{opacity:1}100%{transform:translateY(-48px) rotate(11deg);opacity:0}}
 #chara .ring{position:absolute;inset:0;border-radius:22px;border:2px solid var(--purple);opacity:.38;pointer-events:none}
 #chara.highlight .ring{animation:pulse 1.15s ease-in-out 3}
 #chara.tour .ring{animation:pulse 1.05s ease-in-out 1}
@@ -337,6 +343,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 
 <button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
 <span class="ring"></span>
+<span class="notes" aria-hidden="true"><span>♪</span><span>♫</span><span>♪</span></span>
 <span class="bob" role="img" aria-label="八乙女さきや ミニキャラ"></span>
 </button>
 
@@ -518,7 +525,7 @@ setTimeout(function(){ el.classList.remove('tour');}, 800 + i * 430 + 1100);
 var start = 800 + tour.length * 430 + 300;
 setTimeout(function(){ t.classList.add('highlight');}, start);
 setTimeout(function(){ t.classList.remove('highlight');}, start + 3600);
-startWalk();
+startChara();
 }
 
 var pushedCount = 0;
@@ -600,57 +607,214 @@ var from = new URLSearchParams(location.search).get('from');
 heroGo(from === 'game' ? 1 : from === 'live' ? 2 : 0);
 })();
 
-/* ---------- ミニキャラ歩行 ---------- */
+/* ---------- ミニキャラ：独立オブジェクト（状態機械） ---------- */
 var charaEl = document.getElementById('chara');
 var bobEl = charaEl.querySelector('.bob');
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-var walk = {x:58, min:2.5, max:57, dir:-1, mode:'idle', until:0, speed:5.2, last:0, started:false};
-/* 歩行スプライト：4フレーム（0=踏み出し 1=すり足 2=逆踏み出し 3=立ち）。移動距離に同期してフレームを進める */
-var FRAME_X = ['0%', '33.333%', '66.667%', '100%'];
-var FRAME_STEP = 2.25; /* 移動量（%）ごとに1フレーム進む */
-var walkDist = 0, lastFrame = -1, lastFlip = 0;
+
+/* スプライトシート定義（n=フレーム数、ar=セル縦横比） */
+var SHEETS = {
+walk:{src:'assets/parts/chara-walk.webp', n:4, ar:'356/560'},
+back:{src:'assets/parts/chara-back.webp', n:4, ar:'356/560'},
+idle:{src:'assets/parts/chara-idle.webp', n:2, ar:'356/560'},
+wave:{src:'assets/parts/chara-wave.webp', n:2, ar:'356/560'},
+sitgame:{src:'assets/parts/chara-sit-game.webp', n:2, ar:'520/520'},
+sittv:{src:'assets/parts/chara-sit-tv.webp', n:2, ar:'520/520'},
+sitdesk:{src:'assets/parts/chara-sit-desk.webp', n:2, ar:'520/520'}
+};
+Object.keys(SHEETS).forEach(function(k){ var im = new Image(); im.src = SHEETS[k].src;});
+var curSheet = null, curFrame = -1;
+function setSheet(name){
+if (curSheet === name) return;
+curSheet = name; curFrame = -1;
+var s = SHEETS[name];
+bobEl.style.backgroundImage = "url('" + s.src + "')";
+bobEl.style.backgroundSize = (s.n * 100) + '% 100%';
+bobEl.style.aspectRatio = s.ar;
+}
 function setFrame(i){
-if (i === lastFrame) return;
-lastFrame = i;
-bobEl.style.backgroundPosition = FRAME_X[i] + ' 0';
+if (i === curFrame) return;
+curFrame = i;
+var s = SHEETS[curSheet];
+bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0';
 }
-function setFlip(dir){
-if (dir === lastFlip) return;
-lastFlip = dir;
-bobEl.style.transform = dir < 0 ? 'scaleX(-1)' : '';
+
+/* 床エリア（ステージ%）と活動スポット（物の前） */
+var FLOOR = {x0:2, x1:62, y0:6, y1:24};
+var SPOTS = {
+game:{x:20, y:7.5, sheet:'sitgame'},
+tv:{x:9, y:14.5, sheet:'sittv'},
+music:{x:57, y:21.5, sheet:'idle'},
+desk:{x:41, y:14, sheet:'sitdesk'}
+};
+var C = {
+x:44, y:9, tx:44, ty:9, flip:1,
+state:'idle', until:0, started:false, last:0,
+walkDist:0, actAfter:null, actNext:0, actFrame:0,
+blinkAt:0, blinkOff:0, hopFrom:0, pendingOpen:false,
+lastAct:'', waveStep:0, waveAt:0
+};
+function setPos(){ charaEl.style.left = C.x + '%'; charaEl.style.bottom = C.y + '%';}
+function depthScale(){ return 1.07 - (C.y - FLOOR.y0) * (0.30 / (FLOOR.y1 - FLOOR.y0));}
+function charaActive(){
+return entered && !document.hidden && !scrim.classList.contains('on');
 }
-setFrame(3);
-function walkActive(){
-return entered && !reduceMotion && !document.hidden && !scrim.classList.contains('on');
+function goIdle(ts, min, max){
+C.state = 'idle'; C.flip = 1;
+setSheet('idle'); setFrame(0);
+C.until = ts + min + Math.random() * (max - min);
+C.blinkAt = ts + 1400 + Math.random() * 2000;
+C.blinkOff = 0;
 }
-function walkLoop(ts){
-requestAnimationFrame(walkLoop);
-if (!walk.last) walk.last = ts;
-var dt = Math.min(0.05, (ts - walk.last) / 1000);
-walk.last = ts;
-if (!walkActive()){ setFrame(3); return;}
-if (walk.mode === 'idle'){
-setFrame(3);
-if (ts >= walk.until){
-walk.mode = 'walk';
-walk.dir = walk.x <= walk.min + 0.5 ? 1 : walk.x >= walk.max - 0.5 ? -1 : (Math.random() < 0.5 ? -1 : 1);
+function startWalkTo(tx, ty, act){
+C.tx = Math.max(FLOOR.x0, Math.min(FLOOR.x1, tx));
+C.ty = Math.max(FLOOR.y0, Math.min(FLOOR.y1, ty));
+C.actAfter = act || null;
+C.state = 'walk';
+var dx = C.tx - C.x, dy = C.ty - C.y;
+if (dy > 0 && Math.abs(dy) * 1.326 > Math.abs(dx) * 1.4){ setSheet('back'); C.flip = 1;}
+else { setSheet('walk'); if (Math.abs(dx) > 0.4) C.flip = dx > 0 ? -1 : 1;}
 }
+function actInterval(key){
+if (key === 'game') return 340;
+if (key === 'desk') return 850;
+if (key === 'tv') return 1600;
+return 500;
+}
+function startActivity(key, ts){
+var spot = SPOTS[key];
+C.state = key; C.lastAct = key;
+C.x = spot.x; C.y = spot.y; setPos();
+C.flip = 1;
+setSheet(spot.sheet); setFrame(0);
+C.actFrame = 0;
+C.actNext = ts + actInterval(key);
+C.until = ts + 7000 + Math.random() * 7000;
+charaEl.classList.toggle('music', key === 'music');
+}
+function endActivity(ts){
+charaEl.classList.remove('music');
+goIdle(ts, 1200, 2600);
+}
+function startWave(ts){
+C.state = 'wave'; C.flip = 1;
+setSheet('wave'); C.waveStep = 0; setFrame(0);
+C.waveAt = ts + 165; C.until = ts + 165 * 7;
+}
+function startHop(ts, open){
+C.state = 'hop'; C.hopFrom = ts; C.pendingOpen = !!open; C.flip = 1;
+charaEl.classList.remove('music');
+setSheet('idle'); setFrame(0);
+}
+function applyTransform(ts){
+var hopY = 0, sx = 1, sy = 1, rot = 0;
+if (C.state === 'hop'){
+var p = Math.min(1, (ts - C.hopFrom) / 550);
+hopY = -Math.sin(Math.PI * p) * 30;
+if (p > 0.8){ var s = Math.sin((p - 0.8) / 0.2 * Math.PI); sy = 1 - 0.13 * s; sx = 1 + 0.10 * s;}
+else if (p < 0.14){ var s2 = Math.sin(p / 0.14 * Math.PI); sy = 1 - 0.07 * s2; sx = 1 + 0.05 * s2;}
+}
+if (C.state === 'music') rot = Math.sin(ts / 175) * 2.6;
+if (C.state === 'game') rot = Math.sin(ts / 300) * 1.1;
+var d = depthScale();
+bobEl.style.transform = 'translateY(' + hopY + '%) rotate(' + rot + 'deg) scale(' + (C.flip * d * sx) + ',' + (d * sy) + ')';
+}
+var FRAME_STEP = 2.25; /* 移動量（%）ごとに歩行1フレーム */
+function charaLoop(ts){
+requestAnimationFrame(charaLoop);
+if (!C.last) C.last = ts;
+var dt = Math.min(0.05, (ts - C.last) / 1000);
+C.last = ts;
+if (reduceMotion){ setSheet('idle'); setFrame(0); return;}
+if (!charaActive()){
+if (C.state!== 'frozen'){
+C.state = 'frozen';
+charaEl.classList.remove('music');
+setSheet('idle'); setFrame(0);
+bobEl.style.transform = '';
+}
+return;
+}
+if (C.state === 'frozen') goIdle(ts, 600, 1400);
+switch (C.state){
+case 'idle':
+if (C.blinkOff && ts >= C.blinkOff){ setFrame(0); C.blinkOff = 0; C.blinkAt = ts + 2200 + Math.random() * 2600;}
+else if (!C.blinkOff && ts >= C.blinkAt){ setFrame(1); C.blinkOff = ts + 130;}
+if (ts >= C.until){
+var r = Math.random();
+if (r < 0.50){
+var keys = Object.keys(SPOTS).filter(function(k){ return k!== C.lastAct;});
+var key = keys[Math.floor(Math.random() * keys.length)];
+startWalkTo(SPOTS[key].x, SPOTS[key].y, key);
+} else if (r < 0.72){
+startWalkTo(FLOOR.x0 + Math.random() * (FLOOR.x1 - FLOOR.x0), FLOOR.y0 + Math.random() * (FLOOR.y1 - FLOOR.y0), null);
+} else if (r < 0.86){ startWave(ts);}
+else { startHop(ts, false);}
+}
+break;
+case 'walk': {
+var dx = C.tx - C.x, dy = C.ty - C.y;
+var distPx = Math.sqrt(dx * dx + Math.pow(dy * 1.326, 2));
+if (distPx < 0.35){
+if (C.actAfter){ var a = C.actAfter; C.actAfter = null; startActivity(a, ts);}
+else goIdle(ts, 2500, 5500);
 } else {
-setFlip(walk.dir);
-walk.x += walk.dir * walk.speed * dt;
-walkDist += walk.speed * dt;
-setFrame(Math.floor(walkDist / FRAME_STEP) % 4);
-if (walk.x <= walk.min){ walk.x = walk.min; walk.mode = 'idle'; walk.until = ts + 2200 + Math.random() * 2200;}
-if (walk.x >= walk.max){ walk.x = walk.max; walk.mode = 'idle'; walk.until = ts + 2200 + Math.random() * 2200;}
-charaEl.style.left = walk.x + '%';
+var step = Math.min(distPx, 5.4 * dt);
+var f = step / distPx;
+C.x += dx * f; C.y += dy * f;
+C.walkDist += step;
+setFrame(Math.floor(C.walkDist / FRAME_STEP) % 4);
+setPos();
 }
+break;
 }
-function startWalk(){
-if (walk.started) return;
-walk.started = true;
-walk.until = performance.now() + 1400;
-requestAnimationFrame(walkLoop);
+case 'wave':
+if (ts >= C.waveAt && C.waveStep < 6){
+C.waveStep++; setFrame(C.waveStep % 2); C.waveAt = ts + 165;
 }
+if (ts >= C.until) goIdle(ts, 2500, 5000);
+break;
+case 'hop':
+if (ts - C.hopFrom >= 550){
+var open = C.pendingOpen; C.pendingOpen = false;
+goIdle(ts, 2000, 4500);
+if (open) openPanel('profile');
+}
+break;
+case 'game': case 'tv': case 'desk': case 'music':
+if (C.state!== 'music' && ts >= C.actNext){
+C.actFrame = (C.actFrame + 1) % 2; setFrame(C.actFrame); C.actNext = ts + actInterval(C.state);
+}
+if (ts >= C.until) endActivity(ts);
+break;
+}
+applyTransform(ts);
+}
+function startChara(){
+if (C.started) return;
+C.started = true;
+setSheet('idle'); setFrame(0); setPos();
+C.until = performance.now() + 1600;
+C.blinkAt = performance.now() + 1800;
+requestAnimationFrame(charaLoop);
+}
+/* キャラのタップ：#chara は pointer-events:none（物のタップを通す）ため、
+   背景クリックの座標でキャラ本体に当たったか判定する */
+function charaTap(){
+if (C.state === 'hop') return;
+if (reduceMotion){ openPanel('profile'); return;}
+startHop(performance.now(), true);
+}
+document.addEventListener('click', function(e){
+if (!entered) return;
+if (scrim.classList.contains('on')) return;
+if (e.target.closest('button, a, .panel')) return;
+var r = charaEl.getBoundingClientRect();
+if (e.clientX > r.left + r.width * 0.08 && e.clientX < r.right - r.width * 0.08 &&
+e.clientY > r.top + r.height * 0.03 && e.clientY < r.bottom + 6){
+charaTap();
+}
+});
 
 /* ---------- スンスン：押すと喋る ---------- */
 var sunsunBtn = document.getElementById('sunsun');
@@ -678,7 +842,7 @@ if (p && p.catch) p.catch(stopSun);
 });
 
 document.getElementById('enterBtn').addEventListener('click', enter);
-document.querySelectorAll('[data-panel]').forEach(function(el){
+document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
 el.addEventListener('click', function(){ openPanel(el.getAttribute('data-panel'));});
 });
 document.querySelectorAll('[data-close]').forEach(function(el){
