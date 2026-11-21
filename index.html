@@ -82,10 +82,10 @@ text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(
 .room-name b{color:var(--ink)}
 
 /* ---------- ヒーロースライダー（壁のポスター） ---------- */
-#hero{position:absolute;left:5%;top:6%;width:76%;z-index:2}
+#hero{position:absolute;left:17%;top:12%;width:55%;z-index:2}
 .hero-frame{
-position:relative;background:#fff;padding:7px;border-radius:16px;
-box-shadow:0 14px 34px rgba(139,61,255,.20), 0 3px 8px rgba(43,36,48,.12);
+position:relative;background:#fff;padding:5px;border-radius:12px;
+box-shadow:0 6px 18px rgba(43,36,48,.10);
 }
 .hero-view{overflow:hidden;border-radius:10px;touch-action:pan-y}
 .hero-track{display:flex;transition:transform .48s cubic-bezier(.32,1.1,.4,1)}
@@ -137,13 +137,13 @@ opacity:.38;pointer-events:none;
 .obj.tour .ring{animation:pulse 1.05s ease-in-out 1}
 @keyframes pulse{0%,100%{opacity:0;transform:scale(.96)}50%{opacity:.95;transform:scale(1.04)}}
 
-#obj-tv{left:6%;bottom:24.3%;width:22%}
-#obj-game{left:28.5%;bottom:21%;width:16.5%}
-#obj-desk{left:41%;bottom:24.3%;width:31%}
-#obj-speaker{left:59.5%;bottom:35.8%;width:9%;z-index:3}
+#obj-tv{left:9.8%;bottom:19.9%;width:20.2%}
+#obj-game{left:19.4%;bottom:14.9%;width:19.5%}
+#obj-desk{left:38.8%;bottom:19.1%;width:31%}
+#obj-speaker{left:59.7%;bottom:31.5%;width:7.9%;z-index:3}
 
 #plant{
-position:absolute;left:73.5%;bottom:24%;width:6.8%;
+position:absolute;left:34.2%;bottom:22.3%;width:5.3%;
 pointer-events:none;z-index:1;
 }
 #plant img{display:block;width:100%}
@@ -624,10 +624,10 @@ front:{src:'assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
 idle:{src:'assets/parts/chara-idle.webp', n:2, ar:'356/560'},
 wave:{src:'assets/parts/chara-wave.webp', n:2, ar:'356/560'},
 stretch:{src:'assets/parts/chara-stretch.webp', n:2, ar:'356/560'},
-sitgame:{src:'assets/parts/chara-sit-game.webp', n:2, ar:'520/520'},
-sittv:{src:'assets/parts/chara-sit-tv.webp', n:2, ar:'520/520'},
-sitdesk:{src:'assets/parts/chara-sit-desk.webp', n:2, ar:'520/520'},
-sitrelax:{src:'assets/parts/chara-sitrelax.webp', n:2, ar:'520/520'}
+sitgame:{src:'assets/parts/chara-sit-game.webp', n:2, ar:'520/520', w:19},
+sittv:{src:'assets/parts/chara-sit-tv.webp', n:2, ar:'520/520', w:19},
+sitdesk:{src:'assets/parts/chara-sit-desk.webp', n:2, ar:'520/520', w:19},
+sitrelax:{src:'assets/parts/chara-sitrelax.webp', n:2, ar:'520/520', w:19}
 };
 Object.keys(SHEETS).forEach(function(k){ var im = new Image(); im.src = SHEETS[k].src;});
 var curSheet = null, curFrame = -1;
@@ -651,10 +651,10 @@ bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0'
    x1 はスンスン（left 75.5%）にキャラの右端（x＋幅14.5%）が届かない上限 */
 var FLOOR = {x0:2, x1:58, y0:6, y1:16.5};
 var SPOTS = {
-game:{x:29.5, y:8, sheet:'sitgame'},
-tv:{x:10, y:13.5, sheet:'sittv'},
-music:{x:56, y:14.5, sheet:'wave'},
-desk:{x:43, y:13.5, sheet:'sitdesk'}
+game:{x:20, y:11, sheet:'sitgame'},
+tv:{x:10.5, y:13.5, sheet:'sittv'},
+music:{x:56.5, y:13.5, sheet:'wave'},
+desk:{x:45, y:12.5, sheet:'sitdesk'}
 };
 /* 移動ベクトル→向き：奥（画面上）=背面／手前（画面下）=正面／横=側面（歩行シートは左向き原画、右移動で反転） */
 function faceWalk(dx, dy){
