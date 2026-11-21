@@ -150,10 +150,7 @@ width:16.5%;padding:5px;border-radius:22px;z-index:4;
 transition:transform.22s cubic-bezier(.34,1.56,.64,1);
 }
 #chara:active{transform:scale(.92)}
-#chara .bob{display:block}
-#chara.walking .bob{animation:bob .34s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.4deg)}50%{transform:translateY(-3.4%) rotate(1.4deg)}}
-#chara img{width:100%;display:block}
+#chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('assets/parts/chara-walk.webp');background-size:400% 100%;background-position:100% 0;background-repeat:no-repeat}
 #chara .ring{position:absolute;inset:0;border-radius:22px;border:2px solid var(--purple);opacity:.38;pointer-events:none}
 #chara.highlight .ring{animation:pulse 1.15s ease-in-out 3}
 #chara.tour .ring{animation:pulse 1.05s ease-in-out 1}
@@ -340,7 +337,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 
 <button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
 <span class="ring"></span>
-<span class="bob"><img src="assets/parts/chara-stand.webp" alt="八乙女さきや ミニキャラ"></span>
+<span class="bob" role="img" aria-label="八乙女さきや ミニキャラ"></span>
 </button>
 
 <button id="sunsun" type="button" aria-label="スンスン：押すと喋る">
@@ -605,8 +602,24 @@ heroGo(from === 'game' ? 1 : from === 'live' ? 2 : 0);
 
 /* ---------- ミニキャラ歩行 ---------- */
 var charaEl = document.getElementById('chara');
+var bobEl = charaEl.querySelector('.bob');
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var walk = {x:58, min:2.5, max:57, dir:-1, mode:'idle', until:0, speed:5.2, last:0, started:false};
+/* 歩行スプライト：4フレーム（0=踏み出し 1=すり足 2=逆踏み出し 3=立ち）。移動距離に同期してフレームを進める */
+var FRAME_X = ['0%', '33.333%', '66.667%', '100%'];
+var FRAME_STEP = 2.25; /* 移動量（%）ごとに1フレーム進む */
+var walkDist = 0, lastFrame = -1, lastFlip = 0;
+function setFrame(i){
+if (i === lastFrame) return;
+lastFrame = i;
+bobEl.style.backgroundPosition = FRAME_X[i] + ' 0';
+}
+function setFlip(dir){
+if (dir === lastFlip) return;
+lastFlip = dir;
+bobEl.style.transform = dir < 0 ? 'scaleX(-1)' : '';
+}
+setFrame(3);
 function walkActive(){
 return entered && !reduceMotion && !document.hidden && !scrim.classList.contains('on');
 }
@@ -615,16 +628,18 @@ requestAnimationFrame(walkLoop);
 if (!walk.last) walk.last = ts;
 var dt = Math.min(0.05, (ts - walk.last) / 1000);
 walk.last = ts;
-if (!walkActive()){ charaEl.classList.remove('walking'); return;}
+if (!walkActive()){ setFrame(3); return;}
 if (walk.mode === 'idle'){
-charaEl.classList.remove('walking');
+setFrame(3);
 if (ts >= walk.until){
 walk.mode = 'walk';
 walk.dir = walk.x <= walk.min + 0.5 ? 1 : walk.x >= walk.max - 0.5 ? -1 : (Math.random() < 0.5 ? -1 : 1);
 }
 } else {
-charaEl.classList.add('walking');
+setFlip(walk.dir);
 walk.x += walk.dir * walk.speed * dt;
+walkDist += walk.speed * dt;
+setFrame(Math.floor(walkDist / FRAME_STEP) % 4);
 if (walk.x <= walk.min){ walk.x = walk.min; walk.mode = 'idle'; walk.until = ts + 2200 + Math.random() * 2200;}
 if (walk.x >= walk.max){ walk.x = walk.max; walk.mode = 'idle'; walk.until = ts + 2200 + Math.random() * 2200;}
 charaEl.style.left = walk.x + '%';
