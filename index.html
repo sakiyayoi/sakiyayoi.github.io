@@ -62,6 +62,12 @@ transition:opacity var(--t-enter) var(--ease-expo), transform var(--t-enter) var
 #gate .name{font-size:15px;letter-spacing:.55em;color:var(--sub);text-indent:.55em;font-weight:400}
 #gate .name b{display:block;font-size:34px;letter-spacing:.14em;color:var(--ink);font-weight:800;margin-top:10px;text-indent:.14em}
 #gate .name b .p{color:var(--pink)}
+#gate .g-info{display:flex;flex-direction:column;align-items:center;gap:13px}
+#gate .g-role{font-size:13px;font-weight:800;letter-spacing:.34em;text-indent:.34em;color:var(--ink)}
+#gate .g-chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+#gate .g-chips span{font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--sub);border:1.5px solid var(--line);border-radius:99px;padding:4px 11px}
+#gate .g-live{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;letter-spacing:.1em;color:var(--pink)}
+#gate .g-live .dot{width:8px;height:8px;border-radius:50%;background:var(--pink);flex:none}
 #enterBtn{
 min-width:168px;min-height:56px;padding:14px 34px;
 border-radius:999px;border:2px solid var(--ink);
@@ -227,6 +233,8 @@ background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid v
 }
 /* スンスンは右端寄り＆セリフが長いので、折り返し可にして幅を抑える */
 #sunsun .bubble{font-size:12px;white-space:normal;width:max-content;max-width:150px;text-align:center;line-height:1.5}
+/* テレビは左端寄りなので、ツアー案内の吹き出しも折り返し可にして幅を抑える */
+#obj-tv .bubble{font-size:12px;white-space:normal;width:max-content;max-width:132px;text-align:center;line-height:1.5}
 
 /* ---------- 床タップの印：歩行先に小さな輪が出て消える ---------- */
 #tapmark{
@@ -551,6 +559,32 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 .face.f-kani{background:linear-gradient(120deg,#ff2e88,#ff9a3d)}
 .face.f-ebi{background:linear-gradient(120deg,#8b3dff,#ff2e88)}
 
+/* テレビパネル先頭の「まず見て」：実物サムネイルのカード */
+.pick-label{font-size:11px;letter-spacing:.2em;color:var(--pink);font-weight:800;margin:2px 0 10px}
+.card-first .face{height:150px;padding:0}
+.card-first .face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card-first .play{
+position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;
+width:52px;height:52px;border-radius:50%;background:rgba(255,46,136,.92);
+box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+.card-first .play::after{
+content:'';position:absolute;left:50%;top:50%;transform:translate(-36%,-50%);
+border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;
+}
+.card-first .meta .clip-ttl{font-weight:700;line-height:1.45}
+
+/* テレビパネル末尾：配信で会うための大きめの出口 */
+.meet-cta{margin-top:16px;background:linear-gradient(120deg,var(--pink),var(--purple));border-radius:18px;padding:18px 16px;text-align:center;color:#fff}
+.meet-txt{font-size:16px;font-weight:800;letter-spacing:.06em;margin-bottom:12px}
+.meet-btn{
+display:flex;align-items:center;justify-content:center;min-height:52px;
+background:#fff;color:var(--pink);border-radius:99px;text-decoration:none;
+font-size:15px;font-weight:800;letter-spacing:.08em;
+transition:transform var(--t-press) var(--ease-out);
+}
+.meet-btn:active{transform:scale(.97)}
+
 .mini-link{
 display:flex;align-items:center;gap:10px;text-decoration:none;
 min-height:52px;padding:10px 4px;border-bottom:1px solid var(--line);
@@ -660,6 +694,11 @@ transition:transform var(--t-press) var(--ease-out);
 <!-- 玄関 -->
 <div id="gate">
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
+<div class="g-info">
+<div class="g-role">ミラティブ配信者</div>
+<div class="g-chips"><span>歌</span><span>ゲーム</span><span>雑談</span><span>全部自作</span></div>
+<div class="g-live"><span class="dot"></span>毎晩22時 配信中</div>
+</div>
 <button id="enterBtn" type="button">入る</button>
 </div>
 
@@ -698,6 +737,7 @@ transition:transform var(--t-press) var(--ease-out);
 
 <button class="obj" id="obj-tv" type="button" data-panel="tv" aria-label="テレビ：配信と動画">
 <span class="ring"></span>
+<span class="bubble" id="tvBubble" aria-hidden="true"></span>
 <img src="assets/parts/tv.webp" alt="">
 <span class="tv-screen" aria-hidden="true">
 <span class="tv-scene sc-a on"></span>
@@ -778,6 +818,14 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>テレビ ｜ <b>配信と動画</b></h2>
+<div class="pick-label">まず見て</div>
+<a class="card card-first" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
+<div class="face f-clip">
+<img src="assets/parts/tv-clip.webp" alt="配信切り抜きShorts「雪山にスーツで出張!?」のサムネイル" draggable="false">
+<span class="play" aria-hidden="true"></span>
+</div>
+<div class="meta"><span class="tag pink">切り抜き</span><span class="clip-ttl">雪山にスーツで出張!? ホラゲで働き方を心配し始めた</span><span class="go">見る →</span></div>
+</a>
 <a class="card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
 <div class="face f-live">
 <svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="6" fill="#fff"/><path d="M7 8 a11 11 0 0 0 0 14 M23 8 a11 11 0 0 1 0 14" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
@@ -792,6 +840,10 @@ transition:transform var(--t-press) var(--ease-out);
 </div>
 <div class="meta"><span class="tag dark">動画</span><span>八乙女さきや</span><span class="go">ひらく →</span></div>
 </a>
+<div class="meet-cta">
+<div class="meet-txt">今夜22時、配信で会おう</div>
+<a class="meet-btn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ で会う →</a>
+</div>
 </section>
 
 <!-- ゲーム機：各ゲームを実物カードで -->
@@ -955,7 +1007,7 @@ function highlightTarget(){
 var from = new URLSearchParams(location.search).get('from');
 if (from === 'game') return document.getElementById('obj-game');
 if (from === 'live') return document.getElementById('obj-tv');
-return document.getElementById('chara');
+return document.getElementById('obj-tv');
 }
 
 function enter(){
@@ -974,10 +1026,21 @@ var fromParam = new URLSearchParams(location.search).get('from');
 if (fromParam){
 tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
 }
+var tvBubble = document.getElementById('tvBubble');
 tour.forEach(function(id, i){
 var el = document.getElementById(id);
-setTimeout(function(){ el.classList.add('tour');}, 800 + i * 430);
-setTimeout(function(){ el.classList.remove('tour');}, 800 + i * 430 + 1100);
+var at = 800 + i * 430;
+setTimeout(function(){ el.classList.add('tour');}, at);
+setTimeout(function(){ el.classList.remove('tour');}, at + 1100);
+// ツアーの案内：テレビでは「まず声と笑い」、スンスンでは声が出ることに触れる
+if (id === 'obj-tv'){
+setTimeout(function(){ bubbleShow(tvBubble, 'まずはここから。声と笑い');}, at);
+setTimeout(function(){ tvBubble.classList.remove('show');}, at + 2100);
+}
+if (id === 'sunsun'){
+setTimeout(function(){ bubbleShow(sunBubble, 'おすと声がでる');}, at);
+setTimeout(function(){ sunBubble.classList.remove('show');}, at + 1600);
+}
 });
 var start = 800 + tour.length * 430 + 300;
 setTimeout(function(){ t.classList.add('highlight');}, start);
