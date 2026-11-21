@@ -85,7 +85,7 @@ text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(
 #hero{position:absolute;left:17%;top:12%;width:55%;z-index:2}
 .hero-frame{
 position:relative;background:#fff;padding:5px;border-radius:12px;
-box-shadow:0 6px 18px rgba(43,36,48,.10);
+box-shadow:0 6px 18px rgba(43,36,48,.10);overflow:hidden;
 }
 .hero-view{overflow:hidden;border-radius:10px;touch-action:pan-y}
 .hero-track{display:flex;transition:transform .48s cubic-bezier(.32,1.1,.4,1)}
@@ -160,6 +160,12 @@ pointer-events:none;
 #chara .notes span:nth-child(1){left:14%;font-size:17px;color:var(--pink)}
 #chara .notes span:nth-child(2){left:52%;font-size:21px;color:var(--purple);animation-delay:.75s}
 #chara .notes span:nth-child(3){left:80%;font-size:15px;color:var(--pink);animation-delay:1.5s}
+#chara .hearts{position:absolute;left:0;right:0;top:-14%;height:0;opacity:0;transition:opacity .35s ease;pointer-events:none}
+#chara.ikebo .hearts{opacity:1}
+#chara .hearts span{position:absolute;bottom:0;font-weight:800;line-height:1;color:var(--pink);animation:noteFloat 2.1s ease-in infinite}
+#chara .hearts span:nth-child(1){left:10%;font-size:16px}
+#chara .hearts span:nth-child(2){left:48%;font-size:21px;animation-delay:.7s}
+#chara .hearts span:nth-child(3){left:82%;font-size:14px;animation-delay:1.3s}
 @keyframes noteFloat{0%{transform:translateY(0) rotate(-7deg);opacity:0}18%{opacity:1}100%{transform:translateY(-48px) rotate(11deg);opacity:0}}
 #chara .ring{position:absolute;inset:0;border-radius:22px;border:2px solid var(--purple);opacity:.38;pointer-events:none}
 #chara.highlight .ring{animation:pulse 1.15s ease-in-out 3}
@@ -170,7 +176,137 @@ position:absolute;left:75.5%;bottom:2.5%;
 width:11%;padding:0;border-radius:20px;z-index:3;
 }
 #sunsun:active{transform:scale(.93)}
-#sunsun img{width:100%;display:block;pointer-events:none}
+#sunsun img{width:100%;display:block;pointer-events:none;transform:scaleX(-1)}
+#sunsun.talking.rare{animation:squishBig .45s ease-in-out infinite}
+@keyframes squishBig{0%,100%{transform:scale(1,1)}30%{transform:scale(1.17,.8)}60%{transform:scale(.9,1.13)}}
+
+/* ---------- 右のドア（作品置き場へ） ---------- */
+#obj-door{left:81.4%;bottom:5.2%;width:15.1%;aspect-ratio:623/2783;z-index:2;perspective:520px}
+#obj-door .door-glow{
+position:absolute;inset:0;
+clip-path:polygon(0 0,100% 35.3%,100% 100%,0 64.7%);
+background:linear-gradient(160deg,#fff7da,#ffd9ec);
+opacity:0;transition:opacity .5s ease;pointer-events:none;
+}
+#obj-door .door-leafwrap{
+position:absolute;inset:0;pointer-events:none;
+transform-origin:0% 32%;
+transition:transform .8s cubic-bezier(.5,0,.2,1);
+}
+#obj-door .door-leafwrap img{width:100%;display:block}
+#obj-door.opening .door-glow{opacity:1}
+#obj-door.opening .door-leafwrap{transform:rotateY(-72deg)}
+#obj-door.tour .door-leafwrap{animation:doorPulse 1.05s ease-in-out 1}
+#obj-door.highlight .door-leafwrap{animation:doorPulse 1.15s ease-in-out 3}
+@keyframes doorPulse{0%,100%{filter:drop-shadow(0 0 0 rgba(255,46,136,0))}50%{filter:drop-shadow(0 0 9px rgba(255,46,136,.85))}}
+.door-glint{
+position:absolute;left:86%;top:65%;margin:-7px 0 0 -7px;
+font-size:13px;line-height:1;color:#ffcf4d;opacity:0;pointer-events:none;
+animation:glintPulse 7.5s ease-in infinite;
+}
+@keyframes glintPulse{0%,88%,100%{opacity:0;transform:scale(.5) rotate(0deg)}93%{opacity:.95;transform:scale(1.15) rotate(35deg)}}
+
+/* ---------- 物のアニメーション（部屋が生きてる気配） ---------- */
+/* テレビ：画面の明滅 */
+#obj-tv img{animation:tvFlicker 6s linear infinite}
+@keyframes tvFlicker{0%,100%{filter:brightness(1)}3%{filter:brightness(1.07)}6%{filter:brightness(1)}38%{filter:brightness(1.045)}41%{filter:brightness(1)}72%{filter:brightness(1.08)}75%{filter:brightness(1)}}
+/* ゲーム機：電源ランプの点滅 */
+#obj-game .lamp{
+position:absolute;left:43%;top:40%;width:7px;height:7px;border-radius:50%;
+background:#ff4d6d;box-shadow:0 0 7px 2px rgba(255,77,109,.55);
+animation:lampBlink 2.6s ease-in-out infinite;pointer-events:none;z-index:2;
+}
+@keyframes lampBlink{0%,100%{opacity:1}50%{opacity:.2}}
+/* スピーカー：小さな振動と音符 */
+#obj-speaker img{animation:spkVibe 4.8s ease-in-out infinite}
+@keyframes spkVibe{0%,100%{transform:translateY(0)}2%{transform:translateY(-1.6%)}4%{transform:translateY(0)}6%{transform:translateY(-1.6%)}8%,94%{transform:translateY(0)}}
+#obj-speaker .notes{position:absolute;left:0;right:0;top:-40%;height:0;opacity:0;animation:spkNotes 9.5s ease-in infinite;pointer-events:none;z-index:4}
+@keyframes spkNotes{0%,80%{opacity:0}86%,95%{opacity:1}100%{opacity:0}}
+#obj-speaker .notes span{position:absolute;bottom:0;font-weight:800;line-height:1;animation:noteFloat 2.3s ease-in infinite}
+#obj-speaker .notes span:nth-child(1){left:16%;font-size:12px;color:var(--pink)}
+#obj-speaker .notes span:nth-child(2){left:56%;font-size:15px;color:var(--purple);animation-delay:.8s}
+/* 机：紙や小物の微かな気配 */
+#obj-desk img{animation:deskSway 7s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes deskSway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(.35deg)}}
+/* 観葉植物：葉の揺れ */
+#plant img{animation:leafSway 5.2s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes leafSway{0%,100%{transform:rotate(-1.4deg)}50%{transform:rotate(1.4deg)}}
+#plant.tapwiggle{animation:plantWiggle .38s ease}
+@keyframes plantWiggle{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-2.6deg)}65%{transform:rotate(2.2deg)}}
+#plant .flower{
+position:absolute;left:50%;top:9%;width:34%;max-width:30px;
+transform:translate(-50%,0) scale(0);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+pointer-events:none;
+}
+#plant.bloomed .flower{transform:translate(-50%,0) scale(1)}
+#plantHit{
+position:absolute;left:33.6%;bottom:21.6%;width:6.5%;height:10%;
+z-index:2;border-radius:16px;background:none;
+}
+#plantHit::after{content:'';position:absolute;inset:-6px}
+/* ヒーロー：光の反射が流れる */
+.hero-frame::after{
+content:'';position:absolute;top:-10%;bottom:-10%;left:-32%;width:34%;z-index:2;
+background:linear-gradient(100deg,transparent,rgba(255,255,255,.34),transparent);
+transform:skewX(-18deg);animation:heroShine 8.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes heroShine{0%,70%{left:-32%}88%,100%{left:114%}}
+
+/* ---------- 作品置き場 ---------- */
+#storageView{
+position:fixed;inset:0;z-index:26;background:var(--paper);
+opacity:0;visibility:hidden;transition:opacity .45s ease;
+}
+#storageView.on{opacity:1;visibility:visible}
+#storageStage{
+position:absolute;left:50%;top:50%;
+transform:translate(-50%,-50%);
+width:min(100vw, calc(100dvh * 0.7544));
+aspect-ratio:1376 / 1824;
+background:linear-gradient(to bottom,#fdfbf9 0,#fdfbf9 75.7%,#d8ccd4 75.7%,#d8ccd4 75.95%,#f6eae9 75.95%,#f6eae9 100%);
+}
+.storage-name{
+position:absolute;top:3.2%;left:0;right:0;
+text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(--sub);
+}
+.storage-name b{color:var(--ink)}
+#shelves{
+position:absolute;left:6%;right:6%;top:10.5%;bottom:26.5%;
+overflow-y:auto;overscroll-behavior:contain;padding:4px 2px;
+}
+.shelf{margin-bottom:8.5%}
+.shelf:last-child{margin-bottom:2%}
+.shelf-items{display:flex;justify-content:center;align-items:flex-end;gap:5%}
+.shelf-board{
+height:9px;border-radius:5px;margin-top:7px;
+background:linear-gradient(#e6c69c,#cfa06e);
+box-shadow:0 3px 7px rgba(43,36,48,.16);
+}
+.work{width:29%;display:block;text-decoration:none;transition:transform .18s ease}
+.work:active{transform:scale(.96)}
+.work .wframe{
+display:block;background:#fff;padding:4px;border-radius:9px;
+box-shadow:0 4px 13px rgba(43,36,48,.14);
+}
+.work .wframe img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:6px}
+.work .wface{
+aspect-ratio:4/3;border-radius:6px;position:relative;
+display:flex;align-items:flex-end;padding:9px;overflow:hidden;color:#fff;
+}
+.work .wface svg{position:absolute;right:8px;top:8px;opacity:.9}
+.work .wface .fttl{font-size:13px;font-weight:800;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
+.work .wttl{display:block;text-align:center;font-size:12px;font-weight:800;letter-spacing:.02em;margin-top:8px;line-height:1.35}
+.work .wtag{display:flex;justify-content:center;margin-top:5px}
+#storageDoor{
+position:absolute;left:5%;bottom:24.4%;width:12.5%;z-index:2;
+padding:0;border-radius:14px;transition:transform .18s ease;
+}
+#storageDoor:active{transform:scale(.94)}
+#storageDoor img{width:100%;display:block;pointer-events:none}
+#storageDoor .cap{
+position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);
+font-size:11px;letter-spacing:.16em;color:var(--sub);font-weight:800;white-space:nowrap;
+}
 #sunsun .ring{position:absolute;inset:0;border-radius:20px;border:2px solid var(--pink);opacity:.38;pointer-events:none}
 #sunsun.highlight .ring{animation:pulse 1.15s ease-in-out 3}
 #sunsun.tour .ring{animation:pulse 1.05s ease-in-out 1}
@@ -329,11 +465,14 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <button class="obj" id="obj-game" type="button" data-panel="game" aria-label="ゲーム機：ゲーム">
 <span class="ring"></span>
 <img src="assets/parts/console.webp" alt="">
+<span class="lamp" aria-hidden="true"></span>
 </button>
 
 <div id="plant" aria-hidden="true">
 <img src="assets/parts/plant.webp" alt="" loading="lazy" decoding="async">
+<span class="flower"><svg viewBox="0 0 40 40" width="100%" height="100%"><circle cx="20" cy="11" r="6.4" fill="#ff7eb6"/><circle cx="28.6" cy="17.2" r="6.4" fill="#ff7eb6"/><circle cx="25.3" cy="27.8" r="6.4" fill="#ff7eb6"/><circle cx="14.7" cy="27.8" r="6.4" fill="#ff7eb6"/><circle cx="11.4" cy="17.2" r="6.4" fill="#ff7eb6"/><circle cx="20" cy="19.5" r="4.4" fill="#ffcf4d"/></svg></span>
 </div>
+<button id="plantHit" type="button" aria-label="観葉植物"></button>
 
 <button class="obj" id="obj-desk" type="button" data-panel="desk" aria-label="机：制作机">
 <span class="ring"></span>
@@ -343,11 +482,13 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <button class="obj" id="obj-speaker" type="button" data-panel="speaker" aria-label="スピーカー：曲">
 <span class="ring"></span>
 <img src="assets/parts/speaker.webp" alt="">
+<span class="notes" aria-hidden="true"><span>♪</span><span>♫</span></span>
 </button>
 
 <button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
 <span class="ring"></span>
 <span class="notes" aria-hidden="true"><span>♪</span><span>♫</span><span>♪</span></span>
+<span class="hearts" aria-hidden="true"><span>♥</span><span>♥</span><span>♥</span></span>
 <span class="bob" role="img" aria-label="八乙女さきや ミニキャラ"></span>
 </button>
 
@@ -355,8 +496,25 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <span class="ring"></span>
 <img src="assets/parts/sunsun.webp" alt="ピンクのミニスンスン" loading="lazy" decoding="async">
 </button>
+
+<button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
+<span class="door-glow" aria-hidden="true"></span>
+<span class="door-leafwrap" aria-hidden="true"><img src="assets/parts/door.webp" alt=""><span class="door-glint">✦</span></span>
+</button>
 </div>
 </main>
+
+<!-- 作品置き場 -->
+<div id="storageView" aria-hidden="true">
+<div id="storageStage">
+<div class="storage-name">さきやの <b>作品置き場</b></div>
+<div id="shelves"></div>
+<button id="storageDoor" type="button" aria-label="部屋にもどる">
+<img src="assets/parts/door-front.webp" alt="">
+<span class="cap">部屋へもどる</span>
+</button>
+</div>
+</div>
 
 <div id="scrim"></div>
 
@@ -516,7 +674,7 @@ room.setAttribute('aria-hidden','false');
 // 入室直後：物が順に1回ずつ光って「触れる」ことを示す
 // 入口（?from=）がある時は、その対象をツアーの先頭にする（最初に光る物＝入口の物）
 var t = highlightTarget();
-var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun'];
+var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun','obj-door'];
 var fromParam = new URLSearchParams(location.search).get('from');
 if (fromParam){
 tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
@@ -559,6 +717,13 @@ history.replaceState(null, '', location.pathname + location.search);
 function syncFromHash(){
 var id = location.hash.replace('#','');
 if (location.hash!== lastPushedHash) pushedCount = 0;
+if (id === 'storage'){
+if (!entered) enter();
+closePanels(false);
+showStorage();
+return;
+}
+if (storageOpen) hideStorage();
 if (PANELS.indexOf(id) >= 0){
 if (!entered) enter();
 openPanel(id, false);
@@ -668,12 +833,13 @@ x:48, y:9, tx:48, ty:9, flip:1,
 state:'idle', until:0, started:false, last:0,
 walkDist:0, actAfter:null, actNext:0, actFrame:0,
 blinkAt:0, blinkOff:0, hopFrom:0, pendingOpen:false,
-lastAct:'', waveStep:0, waveAt:0, dash:false
+lastAct:'', waveStep:0, waveAt:0, dash:false,
+ikeboDone:false, begin:0
 };
 function setPos(){ charaEl.style.left = C.x + '%'; charaEl.style.bottom = C.y + '%';}
 function depthScale(){ return 1.07 - (C.y - FLOOR.y0) * (0.19 / (FLOOR.y1 - FLOOR.y0));}
 function charaActive(){
-return entered && !document.hidden && !scrim.classList.contains('on');
+return entered && !document.hidden && !scrim.classList.contains('on') && !storageOpen;
 }
 function goIdle(ts, min, max){
 C.state = 'idle'; C.flip = 1; C.dash = false;
@@ -726,6 +892,25 @@ function endActivity(ts){
 charaEl.classList.remove('music');
 goIdle(ts, 1200, 2600);
 }
+/* レア出現：イケボ（訪問中1回まで） */
+var ikeboAudio = null;
+window.IKEBO = {played:false, src:'assets/voice/ikebo.mp3'};
+function startIkebo(ts){
+C.state = 'ikebo'; C.ikeboDone = true; C.flip = 1; C.dash = false;
+setSheet('wave'); setFrame(1);
+charaEl.classList.add('ikebo');
+if (ikeboAudio){ ikeboAudio.pause();}
+ikeboAudio = new Audio('assets/voice/ikebo.mp3');
+window.IKEBO.played = true;
+var p = ikeboAudio.play();
+if (p && p.catch) p.catch(function(){});
+C.until = ts + 6600;
+}
+function endIkebo(ts){
+charaEl.classList.remove('ikebo');
+if (ikeboAudio){ ikeboAudio.pause(); ikeboAudio = null;}
+goIdle(ts, 2500, 5000);
+}
 function startWave(ts){
 C.state = 'wave'; C.flip = 1;
 setSheet('wave'); C.waveStep = 0; setFrame(0);
@@ -745,6 +930,7 @@ if (p > 0.8){ var s = Math.sin((p - 0.8) / 0.2 * Math.PI); sy = 1 - 0.13 * s; sx
 else if (p < 0.14){ var s2 = Math.sin(p / 0.14 * Math.PI); sy = 1 - 0.07 * s2; sx = 1 + 0.05 * s2;}
 }
 if (C.state === 'music'){ rot = Math.sin(ts / 175) * 3.2; hopY = -Math.abs(Math.sin(ts / 170)) * 6.5;}
+if (C.state === 'ikebo'){ rot = Math.sin(ts / 320) * 1.6;}
 if (C.state === 'game') rot = Math.sin(ts / 300) * 1.1;
 if (C.state === 'sitrelax') rot = Math.sin(ts / 900) * 1.2;
 var d = depthScale();
@@ -761,6 +947,8 @@ if (!charaActive()){
 if (C.state!== 'frozen'){
 C.state = 'frozen';
 charaEl.classList.remove('music');
+charaEl.classList.remove('ikebo');
+if (ikeboAudio){ ikeboAudio.pause(); ikeboAudio = null;}
 setSheet('idle'); setFrame(0);
 bobEl.style.transform = '';
 }
@@ -772,6 +960,7 @@ case 'idle':
 if (C.blinkOff && ts >= C.blinkOff){ setFrame(0); C.blinkOff = 0; C.blinkAt = ts + 2200 + Math.random() * 2600;}
 else if (!C.blinkOff && ts >= C.blinkAt){ setFrame(1); C.blinkOff = ts + 130;}
 if (ts >= C.until){
+if (!C.ikeboDone && ts - C.begin > 20000 && Math.random() < 0.06){ startIkebo(ts); break;}
 var r = Math.random();
 var dash = Math.random() < 0.22;
 if (r < 0.40){
@@ -822,6 +1011,9 @@ goIdle(ts, 2000, 4500);
 if (open) openPanel('profile');
 }
 break;
+case 'ikebo':
+if (ts >= C.until) endIkebo(ts);
+break;
 case 'game': case 'tv': case 'desk': case 'music': case 'sitrelax':
 if (ts >= C.actNext){
 C.actFrame = (C.actFrame + 1) % 2; setFrame(C.actFrame); C.actNext = ts + actInterval(C.state);
@@ -834,6 +1026,7 @@ applyTransform(ts);
 function startChara(){
 if (C.started) return;
 C.started = true;
+C.begin = performance.now();
 setSheet('idle'); setFrame(0); setPos();
 C.until = performance.now() + 1600;
 C.blinkAt = performance.now() + 1800;
@@ -842,7 +1035,7 @@ requestAnimationFrame(charaLoop);
 /* キャラのタップ：#chara は pointer-events:none（物のタップを通す）ため、
    背景クリックの座標でキャラ本体に当たったか判定する */
 function charaTap(){
-if (C.state === 'hop') return;
+if (C.state === 'hop' || C.state === 'ikebo') return;
 if (reduceMotion){ openPanel('profile'); return;}
 startHop(performance.now(), true);
 }
@@ -861,18 +1054,30 @@ charaTap();
 var sunsunBtn = document.getElementById('sunsun');
 var VOICES = ['assets/voice/sun-1.mp3','assets/voice/sun-2.mp3','assets/voice/sun-3.mp3','assets/voice/sun-4.mp3'];
 var sunAudio = null, lastVoice = -1;
-window.SUNSUN = {playing:false, src:'', el:null};
+var RARE_VOICE = 'assets/voice/sun-rare.mp3';
+window.SUNSUN = {playing:false, src:'', el:null, rare:false};
 function stopSun(){
 window.SUNSUN.playing = false;
+window.SUNSUN.rare = false;
 sunsunBtn.classList.remove('talking');
+sunsunBtn.classList.remove('rare');
 }
 sunsunBtn.addEventListener('click', function(){
+var isRare = Math.random() < 0.10;
+var src;
+if (isRare){
+src = RARE_VOICE;
+} else {
 var i = Math.floor(Math.random() * VOICES.length);
 if (VOICES.length > 1 && i === lastVoice) i = (i + 1) % VOICES.length;
 lastVoice = i;
+src = VOICES[i];
+}
 if (sunAudio){ sunAudio.pause();}
-sunAudio = new Audio(VOICES[i]);
-window.SUNSUN.src = VOICES[i];
+sunAudio = new Audio(src);
+window.SUNSUN.src = src;
+window.SUNSUN.rare = isRare;
+sunsunBtn.classList.toggle('rare', isRare);
 window.SUNSUN.el = sunAudio;
 window.SUNSUN.playing = true;
 sunsunBtn.classList.add('talking');
@@ -880,6 +1085,97 @@ sunAudio.addEventListener('ended', stopSun);
 sunAudio.addEventListener('error', stopSun);
 var p = sunAudio.play();
 if (p && p.catch) p.catch(stopSun);
+});
+
+/* ---------- 作品置き場 ---------- */
+var storageView = document.getElementById('storageView');
+var storageOpen = false, pushedStorage = false;
+/* 作品リスト：ここに1件足すと棚に増える */
+var WORKS = [
+{title:'ちょうどいい湯かげん', kind:'ゲーム', tag:'', href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/hero-yukagen-real.webp'},
+{title:'カニ飛ばし', kind:'ゲーム', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', face:'kani'},
+{title:'EBI KANI?', kind:'ゲーム', tag:'', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
+{title:'そばにいて', kind:'曲・MV', tag:'pink', href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
+{title:'空っぽの愛', kind:'曲', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
+{title:'1周年記念サイト', kind:'サイト', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'}
+];
+var KANI_SVG = '<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>';
+(function renderWorks(){
+var html = '';
+for (var i = 0; i < WORKS.length; i += 3){
+html += '<div class="shelf"><div class="shelf-items">';
+WORKS.slice(i, i + 3).forEach(function(w){
+var face = w.img
+? '<img src="' + w.img + '" alt="" loading="lazy" decoding="async">'
+: '<div class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></div>';
+html += '<a class="work" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
++ '<span class="wframe">' + face + '</span>'
++ '<span class="wttl">' + w.title + '</span>'
++ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span></a>';
+});
+html += '</div><div class="shelf-board"></div></div>';
+}
+document.getElementById('shelves').innerHTML = html;
+})();
+function showStorage(){
+if (storageOpen) return;
+storageOpen = true;
+storageView.classList.add('on');
+storageView.setAttribute('aria-hidden','false');
+room.setAttribute('aria-hidden','true');
+}
+function hideStorage(){
+if (!storageOpen) return;
+storageOpen = false;
+storageView.classList.remove('on');
+storageView.setAttribute('aria-hidden','true');
+if (entered) room.setAttribute('aria-hidden','false');
+}
+function goStorage(){
+if (storageOpen) return;
+if (location.hash!== '#storage'){
+pushedStorage = true;
+location.hash = 'storage';
+} else {
+showStorage();
+}
+}
+document.getElementById('storageDoor').addEventListener('click', function(){
+if (pushedStorage){
+pushedStorage = false;
+history.back();
+} else {
+history.replaceState(null, '', location.pathname + location.search);
+hideStorage();
+}
+});
+
+/* ---------- 右のドア：開いて置き場へ ---------- */
+var doorBtn = document.getElementById('obj-door');
+var doorBusy = false;
+doorBtn.addEventListener('click', function(){
+if (doorBusy || storageOpen) return;
+doorBusy = true;
+doorBtn.classList.add('opening');
+setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 820);
+setTimeout(function(){ doorBtn.classList.remove('opening'); doorBusy = false;}, 1500);
+});
+
+/* ---------- 隠し要素：植物を5回タップで花 ---------- */
+var plantEl = document.getElementById('plant');
+var plantTaps = 0, plantTimer = 0, plantBloomed = false;
+document.getElementById('plantHit').addEventListener('click', function(){
+if (plantBloomed) return;
+plantTaps++;
+plantEl.classList.remove('tapwiggle');
+void plantEl.offsetWidth;
+plantEl.classList.add('tapwiggle');
+clearTimeout(plantTimer);
+plantTimer = setTimeout(function(){ plantTaps = 0;}, 2600);
+if (plantTaps >= 5){
+plantBloomed = true;
+plantEl.classList.add('bloomed');
+}
 });
 
 document.getElementById('enterBtn').addEventListener('click', enter);
