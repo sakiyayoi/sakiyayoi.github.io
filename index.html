@@ -193,6 +193,9 @@ transition:transform var(--t-ui) var(--ease-out);
 }
 #sunsun:active{transform:scale(.94)}
 #sunsun img{width:100%;display:block;pointer-events:none}
+#sunsun::after{content:'';position:absolute;inset:-6px}
+/* ゾーン解決で転送されたタップの押し感（当たり判定の再設計） */
+.obj.zbp,#sunsun.zbp{transform:scale(.94)}
 /* スンスンのたまの動き：普段は静か。たまに傾く・揺れる・小さく跳ねる（鈍く、控えめに） */
 #sunsun.idle-tilt{animation:sunTilt 2.6s var(--ease-inout) 1}
 @keyframes sunTilt{0%,100%{transform:rotate(0deg)}30%,58%{transform:rotate(-2.4deg)}}
@@ -334,10 +337,10 @@ pointer-events:none;
 }
 #plant.bloomed .flower{transform:translate(-50%,0) scale(1) rotate(0deg)}
 #plantHit{
-position:absolute;left:33.6%;bottom:21.6%;width:6.5%;height:10%;
+position:absolute;left:33.9%;bottom:21.7%;width:6.9%;height:11.2%;
 z-index:2;border-radius:16px;background:none;
 }
-#plantHit::after{content:'';position:absolute;inset:-6px}
+#plantHit::after{content:'';position:absolute;inset:-8px -14px}
 /* ヒーロー：光の反射が流れる */
 .hero-frame::after{
 content:'';position:absolute;top:-10%;bottom:-10%;left:-32%;width:34%;z-index:2;
@@ -369,11 +372,14 @@ position:absolute;top:7.4%;left:0;right:0;z-index:2;
 display:flex;justify-content:center;gap:7px;padding:0 4%;
 }
 #storageTabs button{
+position:relative;
 font:inherit;font-size:12px;font-weight:800;letter-spacing:.08em;
-padding:6px 13px;border-radius:999px;cursor:pointer;
+padding:9px 14px;border-radius:999px;cursor:pointer;
 background:#fff;color:var(--ink);border:2px solid rgba(43,36,48,.22);
 transition:background var(--t-ui) ease,color var(--t-ui) ease,border-color var(--t-ui) ease,transform var(--t-press) var(--ease-out);
 }
+/* タブの当たりを44px相当まで広げる（見た目はそのまま） */
+#storageTabs button::after{content:'';position:absolute;inset:-5px -3px}
 #storageTabs button:active{transform:scale(.94)}
 #storageTabs button.on{background:var(--pink);border-color:var(--pink);color:#fff}
 #shelves{
@@ -401,6 +407,7 @@ box-shadow:0 3px 7px rgba(43,36,48,.16);
 .wlink:active{transform:scale(.96)}
 /* 応援カウンター：作品ごとに1つ。外部APIが落ちたら .off で静かに消える */
 .cheer{
+position:relative;min-height:40px;
 display:flex;align-items:center;justify-content:center;gap:5px;
 margin:8px auto 0;padding:5px 13px;border-radius:999px;cursor:pointer;
 border:1.5px solid rgba(255,46,136,.45);background:#fff;color:var(--pink);
@@ -408,6 +415,8 @@ font:inherit;font-size:11.5px;font-weight:800;letter-spacing:.04em;
 transition:transform var(--t-press) var(--ease-out), background .2s ease, color .2s ease;
 }
 .cheer:active{transform:scale(.93)}
+/* 応援ボタンの当たりを44px相当まで広げる（見た目はそのまま） */
+.cheer::after{content:'';position:absolute;inset:-4px -8px}
 .cheer .c-heart{font-size:12px;line-height:1}
 .cheer .cheer-n{font-variant-numeric:tabular-nums}
 .cheer.done{background:var(--pink);border-color:var(--pink);color:#fff;cursor:default}
@@ -488,6 +497,7 @@ padding:0;border-radius:14px;transition:transform var(--t-press) var(--ease-out)
 }
 #storageDoor:active{transform:scale(.94)}
 #storageDoor img{width:100%;display:block;pointer-events:none}
+#storageDoor::after{content:'';position:absolute;inset:-8px}
 #storageDoor .cap{
 position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);
 font-size:11px;letter-spacing:.16em;color:var(--sub);font-weight:800;white-space:nowrap;
@@ -1422,7 +1432,71 @@ charaOpenTimer = setTimeout(function(){
 if (!scrim.classList.contains('on') && !storageOpen) openPanel('profile');
 }, 1350);
 }
-/* 背景タップの判定順序：①物・リンク（各要素のハンドラ／ここでは除外）→②キャラ本体→③ヒーロー→④床の素の部分＝歩行→⑤壁側＝ヒント */
+/* ---------- 当たり判定：ゾーン解決（ステージへの capture で背景ハンドラより先に判定） ----------
+   重なる場所では「見た目で手前にある物」が必ず勝つよう、タップ位置を優先順位つきの
+   ゾーンで解決する。ゾーンは各オブジェクトの見た目の矩形（live rect）を少し広げた範囲で、
+   最小44px相当を確保する。ドアだけは箱ではなく、透視で描かれた四角形そのもので判定する。
+   ゾーン外のタップは従来どおり、下の背景ハンドラ（床＝歩行／壁＝ヒント）へ流す。
+   優先順位（手前→奥）：キャラ／スピーカー／スンスン／ポスト／ドア／ゲーム機／植物／机／テレビ */
+var HIT_MIN = 44, HIT_PAD = 6;
+var zbBusy = false;
+function zbRect(el, pl, pr, pt, pb){
+var r = el.getBoundingClientRect();
+var x1 = r.left - pl, x2 = r.right + pr, y1 = r.top - pt, y2 = r.bottom + pb;
+if (x2 - x1 < HIT_MIN){ var cx = (x1 + x2) / 2; x1 = cx - HIT_MIN / 2; x2 = cx + HIT_MIN / 2; }
+if (y2 - y1 < HIT_MIN){ var cy = (y1 + y2) / 2; y1 = cy - HIT_MIN / 2; y2 = cy + HIT_MIN / 2; }
+return {x1: x1, x2: x2, y1: y1, y2: y2};
+}
+function zbIn(r, x, y){ return x >= r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2; }
+/* ドア：clip-path と同じ斜め四角形（上辺 v=.353u／下辺 v=.647+.353u、vは上からの比率）で判定 */
+function zbDoorHit(x, y){
+var r = doorBtn.getBoundingClientRect();
+if (!r.width || !r.height) return false;
+var pad = HIT_PAD + 2;
+if (x < r.left - pad || x > r.right + pad || y < r.top - pad || y > r.bottom + pad) return false;
+var u = (x - r.left) / r.width, v = (y - r.top) / r.height;
+var dv = pad / r.height;
+return v >= 0.353 * u - dv && v <= 0.647 + 0.353 * u + dv;
+}
+function zbResolve(x, y){
+var cr = charaEl.getBoundingClientRect();
+if (x > cr.left + cr.width * 0.08 && x < cr.right - cr.width * 0.08 &&
+y > cr.top + cr.height * 0.03 && y < cr.bottom + 6) return 'chara';
+if (zbIn(zbRect(document.getElementById('obj-speaker'), 7, 7, 7, 7), x, y)) return 'obj-speaker';
+if (zbIn(zbRect(sunsunBtn, HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'sunsun';
+if (zbIn(zbRect(document.getElementById('obj-post'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-post';
+if (zbDoorHit(x, y)) return 'obj-door';
+if (zbIn(zbRect(document.getElementById('obj-game'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-game';
+if (zbIn(zbRect(plantEl, 16, 5, 6, 6), x, y)) return 'plantHit';
+if (zbIn(zbRect(document.getElementById('obj-desk'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-desk';
+if (zbIn(zbRect(document.getElementById('obj-tv'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-tv';
+return null;
+}
+stageEl.addEventListener('click', function(e){
+if (zbBusy || !entered || storageOpen) return;
+if (!e.detail) return; /* キーボード／プログラム発火の click は従来の経路へ */
+if (scrim.classList.contains('on')) return;
+var win = zbResolve(e.clientX, e.clientY);
+if (!win) return; /* ゾーン外：床歩行／壁ヒントは背景ハンドラへ */
+if (win === 'chara'){
+e.stopPropagation();
+e.preventDefault();
+charaTap();
+return;
+}
+var el = document.getElementById(win);
+var cur = (e.target && e.target.closest) ? e.target.closest('button, a') : null;
+if (cur === el) return; /* 自然な対象と一致していればそのまま流す */
+e.stopPropagation();
+e.preventDefault();
+el.classList.add('zbp');
+setTimeout(function(){ el.classList.remove('zbp'); }, 180);
+zbBusy = true;
+el.click();
+zbBusy = false;
+}, true);
+
+/* 背景タップの判定順序：⓪ゾーン解決（上の capture）→①物・リンク（各要素のハンドラ／ここでは除外）→②キャラ本体（ゾーンの取りこぼし用）→③ヒーロー→④床の素の部分＝歩行→⑤壁側＝ヒント */
 document.addEventListener('click', function(e){
 if (!entered) return;
 if (storageOpen) return;
