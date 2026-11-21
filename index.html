@@ -82,7 +82,7 @@ text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(
 .room-name b{color:var(--ink)}
 
 /* ---------- ヒーロースライダー（壁のポスター） ---------- */
-#hero{position:absolute;left:4%;top:8%;width:66%;z-index:2}
+#hero{position:absolute;left:5%;top:11%;width:60%;z-index:2}
 .hero-frame{
 position:relative;background:#fff;padding:7px;border-radius:16px;
 box-shadow:0 14px 34px rgba(139,61,255,.20), 0 3px 8px rgba(43,36,48,.12);
@@ -121,7 +121,7 @@ transition:width .3s ease, background .3s ease;
 
 .obj{
 position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;
-padding:6px;border-radius:20px;
+padding:0;border-radius:20px;
 transition:transform.22s cubic-bezier(.34,1.56,.64,1);
 }
 .obj:active{transform:scale(.93)}
@@ -130,27 +130,27 @@ transition:transform.22s cubic-bezier(.34,1.56,.64,1);
 .desk-sec{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin:2px 0 10px}
 .desk-sec.next{margin-top:18px}
 .obj .ring{
-position:absolute;inset:2px;border-radius:20px;border:2px solid var(--pink);
+position:absolute;inset:0;border-radius:20px;border:2px solid var(--pink);
 opacity:.38;pointer-events:none;
 }
 .obj.highlight .ring{animation:pulse 1.15s ease-in-out 3}
 .obj.tour .ring{animation:pulse 1.05s ease-in-out 1}
 @keyframes pulse{0%,100%{opacity:0;transform:scale(.96)}50%{opacity:.95;transform:scale(1.04)}}
 
-#obj-tv{left:7%;bottom:24%;width:21%}
-#obj-game{left:18%;bottom:13.5%;width:21%}
-#obj-desk{left:37%;bottom:24%;width:32%}
-#obj-speaker{left:62%;bottom:36.2%;width:9.5%;z-index:3}
+#obj-tv{left:6%;bottom:24.3%;width:22%}
+#obj-game{left:28.5%;bottom:21%;width:16.5%}
+#obj-desk{left:41%;bottom:24.3%;width:31%}
+#obj-speaker{left:59.5%;bottom:35.8%;width:9%;z-index:3}
 
 #plant{
-position:absolute;left:33.5%;bottom:24%;width:5.5%;
+position:absolute;left:73.5%;bottom:24%;width:6.8%;
 pointer-events:none;z-index:1;
 }
 #plant img{display:block;width:100%}
 
 #chara{
-position:absolute;left:44%;bottom:9%;
-width:16.5%;padding:5px;border-radius:22px;z-index:4;
+position:absolute;left:48%;bottom:9%;
+width:14.5%;padding:0;border-radius:22px;z-index:4;
 pointer-events:none;
 }
 #chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('assets/parts/chara-idle.webp');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;transform-origin:50% 100%}
@@ -166,8 +166,8 @@ pointer-events:none;
 #chara.tour .ring{animation:pulse 1.05s ease-in-out 1}
 
 #sunsun{
-position:absolute;right:2%;bottom:8.5%;
-width:13%;padding:5px;border-radius:20px;z-index:3;
+position:absolute;left:75.5%;bottom:2.5%;
+width:11%;padding:0;border-radius:20px;z-index:3;
 }
 #sunsun:active{transform:scale(.93)}
 #sunsun img{width:100%;display:block;pointer-events:none}
@@ -620,7 +620,7 @@ var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 var SHEETS = {
 walk:{src:'assets/parts/chara-walk.webp', n:4, ar:'356/560'},
 back:{src:'assets/parts/chara-back.webp', n:4, ar:'356/560'},
-front:{src:'assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:20},
+front:{src:'assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
 idle:{src:'assets/parts/chara-idle.webp', n:2, ar:'356/560'},
 wave:{src:'assets/parts/chara-wave.webp', n:2, ar:'356/560'},
 stretch:{src:'assets/parts/chara-stretch.webp', n:2, ar:'356/560'},
@@ -638,7 +638,7 @@ var s = SHEETS[name];
 bobEl.style.backgroundImage = "url('" + s.src + "')";
 bobEl.style.backgroundSize = (s.n * 100) + '% 100%';
 bobEl.style.aspectRatio = s.ar;
-charaEl.style.width = (s.w || 16.5) + '%';
+charaEl.style.width = (s.w || 14.5) + '%';
 }
 function setFrame(i){
 if (i === curFrame) return;
@@ -647,12 +647,13 @@ var s = SHEETS[curSheet];
 bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0';
 }
 
-/* 床エリア（ステージ%）：壁/床の境界は bottom 約23.8%。足元はその手前に収め、壁にめり込ませない */
-var FLOOR = {x0:2, x1:62, y0:6, y1:16.5};
+/* 床エリア（ステージ%）：壁/床の境界は実測で bottom 24.12%（上から75.88%）。足元はその手前に収め、壁にめり込ませない。
+   x1 はスンスン（left 75.5%）にキャラの右端（x＋幅14.5%）が届かない上限 */
+var FLOOR = {x0:2, x1:58, y0:6, y1:16.5};
 var SPOTS = {
-game:{x:20, y:7.5, sheet:'sitgame'},
+game:{x:29.5, y:8, sheet:'sitgame'},
 tv:{x:10, y:13.5, sheet:'sittv'},
-music:{x:55, y:15, sheet:'wave'},
+music:{x:56, y:14.5, sheet:'wave'},
 desk:{x:43, y:13.5, sheet:'sitdesk'}
 };
 /* 移動ベクトル→向き：奥（画面上）=背面／手前（画面下）=正面／横=側面（歩行シートは左向き原画、右移動で反転） */
@@ -663,7 +664,7 @@ if (dyPx < 0 && -dyPx > Math.abs(dxPx) * 1.15) return {sheet:'front', flip:1};
 return {sheet:'walk', flip: dxPx >= 0 ? -1 : 1};
 }
 var C = {
-x:44, y:9, tx:44, ty:9, flip:1,
+x:48, y:9, tx:48, ty:9, flip:1,
 state:'idle', until:0, started:false, last:0,
 walkDist:0, actAfter:null, actNext:0, actFrame:0,
 blinkAt:0, blinkOff:0, hopFrom:0, pendingOpen:false,
