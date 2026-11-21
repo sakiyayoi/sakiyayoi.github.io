@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>八乙女さきや</title>
+<meta name="description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="八乙女さきや">
+<meta property="og:title" content="八乙女さきや｜公式サイト">
+<meta property="og:description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
+<meta property="og:url" content="https://sakiyayoi.github.io/">
+<meta property="og:image" content="https://sakiyayoi.github.io/assets/parts/hero-song-real.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="八乙女さきや｜公式サイト">
+<meta name="twitter:description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
+<meta name="twitter:image" content="https://sakiyayoi.github.io/assets/parts/hero-song-real.webp">
+<meta name="theme-color" content="#fffdfd">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff2e88'/%3E%3C/svg%3E">
 <style>
 :root{
@@ -33,7 +45,7 @@ background:var(--paper);
 transition:opacity.55s ease, transform.55s ease;
 }
 #gate.gone{opacity:0;transform:scale(1.06);pointer-events:none}
-#gate .name{font-size:15px;letter-spacing:.55em;color:var(--sub);text-indent:.55em}
+#gate .name{font-size:15px;letter-spacing:.55em;color:var(--sub);text-indent:.55em;font-weight:400}
 #gate .name b{display:block;font-size:34px;letter-spacing:.14em;color:var(--ink);font-weight:800;margin-top:10px;text-indent:.14em}
 #gate .name b .p{color:var(--pink)}
 #enterBtn{
@@ -82,7 +94,7 @@ position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:7px;
 background:rgba(255,255,255,.93);border-radius:99px;padding:3px 12px 3px 3px;
 box-shadow:0 2px 8px rgba(43,36,48,.18);
 }
-.hero-cap .tag{font-size:10px}
+.hero-cap .tag{font-size:11px}
 .hero-cap .hero-ttl{font-size:13px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
 .hero-arrow{
 position:absolute;top:50%;transform:translateY(-50%);z-index:3;
@@ -97,8 +109,8 @@ background:rgba(255,255,255,.88);box-shadow:0 2px 8px rgba(43,36,48,.22);
 .hero-arrow.next{right:0}
 .hero-arrow:active::after{background:var(--pink)}
 .hero-arrow:active span{color:#fff}
-.hero-dots{display:flex;justify-content:center;margin-top:5px}
-.hero-dots button{width:28px;height:20px;display:flex;align-items:center;justify-content:center}
+.hero-dots{display:flex;justify-content:center;margin-top:0}
+.hero-dots button{width:32px;height:44px;display:flex;align-items:center;justify-content:center}
 .hero-dots button::after{
 content:'';width:7px;height:7px;border-radius:99px;background:#e0d0ea;
 transition:width .3s ease, background .3s ease;
@@ -112,8 +124,9 @@ transition:transform.22s cubic-bezier(.34,1.56,.64,1);
 }
 .obj:active{transform:scale(.93)}
 .obj::after,#chara::after{content:'';position:absolute;inset:-10px}
-.obj .lbl{font-size:11px;letter-spacing:.18em;color:var(--sub);font-weight:700}
 .obj img{display:block;width:100%;pointer-events:none}
+.desk-sec{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin:2px 0 10px}
+.desk-sec.next{margin-top:18px}
 .obj .ring{
 position:absolute;inset:2px;border-radius:20px;border:2px solid var(--pink);
 opacity:.38;pointer-events:none;
@@ -194,6 +207,7 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 .face.f-live{background:linear-gradient(120deg,var(--pink),var(--purple))}
 .face.f-yt{background:linear-gradient(120deg,#ff5c39,#ff2e88)}
 .face.f-song{background:linear-gradient(120deg,var(--purple),#5b8cff)}
+.face.f-ai{background:linear-gradient(120deg,#ff2e88,#8b3dff)}
 .face.f-yu{background:linear-gradient(120deg,#39c2ff,#8b3dff)}
 .face.f-kani{background:linear-gradient(120deg,#ff2e88,#ff9a3d)}
 .face.f-ebi{background:linear-gradient(120deg,#8b3dff,#ff2e88)}
@@ -250,7 +264,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 
 <!-- 玄関 -->
 <div id="gate">
-<div class="name">八乙女<b>さき<span class="p">や</span></b></div>
+<h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <button id="enterBtn" type="button">入る</button>
 </div>
 
@@ -268,11 +282,11 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
-<img src="assets/parts/hero-yukagen.webp" alt="" draggable="false">
+<img src="assets/parts/hero-yukagen.webp" alt="" draggable="false" loading="lazy" decoding="async">
 <span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">ちょうどいい湯かげん</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
-<img src="assets/parts/hero-live.webp" alt="" draggable="false">
+<img src="assets/parts/hero-live.webp" alt="" draggable="false" loading="lazy" decoding="async">
 <span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
 </a>
 </div>
@@ -289,31 +303,31 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 
 <button class="obj" id="obj-tv" type="button" data-panel="tv" aria-label="テレビ：配信と動画">
 <span class="ring"></span>
-<img src="assets/parts/tv.png" alt="">
+<img src="assets/parts/tv.webp" alt="">
 </button>
 
 <button class="obj" id="obj-game" type="button" data-panel="game" aria-label="ゲーム機：ゲーム">
 <span class="ring"></span>
-<img src="assets/parts/console.png" alt="">
+<img src="assets/parts/console.webp" alt="">
 </button>
 
 <div id="plant" aria-hidden="true">
-<img src="assets/parts/plant.png" alt="">
+<img src="assets/parts/plant.webp" alt="" loading="lazy" decoding="async">
 </div>
 
-<button class="obj" id="obj-desk" type="button" data-panel="desk" aria-label="机：作ったもの">
+<button class="obj" id="obj-desk" type="button" data-panel="desk" aria-label="机：制作机">
 <span class="ring"></span>
-<img src="assets/parts/desk.png" alt="">
+<img src="assets/parts/desk.webp" alt="">
 </button>
 
 <button class="obj" id="obj-speaker" type="button" data-panel="speaker" aria-label="スピーカー：曲">
 <span class="ring"></span>
-<img src="assets/parts/speaker.png" alt="">
+<img src="assets/parts/speaker.webp" alt="">
 </button>
 
 <button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
 <span class="ring"></span>
-<img src="assets/parts/chara.png" alt="八乙女さきや ミニキャラ">
+<img src="assets/parts/chara.webp" alt="八乙女さきや ミニキャラ">
 </button>
 </div>
 </main>
@@ -381,18 +395,33 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 </div>
 <div class="meta"><span class="tag pink">曲・MV</span><span>ミュージックビデオ</span><span class="go">聴く →</span></div>
 </a>
+<a class="card" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener">
+<div class="face f-ai">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M13 26 V10 l14-3 v15" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="9.5" cy="26" r="4" fill="#fff"/><circle cx="23.5" cy="22" r="4" fill="#fff"/></svg>
+<span class="ttl">空っぽの愛</span>
+</div>
+<div class="meta"><span class="tag pink">曲</span><span>HYSTERIC ZOMBIES</span><span class="go">聴く →</span></div>
+</a>
 </section>
 
-<!-- 机：作ったものの広がり -->
-<section class="panel" id="panel-desk" aria-label="作ったもの">
+<!-- 机：制作机（いま作ってるもの＋作ったもの） -->
+<section class="panel" id="panel-desk" aria-label="制作机">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<h2>机 ｜ <b>作ったもの</b></h2>
+<h2>机 ｜ <b>制作机</b></h2>
+<div class="desk-sec">いま作ってるもの</div>
+<a class="card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<div class="face f-kani">
+<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
+<span class="ttl">カニ飛ばし</span>
+</div>
+<div class="meta"><span class="tag pink">制作中</span><span>カニをぶっ飛ばすゲーム</span><span class="go">あそぶ →</span></div>
+</a>
+<div class="desk-sec next">作ったもの</div>
 <a class="mini-link" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>ちょうどいい湯かげん<span class="go">→</span></a>
-<a class="mini-link" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>カニ飛ばし<span class="go">→</span></a>
 <a class="mini-link" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>EBI KANI?<span class="go">→</span></a>
 <a class="mini-link" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener"><span class="tag pink">曲</span>そばにいて（MV）<span class="go">→</span></a>
-<a class="mini-link" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener"><span class="tag dark">動画</span>YouTube の動画<span class="go">→</span></a>
+<a class="mini-link" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="tag pink">曲</span>空っぽの愛<span class="go">→</span></a>
 </section>
 
 <!-- ミニキャラ：プロフィール事実のみ -->
@@ -401,7 +430,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>さきや ｜ <b>プロフィール</b></h2>
 <div class="prof-head">
-<div class="thumb"><img src="assets/parts/chara.png" alt="八乙女さきや ミニキャラ"></div>
+<div class="thumb"><img src="assets/parts/chara.webp" alt="八乙女さきや ミニキャラ" loading="lazy" decoding="async"></div>
 <div>
 <div class="prof-name">八乙女<span>さきや</span></div>
 <div class="chips">
@@ -418,7 +447,7 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <li><span class="k">動画</span><a href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube「八乙女さきや【公式】」↗</a></li>
 <li><span class="k">作ったもの</span>ゲーム3本・曲2本・動画、全部自分で作る</li>
 <li><span class="k">ゲーム</span>ちょうどいい湯かげん／カニ飛ばし／EBI KANI?</li>
-<li><span class="k">曲</span>そばにいて／空っぽの愛</li>
+<li><span class="k">曲</span><span><a href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">そばにいて</a>／<a href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener">空っぽの愛</a></span></li>
 <li><span class="k">いま</span>ミラティブ ロイヤル候補生に申請中</li>
 </ul>
 <div class="likes">
@@ -459,13 +488,18 @@ setTimeout(function(){ gate.style.display = 'none';}, 650);
 room.classList.add('on');
 room.setAttribute('aria-hidden','false');
 // 入室直後：物が順に1回ずつ光って「触れる」ことを示す
+// 入口（?from=）がある時は、その対象をツアーの先頭にする（最初に光る物＝入口の物）
+var t = highlightTarget();
 var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara'];
+var fromParam = new URLSearchParams(location.search).get('from');
+if (fromParam){
+tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
+}
 tour.forEach(function(id, i){
 var el = document.getElementById(id);
 setTimeout(function(){ el.classList.add('tour');}, 800 + i * 430);
 setTimeout(function(){ el.classList.remove('tour');}, 800 + i * 430 + 1100);
 });
-var t = highlightTarget();
 var start = 800 + tour.length * 430 + 300;
 setTimeout(function(){ t.classList.add('highlight');}, start);
 setTimeout(function(){ t.classList.remove('highlight');}, start + 3600);
