@@ -78,17 +78,15 @@ text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(
 .room-name b{color:var(--ink)}
 
 /* ---------- ヒーロースライダー（壁のポスター） ---------- */
-#hero{position:absolute;left:5.5%;top:9%;width:63%;z-index:2}
+#hero{position:absolute;left:3.5%;top:8%;width:72%;z-index:2}
 .hero-frame{
-position:relative;background:#fff;padding:5px;border-radius:14px;
-box-shadow:0 8px 24px rgba(139,61,255,.16), 0 2px 6px rgba(43,36,48,.08);
+position:relative;background:#fff;padding:7px;border-radius:16px;
+box-shadow:0 14px 34px rgba(139,61,255,.20), 0 3px 8px rgba(43,36,48,.12);
 }
-.hero-view{overflow:hidden;border-radius:9px;touch-action:pan-y}
+.hero-view{overflow:hidden;border-radius:10px;touch-action:pan-y}
 .hero-track{display:flex;transition:transform .48s cubic-bezier(.32,1.1,.4,1)}
-.hero-slide{position:relative;flex:0 0 100%;aspect-ratio:3/2;display:block;background:#f3eefc;-webkit-user-drag:none}
+.hero-slide{position:relative;flex:0 0 100%;aspect-ratio:8/5;display:block;background:#f3eefc;-webkit-user-drag:none}
 .hero-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
-.hero-slide.s-song{background:#221e4d}
-.hero-slide.s-song img{object-fit:contain}
 .hero-cap{
 position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:7px;
 background:rgba(255,255,255,.93);border-radius:99px;padding:3px 12px 3px 3px;
@@ -277,12 +275,12 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <div class="hero-frame" id="heroFrame">
 <div class="hero-view">
 <div class="hero-track" id="heroTrack">
-<a class="hero-slide s-song" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
-<img src="assets/parts/hero-song.webp" alt="" draggable="false">
+<a class="hero-slide" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
+<img src="assets/parts/hero-song-real.webp" alt="" draggable="false">
 <span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
-<img src="assets/parts/hero-yukagen.webp" alt="" draggable="false" loading="lazy" decoding="async">
+<img src="assets/parts/hero-yukagen-real.webp" alt="" draggable="false" loading="lazy" decoding="async">
 <span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">ちょうどいい湯かげん</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
