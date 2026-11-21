@@ -10,11 +10,15 @@
 <meta property="og:title" content="八乙女さきや｜公式サイト">
 <meta property="og:description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
 <meta property="og:url" content="https://sakiyayoi.github.io/">
-<meta property="og:image" content="https://sakiyayoi.github.io/assets/parts/chara-stand.webp">
+<meta property="og:image" content="https://sakiyayoi.github.io/assets/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="八乙女さきや ミニキャラ">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="八乙女さきや｜公式サイト">
 <meta name="twitter:description" content="八乙女さきやの公式サイト。VTuber／Mirrativ配信・YouTube動画・ゲーム・曲を全部自分で作る。">
-<meta name="twitter:image" content="https://sakiyayoi.github.io/assets/parts/chara-stand.webp">
+<meta name="twitter:image" content="https://sakiyayoi.github.io/assets/og-card.jpg">
 <meta name="theme-color" content="#fffdfd">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff2e88'/%3E%3C/svg%3E">
 <style>
@@ -78,7 +82,7 @@ text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(
 .room-name b{color:var(--ink)}
 
 /* ---------- ヒーロースライダー（壁のポスター） ---------- */
-#hero{position:absolute;left:3.5%;top:8%;width:72%;z-index:2}
+#hero{position:absolute;left:4%;top:8%;width:66%;z-index:2}
 .hero-frame{
 position:relative;background:#fff;padding:7px;border-radius:16px;
 box-shadow:0 14px 34px rgba(139,61,255,.20), 0 3px 8px rgba(43,36,48,.12);
@@ -133,13 +137,13 @@ opacity:.38;pointer-events:none;
 .obj.tour .ring{animation:pulse 1.05s ease-in-out 1}
 @keyframes pulse{0%,100%{opacity:0;transform:scale(.96)}50%{opacity:.95;transform:scale(1.04)}}
 
-#obj-tv{left:6.5%;bottom:24%;width:24%}
-#obj-game{left:18%;bottom:13.5%;width:26%}
-#obj-desk{left:37%;bottom:24%;width:36%}
-#obj-speaker{left:60%;bottom:37.5%;width:13%;z-index:3}
+#obj-tv{left:7%;bottom:24%;width:21%}
+#obj-game{left:18%;bottom:13.5%;width:21%}
+#obj-desk{left:37%;bottom:24%;width:32%}
+#obj-speaker{left:62%;bottom:36.2%;width:9.5%;z-index:3}
 
 #plant{
-position:absolute;left:32.5%;bottom:24%;width:5.5%;
+position:absolute;left:33.5%;bottom:24%;width:5.5%;
 pointer-events:none;z-index:1;
 }
 #plant img{display:block;width:100%}
@@ -163,7 +167,7 @@ pointer-events:none;
 
 #sunsun{
 position:absolute;right:2%;bottom:8.5%;
-width:15%;padding:5px;border-radius:20px;z-index:3;
+width:13%;padding:5px;border-radius:20px;z-index:3;
 }
 #sunsun:active{transform:scale(.93)}
 #sunsun img{width:100%;display:block;pointer-events:none}
@@ -616,11 +620,14 @@ var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 var SHEETS = {
 walk:{src:'assets/parts/chara-walk.webp', n:4, ar:'356/560'},
 back:{src:'assets/parts/chara-back.webp', n:4, ar:'356/560'},
+front:{src:'assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:20},
 idle:{src:'assets/parts/chara-idle.webp', n:2, ar:'356/560'},
 wave:{src:'assets/parts/chara-wave.webp', n:2, ar:'356/560'},
+stretch:{src:'assets/parts/chara-stretch.webp', n:2, ar:'356/560'},
 sitgame:{src:'assets/parts/chara-sit-game.webp', n:2, ar:'520/520'},
 sittv:{src:'assets/parts/chara-sit-tv.webp', n:2, ar:'520/520'},
-sitdesk:{src:'assets/parts/chara-sit-desk.webp', n:2, ar:'520/520'}
+sitdesk:{src:'assets/parts/chara-sit-desk.webp', n:2, ar:'520/520'},
+sitrelax:{src:'assets/parts/chara-sitrelax.webp', n:2, ar:'520/520'}
 };
 Object.keys(SHEETS).forEach(function(k){ var im = new Image(); im.src = SHEETS[k].src;});
 var curSheet = null, curFrame = -1;
@@ -631,6 +638,7 @@ var s = SHEETS[name];
 bobEl.style.backgroundImage = "url('" + s.src + "')";
 bobEl.style.backgroundSize = (s.n * 100) + '% 100%';
 bobEl.style.aspectRatio = s.ar;
+charaEl.style.width = (s.w || 16.5) + '%';
 }
 function setFrame(i){
 if (i === curFrame) return;
@@ -639,51 +647,60 @@ var s = SHEETS[curSheet];
 bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0';
 }
 
-/* 床エリア（ステージ%）と活動スポット（物の前） */
-var FLOOR = {x0:2, x1:62, y0:6, y1:24};
+/* 床エリア（ステージ%）：壁/床の境界は bottom 約23.8%。足元はその手前に収め、壁にめり込ませない */
+var FLOOR = {x0:2, x1:62, y0:6, y1:16.5};
 var SPOTS = {
 game:{x:20, y:7.5, sheet:'sitgame'},
-tv:{x:9, y:14.5, sheet:'sittv'},
-music:{x:57, y:21.5, sheet:'idle'},
-desk:{x:41, y:14, sheet:'sitdesk'}
+tv:{x:10, y:13.5, sheet:'sittv'},
+music:{x:55, y:15, sheet:'wave'},
+desk:{x:43, y:13.5, sheet:'sitdesk'}
 };
+/* 移動ベクトル→向き：奥（画面上）=背面／手前（画面下）=正面／横=側面（歩行シートは左向き原画、右移動で反転） */
+function faceWalk(dx, dy){
+var dxPx = dx, dyPx = dy * 1.3256;
+if (dyPx > 0 && dyPx > Math.abs(dxPx) * 1.15) return {sheet:'back', flip:1};
+if (dyPx < 0 && -dyPx > Math.abs(dxPx) * 1.15) return {sheet:'front', flip:1};
+return {sheet:'walk', flip: dxPx >= 0 ? -1 : 1};
+}
 var C = {
 x:44, y:9, tx:44, ty:9, flip:1,
 state:'idle', until:0, started:false, last:0,
 walkDist:0, actAfter:null, actNext:0, actFrame:0,
 blinkAt:0, blinkOff:0, hopFrom:0, pendingOpen:false,
-lastAct:'', waveStep:0, waveAt:0
+lastAct:'', waveStep:0, waveAt:0, dash:false
 };
 function setPos(){ charaEl.style.left = C.x + '%'; charaEl.style.bottom = C.y + '%';}
-function depthScale(){ return 1.07 - (C.y - FLOOR.y0) * (0.30 / (FLOOR.y1 - FLOOR.y0));}
+function depthScale(){ return 1.07 - (C.y - FLOOR.y0) * (0.19 / (FLOOR.y1 - FLOOR.y0));}
 function charaActive(){
 return entered && !document.hidden && !scrim.classList.contains('on');
 }
 function goIdle(ts, min, max){
-C.state = 'idle'; C.flip = 1;
+C.state = 'idle'; C.flip = 1; C.dash = false;
 setSheet('idle'); setFrame(0);
 C.until = ts + min + Math.random() * (max - min);
 C.blinkAt = ts + 1400 + Math.random() * 2000;
 C.blinkOff = 0;
 }
-function startWalkTo(tx, ty, act){
+function startWalkTo(tx, ty, act, dash){
 C.tx = Math.max(FLOOR.x0, Math.min(FLOOR.x1, tx));
 C.ty = Math.max(FLOOR.y0, Math.min(FLOOR.y1, ty));
 C.actAfter = act || null;
+C.dash = !!dash;
 C.state = 'walk';
-var dx = C.tx - C.x, dy = C.ty - C.y;
-if (dy > 0 && Math.abs(dy) * 1.326 > Math.abs(dx) * 1.4){ setSheet('back'); C.flip = 1;}
-else { setSheet('walk'); if (Math.abs(dx) > 0.4) C.flip = dx > 0 ? -1 : 1;}
+var f = faceWalk(C.tx - C.x, C.ty - C.y);
+setSheet(f.sheet); C.flip = f.flip;
 }
 function actInterval(key){
 if (key === 'game') return 340;
 if (key === 'desk') return 850;
 if (key === 'tv') return 1600;
+if (key === 'music') return 200;
+if (key === 'sitrelax') return 1400;
 return 500;
 }
 function startActivity(key, ts){
 var spot = SPOTS[key];
-C.state = key; C.lastAct = key;
+C.state = key; C.lastAct = key; C.dash = false;
 C.x = spot.x; C.y = spot.y; setPos();
 C.flip = 1;
 setSheet(spot.sheet); setFrame(0);
@@ -691,6 +708,18 @@ C.actFrame = 0;
 C.actNext = ts + actInterval(key);
 C.until = ts + 7000 + Math.random() * 7000;
 charaEl.classList.toggle('music', key === 'music');
+}
+function startStretch(ts){
+C.state = 'stretch'; C.flip = 1;
+setSheet('stretch'); setFrame(0); C.actFrame = 0;
+C.actNext = ts + 380;
+C.until = ts + 2100;
+}
+function startSitRelax(ts){
+C.state = 'sitrelax'; C.flip = 1;
+setSheet('sitrelax'); setFrame(0); C.actFrame = 0;
+C.actNext = ts + actInterval('sitrelax');
+C.until = ts + 6000 + Math.random() * 5000;
 }
 function endActivity(ts){
 charaEl.classList.remove('music');
@@ -714,8 +743,9 @@ hopY = -Math.sin(Math.PI * p) * 30;
 if (p > 0.8){ var s = Math.sin((p - 0.8) / 0.2 * Math.PI); sy = 1 - 0.13 * s; sx = 1 + 0.10 * s;}
 else if (p < 0.14){ var s2 = Math.sin(p / 0.14 * Math.PI); sy = 1 - 0.07 * s2; sx = 1 + 0.05 * s2;}
 }
-if (C.state === 'music') rot = Math.sin(ts / 175) * 2.6;
+if (C.state === 'music'){ rot = Math.sin(ts / 175) * 3.2; hopY = -Math.abs(Math.sin(ts / 170)) * 6.5;}
 if (C.state === 'game') rot = Math.sin(ts / 300) * 1.1;
+if (C.state === 'sitrelax') rot = Math.sin(ts / 900) * 1.2;
 var d = depthScale();
 bobEl.style.transform = 'translateY(' + hopY + '%) rotate(' + rot + 'deg) scale(' + (C.flip * d * sx) + ',' + (d * sy) + ')';
 }
@@ -742,32 +772,42 @@ if (C.blinkOff && ts >= C.blinkOff){ setFrame(0); C.blinkOff = 0; C.blinkAt = ts
 else if (!C.blinkOff && ts >= C.blinkAt){ setFrame(1); C.blinkOff = ts + 130;}
 if (ts >= C.until){
 var r = Math.random();
-if (r < 0.50){
+var dash = Math.random() < 0.22;
+if (r < 0.40){
 var keys = Object.keys(SPOTS).filter(function(k){ return k!== C.lastAct;});
 var key = keys[Math.floor(Math.random() * keys.length)];
-startWalkTo(SPOTS[key].x, SPOTS[key].y, key);
-} else if (r < 0.72){
-startWalkTo(FLOOR.x0 + Math.random() * (FLOOR.x1 - FLOOR.x0), FLOOR.y0 + Math.random() * (FLOOR.y1 - FLOOR.y0), null);
-} else if (r < 0.86){ startWave(ts);}
-else { startHop(ts, false);}
+startWalkTo(SPOTS[key].x, SPOTS[key].y, key, dash);
+} else if (r < 0.58){
+startWalkTo(FLOOR.x0 + Math.random() * (FLOOR.x1 - FLOOR.x0), FLOOR.y0 + Math.random() * (FLOOR.y1 - FLOOR.y0), null, dash);
+} else if (r < 0.68){ startWave(ts);}
+else if (r < 0.76){ startHop(ts, false);}
+else if (r < 0.85){ startStretch(ts);}
+else { startSitRelax(ts);}
 }
 break;
 case 'walk': {
 var dx = C.tx - C.x, dy = C.ty - C.y;
 var distPx = Math.sqrt(dx * dx + Math.pow(dy * 1.326, 2));
 if (distPx < 0.35){
+C.dash = false;
 if (C.actAfter){ var a = C.actAfter; C.actAfter = null; startActivity(a, ts);}
 else goIdle(ts, 2500, 5500);
 } else {
-var step = Math.min(distPx, 5.4 * dt);
+var step = Math.min(distPx, (C.dash ? 10.5 : 5.4) * dt);
 var f = step / distPx;
 C.x += dx * f; C.y += dy * f;
 C.walkDist += step;
-setFrame(Math.floor(C.walkDist / FRAME_STEP) % 4);
+var fc = faceWalk(dx, dy);
+setSheet(fc.sheet); C.flip = fc.flip;
+setFrame(Math.floor(C.walkDist / (C.dash ? 1.3 : FRAME_STEP)) % 4);
 setPos();
 }
 break;
 }
+case 'stretch':
+if (C.actFrame === 0 && ts >= C.actNext){ C.actFrame = 1; setFrame(1);}
+if (ts >= C.until) goIdle(ts, 2500, 5000);
+break;
 case 'wave':
 if (ts >= C.waveAt && C.waveStep < 6){
 C.waveStep++; setFrame(C.waveStep % 2); C.waveAt = ts + 165;
@@ -781,8 +821,8 @@ goIdle(ts, 2000, 4500);
 if (open) openPanel('profile');
 }
 break;
-case 'game': case 'tv': case 'desk': case 'music':
-if (C.state!== 'music' && ts >= C.actNext){
+case 'game': case 'tv': case 'desk': case 'music': case 'sitrelax':
+if (ts >= C.actNext){
 C.actFrame = (C.actFrame + 1) % 2; setFrame(C.actFrame); C.actNext = ts + actInterval(C.state);
 }
 if (ts >= C.until) endActivity(ts);
