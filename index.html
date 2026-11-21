@@ -202,6 +202,49 @@ transition:transform var(--t-ui) var(--ease-out);
 #sunsun.talking.rare{animation:squishBig .5s ease-in-out infinite}
 @keyframes squishBig{0%,100%{transform:scale(1,1)}32%{transform:scale(1.11,.86)}64%{transform:scale(.95,1.06)}}
 
+/* ---------- 吹き出し：たまに短く出て、余韻を持って消える ---------- */
+.bubble{
+position:absolute;left:50%;bottom:calc(100% + 9px);z-index:6;
+transform:translateX(-50%) translateY(5px) scale(.92);
+background:#fff;border:1.5px solid var(--line);border-radius:14px;
+box-shadow:0 4px 14px rgba(43,36,48,.14);
+padding:6px 11px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--ink);
+white-space:nowrap;opacity:0;pointer-events:none;
+transition:opacity .2s var(--ease-exit), transform .2s var(--ease-exit);
+}
+.bubble.show{
+opacity:1;transform:translateX(-50%) translateY(0) scale(1);
+transition:opacity .26s var(--ease-out), transform .26s var(--ease-out);
+}
+.bubble::after{
+content:'';position:absolute;left:50%;bottom:-5px;width:9px;height:9px;
+transform:translateX(-50%) rotate(45deg);
+background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);
+}
+/* スンスンは右端寄り＆セリフが長いので、折り返し可にして幅を抑える */
+#sunsun .bubble{font-size:12px;white-space:normal;width:max-content;max-width:150px;text-align:center;line-height:1.5}
+
+/* ---------- 床タップの印：歩行先に小さな輪が出て消える ---------- */
+#tapmark{
+position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;z-index:5;
+border:2px solid rgba(255,46,136,.6);border-radius:50%;
+opacity:0;pointer-events:none;
+}
+#tapmark.go{animation:tapRing .55s var(--ease-out) 1}
+@keyframes tapRing{0%{opacity:.85;transform:scale(.35)}100%{opacity:0;transform:scale(1.15)}}
+
+/* ---------- 時間帯の空気：部屋全体に薄い色味を重ねる（静かに） ---------- */
+#tint{
+position:absolute;inset:0;z-index:20;pointer-events:none;
+transition:background-color 1.4s ease;
+}
+#stage.tod-morning #tint{background:rgba(255,240,200,.13)}
+#stage.tod-day #tint{background:rgba(255,255,255,.04)}
+#stage.tod-evening #tint{background:rgba(255,146,64,.16)}
+#stage.tod-night #tint{background:rgba(13,20,58,.25)}
+/* 夜はテレビの画面の光が相対的に目立つように、画面の滲みだけ少し強める */
+#stage.tod-night #obj-tv .tv-screen{box-shadow:inset 0 0 14px rgba(0,0,0,.45), 0 0 20px rgba(150,165,255,.30)}
+
 /* ---------- 右のドア（作品置き場へ） ---------- */
 #obj-door{left:81.4%;bottom:5.2%;width:15.1%;aspect-ratio:623/2783;z-index:2;perspective:520px}
 #obj-door .door-glow{
@@ -621,18 +664,22 @@ background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
 <span class="ring"></span>
 <span class="notes" aria-hidden="true"><span>♪</span><span>♫</span><span>♪</span></span>
 <span class="hearts" aria-hidden="true"><span>♥</span><span>♥</span><span>♥</span></span>
+<span class="bubble" id="charaBubble" aria-hidden="true"></span>
 <span class="bob" role="img" aria-label="八乙女さきや ミニキャラ"></span>
 </button>
 
 <button id="sunsun" type="button" aria-label="スンスン：押すと喋る">
 <span class="ring"></span>
 <img src="assets/parts/sunsun.webp" alt="ピンクのミニスンスン" loading="lazy" decoding="async">
+<span class="bubble" id="sunBubble" aria-hidden="true"></span>
 </button>
 
 <button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
 <span class="door-glow" aria-hidden="true"></span>
 <span class="door-leafwrap" aria-hidden="true"><img src="assets/parts/door.webp" alt=""><span class="door-glint">✦</span></span>
 </button>
+<div id="tapmark" aria-hidden="true"></div>
+<div id="tint" aria-hidden="true"></div>
 </div>
 </main>
 
@@ -1012,6 +1059,7 @@ C.actFrame = 0;
 C.actNext = ts + actInterval(key);
 C.until = ts + 7000 + Math.random() * 7000;
 charaEl.classList.toggle('music', key === 'music');
+if (Math.random() < 0.6) charaSay(ACT_LINES[key], false);
 }
 function startStretch(ts){
 C.state = 'stretch'; C.flip = 1;
@@ -1024,6 +1072,7 @@ C.state = 'sitrelax'; C.flip = 1;
 setSheet('sitrelax'); setFrame(0); C.actFrame = 0;
 C.actNext = ts + actInterval('sitrelax');
 C.until = ts + 6000 + Math.random() * 5000;
+if (Math.random() < 0.6) charaSay(ACT_LINES.sitrelax, false);
 }
 function endActivity(ts){
 charaEl.classList.remove('music');
@@ -1052,6 +1101,7 @@ function startWave(ts){
 C.state = 'wave'; C.flip = 1;
 setSheet('wave'); C.waveStep = 0; setFrame(0);
 C.waveAt = ts + 210; C.until = ts + 210 * 7;
+if (Math.random() < 0.5) charaSay(greetingLine(), false);
 }
 function startHop(ts, open){
 C.state = 'hop'; C.hopFrom = ts; C.pendingOpen = !!open; C.flip = 1;
@@ -1209,22 +1259,101 @@ clearTimeout(hintTimer);
 hintTimer = setTimeout(function(){ stageEl.classList.remove('hint');}, 950);
 }
 
+/* ---------- 時間帯：部屋の空気（ティント）とあいさつ ---------- */
+function todKey(){
+var h = new Date().getHours();
+if (h >= 5 && h < 11) return 'morning';
+if (h >= 11 && h < 16) return 'day';
+if (h >= 16 && h < 19) return 'evening';
+return 'night';
+}
+function applyTod(){
+var k = todKey();
+['tod-morning','tod-day','tod-evening','tod-night'].forEach(function(c){ stageEl.classList.remove(c);});
+stageEl.classList.add('tod-' + k);
+}
+function greetingLine(){
+var k = todKey();
+if (k === 'morning') return 'おはよう';
+if (k === 'day') return 'こんにちは';
+return 'こんばんは';
+}
+
+/* ---------- 吹き出し：短い一言だけ。キャラはタップ時＋活動の節目（間引きあり）、スンスンは声と同時のみ ---------- */
+var charaBubble = document.getElementById('charaBubble');
+var sunBubble = document.getElementById('sunBubble');
+var charaBubbleTimer = 0, lastCharaSay = 0;
+var ACT_LINES = {game:'ゲームしてる', tv:'テレビ見てる', music:'曲きいてる', desk:'つくってる', sitrelax:'ひとやすみ'};
+function bubbleShow(el, text){
+el.textContent = text;
+el.classList.remove('show');
+void el.offsetWidth;
+el.classList.add('show');
+}
+function charaSay(text, force){
+if (!text) return;
+var now = performance.now();
+if (!force && now - lastCharaSay < 18000) return;
+lastCharaSay = now;
+bubbleShow(charaBubble, text);
+clearTimeout(charaBubbleTimer);
+charaBubbleTimer = setTimeout(function(){ charaBubble.classList.remove('show');}, 2500);
+}
+function sunSay(text){ bubbleShow(sunBubble, text);}
+function sunHush(){ sunBubble.classList.remove('show');}
+
+/* ---------- 遊び：床の素の部分をタップすると、キャラがそこまで歩く ---------- */
+var tapmarkEl = document.getElementById('tapmark');
+var charaOpenTimer = 0;
+function showTapmark(px, py){
+if (reduceMotion) return;
+tapmarkEl.style.left = px + '%';
+tapmarkEl.style.bottom = py + '%';
+tapmarkEl.classList.remove('go');
+void tapmarkEl.offsetWidth;
+tapmarkEl.classList.add('go');
+}
+function walkToTap(px, py){
+if (C.state === 'ikebo' || C.state === 'hop') return;
+clearTimeout(charaOpenTimer);
+charaEl.classList.remove('music');
+var w = (SHEETS[curSheet] && SHEETS[curSheet].w) || 14.5;
+startWalkTo(px - w / 2, py, null, false);
+showTapmark(px, py);
+}
+
 /* キャラのタップ：#chara は pointer-events:none（物のタップを通す）ため、
-   背景クリックの座標でキャラ本体に当たったか判定する */
+   背景クリックの座標でキャラ本体に当たったか判定する。
+   タップ時はあいさつの吹き出しを出してから、少し遅れてプロフィールを開く */
 function charaTap(){
 if (C.state === 'hop' || C.state === 'ikebo') return;
+charaSay(greetingLine(), true);
 if (reduceMotion){ openPanel('profile'); return;}
-startHop(performance.now(), true);
+startHop(performance.now(), false);
+clearTimeout(charaOpenTimer);
+charaOpenTimer = setTimeout(function(){
+if (!scrim.classList.contains('on') && !storageOpen) openPanel('profile');
+}, 1350);
 }
+/* 背景タップの判定順序：①物・リンク（各要素のハンドラ／ここでは除外）→②キャラ本体→③ヒーロー→④床の素の部分＝歩行→⑤壁側＝ヒント */
 document.addEventListener('click', function(e){
 if (!entered) return;
+if (storageOpen) return;
 if (scrim.classList.contains('on')) return;
 if (e.target.closest('button, a, .panel')) return;
 var r = charaEl.getBoundingClientRect();
 if (e.clientX > r.left + r.width * 0.08 && e.clientX < r.right - r.width * 0.08 &&
 e.clientY > r.top + r.height * 0.03 && e.clientY < r.bottom + 6){
 charaTap();
-} else if (!e.target.closest('#hero')){
+return;
+}
+if (e.target.closest('#hero')) return;
+var sr = stageEl.getBoundingClientRect();
+var px = (e.clientX - sr.left) / sr.width * 100;
+var py = (sr.bottom - e.clientY) / sr.height * 100;
+if (!reduceMotion && px >= 0 && px <= 100 && py >= 0 && py <= 24.5){
+walkToTap(px, py);
+} else {
 hintRings();
 }
 });
@@ -1232,6 +1361,9 @@ hintRings();
 /* ---------- スンスン：押すと喋る ---------- */
 var sunsunBtn = document.getElementById('sunsun');
 var VOICES = ['assets/voice/sun-1.mp3','assets/voice/sun-2.mp3','assets/voice/sun-3.mp3','assets/voice/sun-4.mp3'];
+/* 声クリップの文そのままを吹き出しに出す（VOICES と同じ順） */
+var SUN_LINES = ['僕の名前はやトやです。よろしくお願いします。','今日はみんなに会えてとっても嬉しいです','バンボ、ボンボビ。','あの、皆さんこんばんは。にゃめやです。'];
+var SUN_RARE_LINE = '僕の名前はや乙女咲やです。よろしくお願いします。';
 var sunAudio = null, lastVoice = -1;
 var RARE_VOICE = 'assets/voice/sun-rare.mp3';
 window.SUNSUN = {playing:false, src:'', el:null, rare:false};
@@ -1240,6 +1372,7 @@ window.SUNSUN.playing = false;
 window.SUNSUN.rare = false;
 sunsunBtn.classList.remove('talking');
 sunsunBtn.classList.remove('rare');
+sunHush();
 }
 /* スンスンのたまの動き：低頻度で、傾く・揺れる・小さく跳ねる。喋っている間は出さない */
 var SUN_IDLES = ['idle-tilt','idle-sway','idle-hop'];
@@ -1259,17 +1392,20 @@ scheduleSunIdle();
 sunsunBtn.addEventListener('click', function(){
 SUN_IDLES.forEach(function(c){ sunsunBtn.classList.remove(c);});
 var isRare = Math.random() < 0.10;
-var src;
+var src, line;
 if (isRare){
 src = RARE_VOICE;
+line = SUN_RARE_LINE;
 } else {
 var i = Math.floor(Math.random() * VOICES.length);
 if (VOICES.length > 1 && i === lastVoice) i = (i + 1) % VOICES.length;
 lastVoice = i;
 src = VOICES[i];
+line = SUN_LINES[i];
 }
 if (sunAudio){ sunAudio.pause();}
 sunAudio = new Audio(src);
+sunSay(line);
 window.SUNSUN.src = src;
 window.SUNSUN.rare = isRare;
 sunsunBtn.classList.toggle('rare', isRare);
@@ -1467,6 +1603,10 @@ plantBloomed = true;
 plantEl.classList.add('bloomed');
 }
 });
+
+/* 時間帯の空気は読み込み時に決め、境界をまたいだら静かに切り替える */
+applyTod();
+setInterval(applyTod, 60000);
 
 document.getElementById('enterBtn').addEventListener('click', enter);
 document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
