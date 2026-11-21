@@ -237,18 +237,6 @@ opacity:0;pointer-events:none;
 #tapmark.go{animation:tapRing .55s var(--ease-out) 1}
 @keyframes tapRing{0%{opacity:.85;transform:scale(.35)}100%{opacity:0;transform:scale(1.15)}}
 
-/* ---------- 時間帯の空気：部屋全体に薄い色味を重ねる（静かに） ---------- */
-#tint{
-position:absolute;inset:0;z-index:20;pointer-events:none;
-transition:background-color 1.4s ease;
-}
-#stage.tod-morning #tint{background:rgba(255,240,200,.13)}
-#stage.tod-day #tint{background:rgba(255,255,255,.04)}
-#stage.tod-evening #tint{background:rgba(255,146,64,.16)}
-#stage.tod-night #tint{background:rgba(13,20,58,.25)}
-/* 夜はテレビの画面の光が相対的に目立つように、画面の滲みだけ少し強める */
-#stage.tod-night #obj-tv .tv-screen{box-shadow:inset 0 0 14px rgba(0,0,0,.45), 0 0 20px rgba(150,165,255,.30)}
-
 /* ---------- 右のドア（作品置き場へ） ---------- */
 #obj-door{left:81.4%;bottom:5.2%;width:15.1%;aspect-ratio:623/2783;z-index:2;perspective:520px}
 #obj-door .door-glow{
@@ -764,7 +752,6 @@ transition:transform var(--t-press) var(--ease-out);
 <img src="assets/parts/post.webp" alt="" loading="lazy" decoding="async">
 </button>
 <div id="tapmark" aria-hidden="true"></div>
-<div id="tint" aria-hidden="true"></div>
 </div>
 </main>
 
@@ -1356,18 +1343,13 @@ clearTimeout(hintTimer);
 hintTimer = setTimeout(function(){ stageEl.classList.remove('hint');}, 950);
 }
 
-/* ---------- 時間帯：部屋の空気（ティント）とあいさつ ---------- */
+/* ---------- 時間帯：吹き出しのあいさつだけに使う（部屋の色味ティントは撤去済み） ---------- */
 function todKey(){
 var h = new Date().getHours();
 if (h >= 5 && h < 11) return 'morning';
 if (h >= 11 && h < 16) return 'day';
 if (h >= 16 && h < 19) return 'evening';
 return 'night';
-}
-function applyTod(){
-var k = todKey();
-['tod-morning','tod-day','tod-evening','tod-night'].forEach(function(c){ stageEl.classList.remove(c);});
-stageEl.classList.add('tod-' + k);
 }
 function greetingLine(){
 var k = todKey();
@@ -1771,10 +1753,6 @@ plantBloomed = true;
 plantEl.classList.add('bloomed');
 }
 });
-
-/* 時間帯の空気は読み込み時に決め、境界をまたいだら静かに切り替える */
-applyTod();
-setInterval(applyTod, 60000);
 
 /* ---------- 動的レイヤー v2 ----------
    裏側は「部屋API」（ChatGPT Sites）https://sakiya-counter-lab.sakiyayoi.chatgpt.site に一本化。
