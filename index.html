@@ -154,6 +154,7 @@ opacity:0;pointer-events:none;
 #obj-game{left:19.4%;bottom:14.9%;width:19.5%}
 #obj-desk{left:38.8%;bottom:19.1%;width:31%}
 #obj-speaker{left:59.7%;bottom:31.5%;width:7.9%;z-index:3}
+#obj-post{left:2.6%;bottom:2.4%;width:8.6%;z-index:2}
 
 #plant{
 position:absolute;left:34.2%;bottom:22.3%;width:5.3%;
@@ -396,7 +397,23 @@ background:linear-gradient(#e6c69c,#cfa06e);
 box-shadow:0 3px 7px rgba(43,36,48,.16);
 }
 .work{width:29%;display:block;text-decoration:none;position:relative;transition:transform var(--t-press) var(--ease-out)}
-.work:active{transform:scale(.96)}
+.wlink{display:block;text-decoration:none;color:inherit;transition:transform var(--t-press) var(--ease-out)}
+.wlink:active{transform:scale(.96)}
+/* 応援カウンター：作品ごとに1つ。外部APIが落ちたら .off で静かに消える */
+.cheer{
+display:flex;align-items:center;justify-content:center;gap:5px;
+margin:8px auto 0;padding:5px 13px;border-radius:999px;cursor:pointer;
+border:1.5px solid rgba(255,46,136,.45);background:#fff;color:var(--pink);
+font:inherit;font-size:11.5px;font-weight:800;letter-spacing:.04em;
+transition:transform var(--t-press) var(--ease-out), background .2s ease, color .2s ease;
+}
+.cheer:active{transform:scale(.93)}
+.cheer .c-heart{font-size:12px;line-height:1}
+.cheer .cheer-n{font-variant-numeric:tabular-nums}
+.cheer.done{background:var(--pink);border-color:var(--pink);color:#fff;cursor:default}
+.cheer.off{display:none}
+.cheer.pop{animation:cheerPop .45s var(--ease-out) 1}
+@keyframes cheerPop{0%{transform:scale(1)}40%{transform:scale(1.16)}100%{transform:scale(1)}}
 /* 棚の作品の輪郭線も部屋と同じ扱い：常時は消え、置き場を開いた直後だけ薄く見え、背景タップで短く光る */
 .work::after{
 content:'';position:absolute;inset:-5px;border-radius:16px;
@@ -553,6 +570,23 @@ border-bottom:1px solid var(--line);font-size:15px;
 .facts .k{font-size:11px;letter-spacing:.14em;color:var(--sub);font-weight:800;white-space:nowrap;min-width:74px}
 .note{font-size:12px;color:var(--sub);line-height:1.7;margin-top:6px}
 
+/* 応援メッセージ（ポストのパネル） */
+.msg-list{display:flex;flex-direction:column;gap:10px;margin:12px 0 14px}
+.msg-card{border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
+.msg-head{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.msg-name{font-weight:800;font-size:13px}
+.msg-to{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:#fff;background:var(--purple);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.msg-text{font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.msg-date{font-size:11px;color:var(--sub);margin-top:4px}
+.msg-empty{font-size:13.5px;color:var(--sub);line-height:1.7;border:1.5px dashed var(--line);border-radius:14px;padding:12px 14px}
+.msg-send{
+display:block;text-align:center;text-decoration:none;
+background:var(--pink);color:#fff;font-weight:800;font-size:15px;letter-spacing:.06em;
+border-radius:999px;padding:13px 16px;
+transition:transform var(--t-press) var(--ease-out);
+}
+.msg-send:active{transform:scale(.97)}
+
 /* プロフィール */
 .prof-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
 .prof-head .thumb{
@@ -701,6 +735,11 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
 <span class="door-glow" aria-hidden="true"></span>
 <span class="door-leafwrap" aria-hidden="true"><img src="assets/parts/door.webp" alt=""><span class="door-glint">✦</span></span>
+</button>
+
+<button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
+<span class="ring"></span>
+<img src="assets/parts/post.webp" alt="" loading="lazy" decoding="async">
 </button>
 <div id="tapmark" aria-hidden="true"></div>
 <div id="tint" aria-hidden="true"></div>
@@ -865,6 +904,16 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="prof-works" id="profWorks" type="button">作品置き場へ（ゲーム・曲・記念サイト）<span class="go">→</span></button>
 </section>
 
+<!-- ポスト：応援メッセージ（投稿はGoogleフォーム／表示は承認済みのみ assets/messages.json） -->
+<section class="panel" id="panel-post" aria-label="応援メッセージ">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>ポスト ｜ <b>応援メッセージ</b></h2>
+<p class="note">送ってくれたメッセージは、内容を確認してからここに飾られます。すぐには表示されません。</p>
+<div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
+<a class="msg-send" href="https://docs.google.com/forms/d/e/1FAIpQLSeNcAFLRt_jEVTff_NuEyLGJDKt3KrYJHRVIL25SgmvGf_J5Q/viewform" target="_blank" rel="noopener">メッセージを送る</a>
+</section>
+
 <script>
 (function(){
 "use strict";
@@ -872,7 +921,7 @@ var gate = document.getElementById('gate');
 var room = document.getElementById('room');
 var scrim = document.getElementById('scrim');
 var entered = false;
-var PANELS = ['tv','game','speaker','desk','profile'];
+var PANELS = ['tv','game','speaker','desk','profile','post'];
 
 function panelEl(id){ return document.getElementById('panel-' + id);}
 
@@ -894,7 +943,7 @@ room.setAttribute('aria-hidden','false');
 // 入室直後：物が順に1回ずつ光って「触れる」ことを示す
 // 入口（?from=）がある時は、その対象をツアーの先頭にする（最初に光る物＝入口の物）
 var t = highlightTarget();
-var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun','obj-door'];
+var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun','obj-post','obj-door'];
 var fromParam = new URLSearchParams(location.search).get('from');
 if (fromParam){
 tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
@@ -1487,12 +1536,12 @@ var storageOpen = false, pushedStorage = false, storageTourTimer = 0;
    cat: game=ゲームケース / music=CDケース / site=本・アルバム
    featured: true で「おすすめ」欄入り / date: 'YYYY-MM-DD' があれば最新欄は日付順、無ければ並び順（後ろ＝新しい） */
 var WORKS = [
-{title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
-{title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'assets/parts/work-kani.webp'},
-{title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
-{title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
-{title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
-{title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'}
+{id:'yukagen', title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
+{id:'kani', title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'assets/parts/work-kani.webp'},
+{id:'ebikani', title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
+{id:'sobaniite', title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
+{id:'karappo', title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
+{id:'anniv', title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'}
 ];
 var KANI_SVG = '<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>';
 var CAT_LABEL = {game:'ゲーム', music:'曲・MV', site:'サイト'};
@@ -1507,10 +1556,13 @@ var face = w.img
 ? '<img src="' + w.img + '" alt="" loading="lazy" decoding="async">'
 : '<span class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></span>';
 var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
-return '<a class="work" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
+var cheer = w.id ? '<button type="button" class="cheer" data-cheer="' + w.id + '" aria-label="' + w.title + 'を応援する"><span class="c-heart" aria-hidden="true">♥</span>応援<span class="cheer-n">…</span></button>' : '';
+return '<div class="work">'
++ '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
 + '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>'
 + '<span class="wttl">' + w.title + '</span>'
-+ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span></a>';
++ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span></a>'
++ cheer + '</div>';
 }
 function shelvesHTML(list){
 var html = '';
@@ -1535,6 +1587,7 @@ return b.i - a.i;
 });
 return arr.slice(0, 3).map(function(x){ return x.w; });
 }
+var hydrateCheersFn = null; /* 動的レイヤー（応援カウンター）が末尾で差し込む */
 var curCat = 'all';
 var shelvesEl = document.getElementById('shelves');
 var tabsEl = document.getElementById('storageTabs');
@@ -1562,6 +1615,7 @@ html += sectionHTML(CAT_LABEL[curCat] || curCat, list);
 shelvesEl.innerHTML = html;
 shelvesEl.scrollTop = 0;
 renderTabs();
+if (hydrateCheersFn) hydrateCheersFn();
 }
 tabsEl.addEventListener('click', function(e){
 var btn = e.target.closest ? e.target.closest('button[data-cat]') : null;
@@ -1649,6 +1703,123 @@ plantEl.classList.add('bloomed');
 /* 時間帯の空気は読み込み時に決め、境界をまたいだら静かに切り替える */
 applyTod();
 setInterval(applyTod, 60000);
+
+/* ---------- 動的レイヤー v1 ----------
+   応援メッセージ：表示は承認済みのみ（assets/messages.json）。投稿はGoogleフォーム。
+   応援カウンター：Abacus（無料・登録不要）namespace=sakiyayoi.github.io / key=cheer-<作品id>。
+   外部が落ちても本体は壊れない：失敗したら、その機能だけ静かに消える／空表示のままにする */
+function escHTML(s){
+return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+});
+}
+function loadMessages(){
+var list = document.getElementById('msgList');
+if (!list || !window.fetch) return;
+fetch('assets/messages.json', {cache:'no-cache'}).then(function(r){
+if (!r.ok) throw new Error('ng');
+return r.json();
+}).then(function(data){
+var msgs = (data && data.messages) || [];
+if (!msgs.length) return; /* 0件の間は静的フォールバック（空表示）のまま */
+var html = '';
+for (var i = msgs.length - 1; i >= 0; i--){
+var m = msgs[i];
+html += '<div class="msg-card"><div class="msg-head">'
++ '<span class="msg-name">' + escHTML(m.name || 'ななしさん') + '</span>'
++ (m.to ? '<span class="msg-to">' + escHTML(m.to) + '</span>' : '')
++ '</div><div class="msg-text">' + escHTML(m.text || '') + '</div>'
++ (m.date ? '<div class="msg-date">' + escHTML(m.date) + '</div>' : '')
++ '</div>';
+}
+list.innerHTML = html;
+}).catch(function(){ /* 読めなくても空表示のまま（本体は壊れない） */ });
+}
+var CHEER_NS = 'sakiyayoi.github.io';
+var cheerState = {};
+function cheerFetch(path){
+var ctl = ('AbortController' in window) ? new AbortController() : null;
+var timer = ctl ? setTimeout(function(){ ctl.abort(); }, 6000) : 0;
+return fetch('https://abacus.jasoncameron.dev/' + path, ctl ? {signal:ctl.signal} : {}).then(function(r){
+if (timer) clearTimeout(timer);
+if (r.status === 404) return 0; /* まだ誰も応援していない */
+if (!r.ok) throw new Error('ng');
+return r.json().then(function(j){ return j.value; });
+}, function(err){
+if (timer) clearTimeout(timer);
+throw err;
+});
+}
+function paintCheer(id){
+var st = cheerState[id];
+document.querySelectorAll('button.cheer[data-cheer="' + id + '"]').forEach(function(btn){
+if (!st || st.off){ btn.classList.add('off'); return; }
+btn.classList.toggle('done', !!st.done);
+btn.disabled = !!st.done;
+var n = btn.querySelector('.cheer-n');
+if (n) n.textContent = (st.n === null) ? '…' : String(st.n);
+});
+}
+function hydrateCheers(){
+if (!window.fetch) {
+document.querySelectorAll('button.cheer').forEach(function(b){ b.classList.add('off'); });
+return;
+}
+document.querySelectorAll('button.cheer[data-cheer]').forEach(function(btn){
+var id = btn.getAttribute('data-cheer');
+var st = cheerState[id];
+if (!st){
+st = cheerState[id] = {n:null, done:false, off:false, busy:false};
+try { st.done = sessionStorage.getItem('cheered:' + id) === '1'; } catch(e){}
+cheerFetch('get/' + CHEER_NS + '/cheer-' + id).then(function(v){
+st.n = v;
+paintCheer(id);
+}).catch(function(){
+/* 一過性の失敗かもしれないので1回だけ間を置いて再試行し、それでも駄目なら静かに消す */
+setTimeout(function(){
+cheerFetch('get/' + CHEER_NS + '/cheer-' + id).then(function(v){
+st.n = v;
+paintCheer(id);
+}).catch(function(){
+st.off = true; /* APIが落ちていたら、この作品の応援だけ静かに消す */
+paintCheer(id);
+});
+}, 1500);
+});
+}
+paintCheer(id);
+});
+}
+function cheerUp(id){
+var st = cheerState[id];
+if (!st || st.done || st.busy || st.off) return;
+st.busy = true;
+cheerFetch('hit/' + CHEER_NS + '/cheer-' + id).then(function(v){
+st.busy = false;
+st.n = v;
+st.done = true;
+try { sessionStorage.setItem('cheered:' + id, '1'); } catch(e){}
+paintCheer(id);
+document.querySelectorAll('button.cheer[data-cheer="' + id + '"]').forEach(function(b){
+b.classList.remove('pop');
+void b.offsetWidth;
+b.classList.add('pop');
+});
+}).catch(function(){
+st.busy = false;
+st.off = true;
+paintCheer(id);
+});
+}
+shelvesEl.addEventListener('click', function(e){
+var btn = e.target.closest ? e.target.closest('button.cheer') : null;
+if (!btn) return;
+e.preventDefault();
+cheerUp(btn.getAttribute('data-cheer'));
+});
+hydrateCheersFn = hydrateCheers;
+hydrateCheers();
+loadMessages();
 
 document.getElementById('enterBtn').addEventListener('click', enter);
 document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
