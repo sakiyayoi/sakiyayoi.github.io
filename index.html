@@ -586,6 +586,18 @@ border-radius:999px;padding:13px 16px;
 transition:transform var(--t-press) var(--ease-out);
 }
 .msg-send:active{transform:scale(.97)}
+.msg-form{display:flex;flex-direction:column;gap:9px}
+.msg-form input,.msg-form textarea{
+font-family:inherit;font-size:14.5px;color:var(--ink);
+border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;
+width:100%;box-sizing:border-box;
+}
+.msg-form textarea{resize:vertical;min-height:84px;line-height:1.6}
+.msg-form input:focus,.msg-form textarea:focus{outline:none;border-color:var(--pink)}
+.msg-form .msg-send{border:none;font-family:inherit;cursor:pointer;width:100%}
+.msg-form .msg-send[disabled]{opacity:.55;cursor:default;transform:none}
+.msg-status{font-size:12.5px;color:var(--sub);line-height:1.6;margin:0}
+.msg-status.ok{color:#d81b74;font-weight:700}
 
 /* プロフィール */
 .prof-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
@@ -904,14 +916,19 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="prof-works" id="profWorks" type="button">作品置き場へ（ゲーム・曲・記念サイト）<span class="go">→</span></button>
 </section>
 
-<!-- ポスト：応援メッセージ（投稿はGoogleフォーム／表示は承認済みのみ assets/messages.json） -->
+<!-- ポスト：応援メッセージ（投稿は部屋APIへ直接送信し未承認で保存／表示は承認済みのみ） -->
 <section class="panel" id="panel-post" aria-label="応援メッセージ">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>ポスト ｜ <b>応援メッセージ</b></h2>
 <p class="note">送ってくれたメッセージは、内容を確認してからここに飾られます。すぐには表示されません。</p>
 <div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
-<a class="msg-send" href="https://docs.google.com/forms/d/e/1FAIpQLSeNcAFLRt_jEVTff_NuEyLGJDKt3KrYJHRVIL25SgmvGf_J5Q/viewform" target="_blank" rel="noopener">メッセージを送る</a>
+<form class="msg-form" id="msgForm">
+<input type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off">
+<textarea id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ"></textarea>
+<button class="msg-send" id="msgSubmit" type="submit">メッセージを送る</button>
+<p class="msg-status" id="msgStatus" role="status"></p>
+</form>
 </section>
 
 <script>
@@ -1704,22 +1721,38 @@ plantEl.classList.add('bloomed');
 applyTod();
 setInterval(applyTod, 60000);
 
-/* ---------- 動的レイヤー v1 ----------
-   応援メッセージ：表示は承認済みのみ（assets/messages.json）。投稿はGoogleフォーム。
-   応援カウンター：Abacus（無料・登録不要）namespace=sakiyayoi.github.io / key=cheer-<作品id>。
+/* ---------- 動的レイヤー v2 ----------
+   裏側は「部屋API」（ChatGPT Sites）https://sakiya-counter-lab.sakiyayoi.chatgpt.site に一本化。
+   応援メッセージ：表示は GET /api/messages（承認済みのみが返る）。
+   投稿は POST /api/messages で未承認として保存され、確認してから飾られる。
+   応援カウンター：GET /api/likes（作品別の件数マップ）／ POST /api/likes {"work":作品id} で+1。
    外部が落ちても本体は壊れない：失敗したら、その機能だけ静かに消える／空表示のままにする */
+var ROOM_API = 'https://sakiya-counter-lab.sakiyayoi.chatgpt.site';
 function escHTML(s){
 return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
 return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
 });
 }
+function apiFetch(path, opts){
+opts = opts || {};
+var ctl = ('AbortController' in window) ? new AbortController() : null;
+var timer = ctl ? setTimeout(function(){ ctl.abort(); }, 8000) : 0;
+var init = {method: opts.method || 'GET'};
+if (ctl) init.signal = ctl.signal;
+if (opts.body){ init.headers = {'Content-Type':'application/json'}; init.body = JSON.stringify(opts.body); }
+return fetch(ROOM_API + path, init).then(function(r){
+if (timer) clearTimeout(timer);
+if (!r.ok) throw new Error('ng');
+return r.json();
+}, function(err){
+if (timer) clearTimeout(timer);
+throw err;
+});
+}
 function loadMessages(){
 var list = document.getElementById('msgList');
 if (!list || !window.fetch) return;
-fetch('assets/messages.json', {cache:'no-cache'}).then(function(r){
-if (!r.ok) throw new Error('ng');
-return r.json();
-}).then(function(data){
+apiFetch('/api/messages').then(function(data){
 var msgs = (data && data.messages) || [];
 if (!msgs.length) return; /* 0件の間は静的フォールバック（空表示）のまま */
 var html = '';
@@ -1735,19 +1768,31 @@ html += '<div class="msg-card"><div class="msg-head">'
 list.innerHTML = html;
 }).catch(function(){ /* 読めなくても空表示のまま（本体は壊れない） */ });
 }
-var CHEER_NS = 'sakiyayoi.github.io';
 var cheerState = {};
-function cheerFetch(path){
-var ctl = ('AbortController' in window) ? new AbortController() : null;
-var timer = ctl ? setTimeout(function(){ ctl.abort(); }, 6000) : 0;
-return fetch('https://abacus.jasoncameron.dev/' + path, ctl ? {signal:ctl.signal} : {}).then(function(r){
-if (timer) clearTimeout(timer);
-if (r.status === 404) return 0; /* まだ誰も応援していない */
-if (!r.ok) throw new Error('ng');
-return r.json().then(function(j){ return j.value; });
-}, function(err){
-if (timer) clearTimeout(timer);
-throw err;
+var likesMap = null;      /* GET /api/likes の結果（作品id → 件数） */
+var likesLoading = false;
+function fetchLikes(isRetry){
+if (likesLoading) return;
+likesLoading = true;
+apiFetch('/api/likes').then(function(map){
+likesLoading = false;
+likesMap = map || {};
+Object.keys(cheerState).forEach(function(id){
+var v = likesMap[id];
+cheerState[id].n = (typeof v === 'number') ? v : 0; /* マップに無い作品はまだ0 */
+paintCheer(id);
+});
+}).catch(function(){
+likesLoading = false;
+if (!isRetry){
+/* 一過性の失敗かもしれないので1回だけ間を置いて再試行し、それでも駄目なら静かに消す */
+setTimeout(function(){ fetchLikes(true); }, 1500);
+} else {
+Object.keys(cheerState).forEach(function(id){
+cheerState[id].off = true; /* APIが落ちていたら、応援だけ静かに消す */
+paintCheer(id);
+});
+}
 });
 }
 function paintCheer(id){
@@ -1771,32 +1816,31 @@ var st = cheerState[id];
 if (!st){
 st = cheerState[id] = {n:null, done:false, off:false, busy:false};
 try { st.done = sessionStorage.getItem('cheered:' + id) === '1'; } catch(e){}
-cheerFetch('get/' + CHEER_NS + '/cheer-' + id).then(function(v){
-st.n = v;
-paintCheer(id);
-}).catch(function(){
-/* 一過性の失敗かもしれないので1回だけ間を置いて再試行し、それでも駄目なら静かに消す */
-setTimeout(function(){
-cheerFetch('get/' + CHEER_NS + '/cheer-' + id).then(function(v){
-st.n = v;
-paintCheer(id);
-}).catch(function(){
-st.off = true; /* APIが落ちていたら、この作品の応援だけ静かに消す */
-paintCheer(id);
-});
-}, 1500);
-});
+if (likesMap){
+var v = likesMap[id];
+st.n = (typeof v === 'number') ? v : 0;
+}
 }
 paintCheer(id);
 });
+if (!likesMap) fetchLikes(false); /* 件数は全作品まとめて1回だけ取りに行く */
 }
 function cheerUp(id){
 var st = cheerState[id];
 if (!st || st.done || st.busy || st.off) return;
 st.busy = true;
-cheerFetch('hit/' + CHEER_NS + '/cheer-' + id).then(function(v){
+apiFetch('/api/likes', {method:'POST', body:{work:id}}).then(function(res){
 st.busy = false;
-st.n = v;
+/* 返り値の形（作品別マップ／count／value 等）を吸収し、読めなければ手元で+1する */
+var v = null;
+if (res){
+if (typeof res[id] === 'number') v = res[id];
+else if (typeof res.count === 'number') v = res.count;
+else if (typeof res.value === 'number') v = res.value;
+else if (typeof res.likes === 'number') v = res.likes;
+}
+st.n = (v !== null) ? v : ((st.n || 0) + 1);
+if (likesMap) likesMap[id] = st.n;
 st.done = true;
 try { sessionStorage.setItem('cheered:' + id, '1'); } catch(e){}
 paintCheer(id);
@@ -1820,6 +1864,38 @@ cheerUp(btn.getAttribute('data-cheer'));
 hydrateCheersFn = hydrateCheers;
 hydrateCheers();
 loadMessages();
+
+/* 応援メッセージの投稿：部屋APIへ直接送る（未承認で保存され、確認してから飾られる） */
+var msgForm = document.getElementById('msgForm');
+if (msgForm){
+msgForm.addEventListener('submit', function(e){
+e.preventDefault();
+var nameEl = document.getElementById('msgName');
+var textEl = document.getElementById('msgText');
+var btn = document.getElementById('msgSubmit');
+var status = document.getElementById('msgStatus');
+var text = (textEl.value || '').trim();
+if (!text){
+status.textContent = 'メッセージを書いてから送ってね。';
+status.classList.remove('ok');
+return;
+}
+if (btn.disabled) return;
+btn.disabled = true;
+status.textContent = '送っています…';
+status.classList.remove('ok');
+apiFetch('/api/messages', {method:'POST', body:{name:(nameEl.value || '').trim(), text:text}}).then(function(){
+btn.disabled = false;
+textEl.value = '';
+status.textContent = 'ありがとう！内容を確認してから、ここに飾られます。';
+status.classList.add('ok');
+}).catch(function(){
+btn.disabled = false;
+status.textContent = '今は送れなかったみたい。時間をおいて、もう一度試してみてね。';
+status.classList.remove('ok');
+});
+});
+}
 
 document.getElementById('enterBtn').addEventListener('click', enter);
 document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
