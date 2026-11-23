@@ -728,11 +728,44 @@ transition:transform var(--t-press) var(--ease-out);
 .panel{transform:none;opacity:0}
 .panel.on{opacity:1}
 }
+
+/* --- 取り入れた型：英語小ラベル＋日本語見出し／お知らせ／予定／運勢／オープニング --- */
+.p-en{font-size:10px;letter-spacing:.32em;color:var(--pink);font-weight:800;margin-bottom:2px}
+.news-list{list-style:none;margin:2px 0 14px}
+.news-list li{display:flex;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.6}
+.news-list time{color:var(--pink);font-weight:800;font-size:12px;white-space:nowrap;padding-top:2px}
+.sched{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.sched .sched-en{font-size:10px;letter-spacing:.28em;color:var(--pink);font-weight:800}
+.sched b{font-size:19px;letter-spacing:.03em}
+.sched span{font-size:12px;color:var(--sub);font-weight:700}
+#opening{position:fixed;inset:0;z-index:80;background:var(--paper,#fff7fa);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .6s ease, visibility .6s}
+#opening.hide{opacity:0;visibility:hidden}
+#opening img{width:148px;height:148px;object-fit:cover;object-position:top;border-radius:50%;box-shadow:0 10px 30px rgba(43,36,48,.18);animation:opIn .8s ease both}
+#opening .op-en{font-size:11px;letter-spacing:.34em;color:var(--pink);font-weight:800;animation:opIn .8s .1s ease both}
+#opening .op-name{font-size:30px;font-weight:800;letter-spacing:.1em;animation:opIn .8s .2s ease both}
+#opening .op-tap{font-size:12px;color:var(--sub);letter-spacing:.14em;animation:opIn .8s .35s ease both}
+@keyframes opIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.fortune{margin-top:16px;border-top:1.5px dashed var(--line);padding-top:14px}
+.fortune .f-res{font-size:15px;font-weight:800;text-align:center;min-height:24px;margin-top:10px}
+.fortune .f-line{font-size:12.5px;color:var(--sub);text-align:center;margin-top:4px}
+.fortune button{display:block;width:100%;background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:800;font-size:14.5px;border-radius:999px;padding:12px;cursor:pointer}
+.fortune button:disabled{color:var(--sub);background:#faf3f8}
+.reqcard{margin-top:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.reqcard .r-ttl{font-weight:800;font-size:14px}
+.reqcard .r-note{font-size:12px;color:var(--sub);margin-top:2px}
+.reqcard button{margin-top:9px;background:var(--pink);color:#fff;border:none;font-weight:800;font-size:13.5px;border-radius:999px;padding:9px 16px;cursor:pointer}
+.reqcard .r-done{font-size:12px;color:#d81b74;font-weight:700;margin-left:8px}
 </style>
 </head>
 <body>
 
 <!-- 玄関 -->
+<div id="opening" role="button" aria-label="タップではじめる">
+<img src="assets/parts/mirrativ-emomo.webp" alt="">
+<div class="op-en">SAKIYA OFFICIAL ROOM</div>
+<div class="op-name">八乙女さきや</div>
+<div class="op-tap">タップではじめる</div>
+</div>
 <div id="gate">
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
@@ -867,6 +900,7 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-tv" aria-label="配信と動画">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">STREAM</div>
 <h2>テレビ ｜ <b>配信と動画</b></h2>
 <a class="card card-first" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
 <div class="face f-live">
@@ -875,6 +909,12 @@ transition:transform var(--t-press) var(--ease-out);
 </div>
 <div class="meta"><span class="tag pink">配信</span><span>Mirrativ｜八乙女さきや</span><span class="mirrativ-updated">2026.11.23</span><span class="go">会いにいく →</span></div>
 </a>
+<div class="sched"><span class="sched-en">SCHEDULE</span><b>毎晩 22:00〜</b><span>連続配信 445日（2026.11.23時点）</span></div>
+<div class="pick-label">お知らせ</div>
+<ul class="news-list">
+<li><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」と「童話キャラ16タイプ診断」を公開しました</span></li>
+<li><time>2026.11.18</time><span>ゲーム「ちょうどいい湯かげん」を公開しました</span></li>
+</ul>
 <div class="pick-label">まず見て</div>
 <a class="card card-first" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
 <div class="face f-clip">
@@ -900,6 +940,7 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-game" aria-label="ゲーム">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">GAMES</div>
 <h2>ゲーム機 ｜ <b>あそぶ</b></h2>
 <a class="card imgcard" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
 <div class="face f-usagori"><img class="cardimg" src="assets/parts/card-usagori.webp" alt="" draggable="false" loading="lazy">
@@ -942,6 +983,7 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-speaker" aria-label="曲">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">MUSIC</div>
 <h2>スピーカー ｜ <b>きく</b></h2>
 <a class="card" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">
 <div class="face f-song" style="height:128px">
@@ -957,12 +999,18 @@ transition:transform var(--t-press) var(--ease-out);
 </div>
 <div class="meta"><span class="tag pink">曲</span><span>HYSTERIC ZOMBIES</span><span class="go">聴く →</span></div>
 </a>
+<div class="reqcard">
+<div class="r-ttl">歌リクエスト</div>
+<div class="r-note">配信で歌ってほしい曲は、この文をコピーして配信のコメントに貼ってね。</div>
+<button type="button" id="reqCopy">リクエスト文をコピー</button><span class="r-done" id="reqDone"></span>
+</div>
 </section>
 
 <!-- 机：制作机（いま作ってるもの＋作ったもの） -->
 <section class="panel" id="panel-desk" aria-label="制作机">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">STUDIO</div>
 <h2>机 ｜ <b>制作机</b></h2>
 <div class="desk-sec">いま作ってるもの</div>
 <a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
@@ -985,6 +1033,7 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-profile" aria-label="プロフィール">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">PROFILE</div>
 <h2>さきや ｜ <b>プロフィール</b></h2>
 <div class="prof-head">
 <div class="thumb"><img src="assets/parts/chara.webp" alt="八乙女さきや ミニキャラ" loading="lazy" decoding="async"></div>
@@ -995,6 +1044,13 @@ transition:transform var(--t-press) var(--ease-out);
 </div>
 </div>
 <p class="prof-intro">ミラティブ配信者。ゲーム・曲・動画を全部ひとりで作って、配信と投稿をしている。</p>
+<div class="likes">
+<div class="ttl">合言葉・FM</div>
+<div class="chips">
+<span class="chip">合言葉：やにかすおとめ</span>
+<span class="chip purple">FM：🩷🌈💜</span>
+</div>
+</div>
 <div class="chips">
 <span class="chip purple">天使と悪魔の少年・女装男子</span>
 </div>
@@ -1047,6 +1103,7 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-post" aria-label="応援メッセージ">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">MESSAGE</div>
 <h2>ポスト ｜ <b>応援メッセージ</b></h2>
 <p class="note">送ってくれたメッセージは、内容を確認してからここに飾られます。すぐには表示されません。</p>
 <div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
@@ -1062,6 +1119,7 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-bonus" aria-label="今日のボーナス">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">DAILY</div>
 <h2>今日のボーナス ｜ <b>まいにち特典</b></h2>
 <p class="note" id="bonusToday">今日の日付を確認中…</p>
 <div class="bonus-stats">
@@ -1073,6 +1131,12 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="bonus-stamps" id="bonusStamps"></div>
 <button class="bonus-claim" id="bonusClaim" type="button">ボーナスを受け取る</button>
 <div class="bonus-reward" id="bonusReward" role="status"></div>
+<div class="fortune">
+<div class="desk-sec">今日の運勢（1日1回）</div>
+<button type="button" id="fortuneBtn">運勢をひく</button>
+<div class="f-res" id="fortuneRes"></div>
+<div class="f-line" id="fortuneLine"></div>
+</div>
 <p class="bonus-next">毎日0時に切り替わります。7日連続で特別報酬、ポイントは100ごとに称号が上がります。この端末にだけ記録されます。</p>
 </section>
 
@@ -2146,6 +2210,41 @@ document.getElementById('bonusClaim').addEventListener('click', function(){
   bonusRender();
 });
 bonusRender();
+
+
+/* ---------- オープニング ---------- */
+(function(){ var op=document.getElementById('opening'); if(!op) return; var hid=false;
+function hide(){ if(hid) return; hid=true; op.classList.add('hide'); setTimeout(function(){ op.remove(); },700); }
+op.addEventListener('click', hide); setTimeout(hide, 2100); })();
+
+/* ---------- 歌リクエスト文コピー ---------- */
+var reqBtn=document.getElementById('reqCopy');
+if(reqBtn) reqBtn.addEventListener('click', function(){
+  var txt='【歌リクエスト】曲名： ／ アーティスト： ';
+  function done(){ document.getElementById('reqDone').textContent='コピーしたよ'; }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, done); } else { done(); }
+});
+
+/* ---------- 今日の運勢（1日1回・大吉で+10pt） ---------- */
+var FORTUNES=[['大吉','今日は配信も創作も絶好調。まず1つ動かそう。'],['中吉','いい流れ。手をつけた分だけ進む日。'],['小吉','小さく勝てる日。1つ終わらせると気持ちいい。'],['吉','穏やかな日。無理せず、でも止まらずに。'],['末吉','後半に運が来る日。夜の配信が山場かも。']];
+function fortuneRender(){
+  var s=bonusLoad(); var f=s.fortune||{}; var today=bonusTodayStr();
+  var btn=document.getElementById('fortuneBtn'); if(!btn) return;
+  if(f.date===today){ btn.disabled=true; btn.textContent='今日はもう引いたよ';
+    document.getElementById('fortuneRes').textContent=f.result;
+    document.getElementById('fortuneLine').textContent=f.line||''; }
+}
+var fBtn=document.getElementById('fortuneBtn');
+if(fBtn) fBtn.addEventListener('click', function(){
+  var s=bonusLoad(); var today=bonusTodayStr(); if(s.fortune && s.fortune.date===today){ fortuneRender(); return; }
+  var pick=FORTUNES[Math.floor(Math.random()*FORTUNES.length)];
+  var line=pick[1]; if(pick[0]==='大吉'){ s.points=(s.points||0)+10; line+='（大吉ボーナス +10ポイント）'; }
+  s.fortune={date:today, result:pick[0], line:pick[1]}; bonusSave(s);
+  document.getElementById('fortuneRes').textContent=pick[0];
+  document.getElementById('fortuneLine').textContent=line;
+  bonusRender(); fortuneRender();
+});
+fortuneRender();
 
 document.getElementById('enterBtn').addEventListener('click', enter);
 document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
