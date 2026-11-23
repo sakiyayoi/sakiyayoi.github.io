@@ -2318,5 +2318,17 @@ try{ enter(); }catch(e){}
 setTimeout(function(){ var b=document.querySelector('[data-panel="'+pn+'"]'); if(b) b.click(); }, 1000);
 })();
 </script>
+
+<script>
+/* probe (temporary) */
+window.addEventListener('load', function(){ setTimeout(function(){
+  var bad = [];
+  document.querySelectorAll('#panel-tv *').forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if (r.right > 391 || r.width > 392) bad.push(el.tagName + '.' + (el.className.baseVal!==undefined?'svg':el.className) + ' w=' + Math.round(r.width) + ' r=' + Math.round(r.right));
+  });
+  document.title = 'PROBE[' + bad.slice(0,6).join(' | ') + ']';
+}, 2500); });
+</script>
 </body>
 </html>
