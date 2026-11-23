@@ -89,7 +89,7 @@ position:absolute;left:50%;top:50%;
 transform:translate(-50%,-50%);
 width:min(100vw, calc(100dvh * 0.7544));
 aspect-ratio:1376 / 1824;
-background:url('assets/parts/room-bg-diner.webp') center / 100% 100% no-repeat;
+background:url('assets/parts/room-bg.webp') center / 100% 100% no-repeat;
 }
 .room-name{
 position:absolute;top:3.2%;left:0;right:0;
@@ -755,23 +755,6 @@ transition:transform var(--t-press) var(--ease-out);
 .reqcard .r-note{font-size:12px;color:var(--sub);margin-top:2px}
 .reqcard button{margin-top:9px;background:var(--pink);color:#fff;border:none;font-weight:800;font-size:13.5px;border-radius:999px;padding:9px 16px;cursor:pointer}
 .reqcard .r-done{font-size:12px;color:#d81b74;font-weight:700;margin-left:8px}
-
-/* --- ダイナー化：ヒーローを右へ（窓を見せる）／画面位置／フロート／棚の作り替え／週間予定 --- */
-#hero{left:37%;width:56%}
-.tv-screen{left:16.5%;top:35.5%;width:67%;height:41%;border-radius:16px}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.6%)}}
-.obj img{animation:floaty 3.8s ease-in-out infinite}
-#obj-game img{animation-duration:4.4s}
-#obj-speaker img{animation-duration:3.2s}
-#obj-desk img{animation-duration:4.9s}
-.obj3d{transform:none;border-radius:14px;overflow:hidden;box-shadow:0 8px 20px rgba(43,36,48,.13)}
-.shelf-board{height:6px;background:#f49ac1;box-shadow:none;border-radius:3px}
-.work:hover{transform:translateY(-3px)}
-.week{list-style:none;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:0 0 14px}
-.week li{text-align:center;font-size:10.5px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 0;color:var(--sub);font-weight:700}
-.week li b{display:block;font-size:12.5px;color:var(--ink)}
-.week li.today{background:var(--pink);border-color:var(--pink);color:#ffe3f0}
-.week li.today b{color:#fff}
 </style>
 </head>
 <body>
@@ -834,7 +817,7 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="obj" id="obj-tv" type="button" data-panel="tv" aria-label="テレビ：配信と動画">
 <span class="ring"></span>
 <span class="bubble" id="tvBubble" aria-hidden="true"></span>
-<img src="assets/parts/tv-diner.webp" alt="">
+<img src="assets/parts/tv.webp" alt="">
 <span class="tv-screen" aria-hidden="true">
 <span class="tv-scene sc-a on"></span>
 <span class="tv-scene sc-b"></span>
@@ -846,7 +829,7 @@ transition:transform var(--t-press) var(--ease-out);
 
 <button class="obj" id="obj-game" type="button" data-panel="game" aria-label="ゲーム機：ゲーム">
 <span class="ring"></span>
-<img src="assets/parts/console-diner.webp" alt="">
+<img src="assets/parts/console.webp" alt="">
 <span class="lamp" aria-hidden="true"></span>
 </button>
 
@@ -863,7 +846,7 @@ transition:transform var(--t-press) var(--ease-out);
 
 <button class="obj" id="obj-speaker" type="button" data-panel="speaker" aria-label="スピーカー：曲">
 <span class="ring"></span>
-<img src="assets/parts/speaker-diner.webp" alt="">
+<img src="assets/parts/speaker.webp" alt="">
 <span class="notes" aria-hidden="true"><span>♪</span><span>♫</span></span>
 </button>
 
@@ -927,9 +910,6 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="meta"><span class="tag pink">配信</span><span>Mirrativ｜八乙女さきや</span><span class="mirrativ-updated">2026.11.23</span><span class="go">会いにいく →</span></div>
 </a>
 <div class="sched"><span class="sched-en">SCHEDULE</span><b>毎晩 22:00〜</b><span>連続配信 445日（2026.11.23時点）</span></div>
-<ul class="week" id="weekList">
-<li><b>月</b>22時</li><li><b>火</b>22時</li><li><b>水</b>22時</li><li><b>木</b>22時</li><li><b>金</b>22時</li><li><b>土</b>22時</li><li><b>日</b>22時</li>
-</ul>
 <div class="pick-label">お知らせ</div>
 <ul class="news-list">
 <li><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」と「童話キャラ16タイプ診断」を公開しました</span></li>
@@ -2256,8 +2236,7 @@ function fortuneRender(){
 }
 var fBtn=document.getElementById('fortuneBtn');
 if(fBtn) fBtn.addEventListener('click', function(){
-  var s=bonusLoad(); var today=bonusTodayStr(); if(s.fortune && s.fortune.date===today){ fortuneRender();
-(function(){ var wl=document.getElementById('weekList'); if(!wl) return; var idx=(new Date().getDay()+6)%7; var li=wl.children[idx]; if(li) li.classList.add('today'); })(); return; }
+  var s=bonusLoad(); var today=bonusTodayStr(); if(s.fortune && s.fortune.date===today){ fortuneRender(); return; }
   var pick=FORTUNES[Math.floor(Math.random()*FORTUNES.length)];
   var line=pick[1]; if(pick[0]==='大吉'){ s.points=(s.points||0)+10; line+='（大吉ボーナス +10ポイント）'; }
   s.fortune={date:today, result:pick[0], line:pick[1]}; bonusSave(s);
