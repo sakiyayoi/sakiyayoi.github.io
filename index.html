@@ -565,21 +565,18 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 .work .new-badge{top:8px;left:8px}
 .wdate{display:block;text-align:center;font-size:11px;color:var(--sub);font-weight:700;margin-top:4px;letter-spacing:.04em}
 .storage-updated{position:absolute;top:5.6%;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.14em;color:var(--sub);font-weight:700}
-#liveBtn{position:absolute;left:4%;top:6.2%;z-index:5;display:flex;align-items:center;gap:7px;background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.04em;border-radius:99px;padding:11px 15px;box-shadow:0 5px 16px rgba(255,46,136,.4);text-decoration:none;transition:transform var(--t-press) var(--ease-out)}
-#liveBtn:active{transform:scale(.94)}
-#liveBtn .live-dot{width:9px;height:9px;border-radius:50%;background:#fff;flex:none;animation:lampBreathe 1.8s ease-in-out infinite}
-.sticker{position:absolute;right:10px;top:10px;z-index:2;width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(43,36,48,.25);display:flex;align-items:center;justify-content:center;font-size:22px;transform:rotate(8deg)}
-.card{border:2px solid #ffe3f0;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 6px 16px rgba(43,36,48,.08);margin-bottom:12px;display:block;text-decoration:none}
-.card .face{border-radius:0}
-.work .obj3d{border-radius:12px}
 .hero-live-badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--pink);color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;border-radius:99px;padding:5px 11px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
 .mirrativ-updated{font-size:11px;color:var(--sub);font-weight:700}
 .hero-new{position:absolute;top:10px;left:10px;z-index:2;background:#ffcf4d;color:#2b2430;font-size:11px;font-weight:800;letter-spacing:.14em;border-radius:99px;padding:4px 10px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
 .meta .date{font-size:11px;color:var(--sub);font-weight:700;white-space:nowrap}
-#bonusBtn{position:absolute;right:4%;top:6.2%;z-index:5;display:flex;align-items:center;gap:7px;background:#ffcf4d;color:#2b2430;font-size:13px;font-weight:800;letter-spacing:.04em;border-radius:99px;padding:10px 14px;box-shadow:0 4px 14px rgba(43,36,48,.22);transition:transform var(--t-press) var(--ease-out)}
-#bonusBtn:active{transform:scale(.94)}
-#bonusBtn .bonus-dot{width:9px;height:9px;border-radius:50%;background:var(--pink);flex:none}
-#bonusBtn.claimed{background:#fff;color:var(--sub);box-shadow:0 2px 8px rgba(43,36,48,.14)}
+#dock{position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px, env(safe-area-inset-bottom));z-index:24;display:flex;gap:8px;background:rgba(255,255,255,.94);border:1.5px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 24px rgba(43,36,48,.18)}
+#dock a,#dock button{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;letter-spacing:.03em;border-radius:999px;padding:10px 14px;text-decoration:none;transition:transform var(--t-press) var(--ease-out);white-space:nowrap}
+#dock a:active,#dock button:active{transform:scale(.95)}
+#liveBtn{background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff}
+#liveBtn .live-dot{width:8px;height:8px;border-radius:50%;background:#fff;flex:none;animation:lampBreathe 1.8s ease-in-out infinite}
+#bonusBtn{background:#fff6fa;color:#d81b74;border:1.5px solid #ffd0e4}
+#bonusBtn .bonus-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);flex:none}
+#bonusBtn.claimed{color:var(--sub);border-color:var(--line)}
 #bonusBtn.claimed .bonus-dot{background:#d8ccd4}
 .bonus-stats{display:flex;gap:8px;margin:12px 0}
 .bonus-stat{flex:1;background:#fff0f7;border:1.5px solid #ffd0e4;border-radius:14px;padding:10px 8px;text-align:center}
@@ -840,17 +837,18 @@ transition:transform var(--t-press) var(--ease-out);
 <span class="ring"></span>
 <img src="assets/parts/post.webp" alt="" loading="lazy" decoding="async">
 </button>
-<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>Mirrativ 毎晩22時</a>
-<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のボーナス</button>
 <div id="tapmark" aria-hidden="true"></div>
 </div>
 </main>
+<div id="dock">
+<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>Mirrativ 毎晩22時</a>
+<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のボーナス</button>
+</div>
 
 <!-- 作品置き場 -->
 <div id="storageView" aria-hidden="true">
 <div id="storageStage">
 <div class="storage-name">さきやの <b>作品置き場</b></div>
-<div class="storage-updated">最終更新 2026.11.23｜新作2本追加</div>
 <div id="storageTabs" aria-label="カテゴリ"></div>
 <div id="shelves"></div>
 <button id="storageDoor" type="button" aria-label="部屋にもどる">
@@ -867,7 +865,6 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>テレビ ｜ <b>配信と動画</b></h2>
-<div class="pick-label">まず配信で会おう</div>
 <a class="card card-first" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
 <div class="face f-live">
 <img src="assets/parts/mirrativ-emomo.webp" alt="八乙女さきやのエモモ（Mirrativ公式から取得・2026.11.23時点）" draggable="false">
@@ -903,11 +900,9 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>ゲーム機 ｜ <b>あそぶ</b></h2>
 <a class="card" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
-<span class="new-badge">NEW</span>
 <div class="face f-usagori">
 <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="13" cy="20" r="6" fill="#fff"/><path d="M10 15 q-2-7 1-9 q3 1 2 7 M16 15 q1-7 4-7 q2 2-1 8" fill="#fff"/></svg>
 <span class="ttl">うさぎ、ゴリラを殴る。3D</span>
-<span class="sticker" aria-hidden="true">🐰</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>巨大ゴリラと75秒ボス戦</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
 </a>
@@ -915,7 +910,6 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="face f-yu">
 <svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 24 q5-4 10 0 t10 0 t6 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 16 q2-5 5-5 M19 13 q3-3 6-1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/></svg>
 <span class="ttl">ちょうどいい湯かげん</span>
-<span class="sticker" aria-hidden="true">🦆</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>お湯の温度を合わせる</span><span class="go">あそぶ →</span></div>
 </a>
@@ -923,7 +917,6 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="face f-kani">
 <svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
 <span class="ttl">カニ飛ばし</span>
-<span class="sticker" aria-hidden="true">🦀</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>カニをぶっ飛ばす</span><span class="go">あそぶ →</span></div>
 </a>
@@ -931,16 +924,13 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="face f-ebi">
 <svg width="34" height="34" viewBox="0 0 34 34"><text x="17" y="25" font-size="21" font-weight="800" fill="#fff" text-anchor="middle">?</text></svg>
 <span class="ttl">EBI KANI?</span>
-<span class="sticker" aria-hidden="true">🦐</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>エビかカニか</span><span class="go">あそぶ →</span></div>
 </a>
 <a class="card" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
-<span class="new-badge">NEW</span>
 <div class="face f-fairy">
 <svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 4 l2.5 7.5 L27 14 l-7.5 2.5 L17 24 l-2.5-7.5 L7 14 l7.5-2.5 Z" fill="#fff"/></svg>
 <span class="ttl">童話キャラ16タイプ診断</span>
-<span class="sticker" aria-hidden="true">⭐</span>
 </div>
 <div class="meta"><span class="tag">診断</span><span>20問でわかる童話診断</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
 </a>
@@ -1799,7 +1789,7 @@ var face = w.img
 : '<span class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></span>';
 var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
 var cheer = w.id ? '<button type="button" class="cheer" data-cheer="' + w.id + '" aria-label="' + w.title + 'を応援する"><span class="c-heart" aria-hidden="true">♥</span>応援<span class="cheer-n">…</span></button>' : '';
-var badge = w.isNew ? '<span class="new-badge">NEW</span>' : '';
+var badge = '';
 var wdate = w.date ? '<span class="wdate">' + w.date.replace(/-/g,'.') + ' 公開</span>' : '';
 return '<div class="work">'
 + '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
@@ -1852,6 +1842,7 @@ var feat = WORKS.filter(function(w){ return w.featured; });
 if (feat.length) html += sectionHTML('<b>おすすめ</b>', feat);
 html += sectionHTML('<b>最新</b>', latestWorks());
 html += sectionHTML('ぜんぶの作品', WORKS);
+html += '<p class="bonus-next">最終更新 2026.11.23｜新作2本追加</p>';
 } else {
 var list = WORKS.filter(function(w){ return catOf(w) === curCat; });
 html += sectionHTML(CAT_LABEL[curCat] || curCat, list);
