@@ -575,9 +575,9 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 #dock{position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px, env(safe-area-inset-bottom));z-index:24;display:flex;gap:8px;background:rgba(255,255,255,.94);border:1.5px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 24px rgba(43,36,48,.18)}
 #dock a,#dock button{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;letter-spacing:.03em;border-radius:999px;padding:10px 14px;text-decoration:none;transition:transform var(--t-press) var(--ease-out);white-space:nowrap}
 #dock a:active,#dock button:active{transform:scale(.95)}
-#liveBtn{background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff}
+#liveBtn{background:var(--pink);color:#fff}
 #liveBtn .live-dot{width:8px;height:8px;border-radius:50%;background:#fff;flex:none;animation:lampBreathe 1.8s ease-in-out infinite}
-#bonusBtn{background:#fff6fa;color:#d81b74;border:1.5px solid #ffd0e4}
+#bonusBtn{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
 #bonusBtn .bonus-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);flex:none}
 #bonusBtn.claimed{color:var(--sub);border-color:var(--line)}
 #bonusBtn.claimed .bonus-dot{background:#d8ccd4}
@@ -591,7 +591,7 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 .bonus-stamp .getlbl{position:absolute;top:-7px;right:-4px;background:var(--pink);color:#fff;font-size:8.5px;font-weight:800;border-radius:99px;padding:2px 6px;transform:rotate(10deg);box-shadow:0 2px 6px rgba(255,46,136,.4)}
 .bonus-stamp.today{border-color:var(--pink)}
 .bonus-stamp .s-emoji{font-size:18px;line-height:1.2}
-.bonus-claim{display:block;width:100%;text-align:center;background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff;font-weight:800;font-size:16.5px;letter-spacing:.06em;border-radius:999px;padding:14px 16px;cursor:pointer;box-shadow:0 6px 18px rgba(255,46,136,.4);transition:transform var(--t-press) var(--ease-out)}
+.bonus-claim{display:block;width:100%;text-align:center;background:var(--pink);color:#fff;font-weight:800;font-size:16px;letter-spacing:.06em;border-radius:999px;padding:14px 16px;cursor:pointer;transition:transform var(--t-press) var(--ease-out)}
 .bonus-claim:disabled{background:#e9dfe8;color:#a08b9d;box-shadow:none}
 .bonus-claim:active{transform:scale(.97)}
 .bonus-claim[disabled]{background:#e8e0ea;color:var(--sub);cursor:default;transform:none}
@@ -737,7 +737,7 @@ transition:transform var(--t-press) var(--ease-out);
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
 <div class="g-role">ミラティブ配信者</div>
-<div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span><span>雑談</span><span>全部自作</span></div>
+<div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span></div>
 <div class="g-live"><span class="dot"></span>毎晩22時 配信中</div>
 </div>
 <button id="enterBtn" type="button">入る</button>
@@ -754,12 +754,10 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="hero-track" id="heroTrack">
 <a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
 <img src="assets/parts/mirrativ-emomo.webp" alt="" draggable="false" loading="lazy" decoding="async">
-<span class="hero-live-badge">毎晩22時 配信</span>
 <span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener" aria-label="ゲーム：うさぎ、ゴリラを殴る。3D">
 <img src="assets/parts/hero-usagori-real.webp" alt="" draggable="false">
-<span class="hero-new">NEW</span>
 <span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">うさぎ、ゴリラを殴る。3D</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
@@ -873,10 +871,9 @@ transition:transform var(--t-press) var(--ease-out);
 <a class="card card-first" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
 <div class="face f-live">
 <img src="assets/parts/mirrativ-emomo-banner.webp" alt="八乙女さきやのエモモ（Mirrativ公式から取得・2026.11.23時点）" draggable="false" style="object-position:center top">
-<span class="hero-live-badge">毎晩22時 配信</span>
 <span class="play" aria-hidden="true"></span>
 </div>
-<div class="meta"><span class="tag pink">配信</span><span>Mirrativ｜八乙女さきや</span><span class="mirrativ-updated">カード 2026.11.23時点</span><span class="go">会いにいく →</span></div>
+<div class="meta"><span class="tag pink">配信</span><span>Mirrativ｜八乙女さきや</span><span class="mirrativ-updated">2026.11.23</span><span class="go">会いにいく →</span></div>
 </a>
 <div class="pick-label">まず見て</div>
 <a class="card card-first" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
