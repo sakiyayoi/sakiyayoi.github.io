@@ -759,7 +759,6 @@ transition:transform var(--t-press) var(--ease-out);
 .reqcard .r-done{font-size:12px;color:#d81b74;font-weight:700;margin-left:8px}
 
 /* ===== DINER SAKIYA design system (dn-) : panel-first build ===== */
-@layer dn {
 .dn-root{
 --dn-pink:#FF2E88; --dn-pink-deep:#D81B74; --dn-pink-soft:#FFD9E8; --dn-cream:#FFF6EC;
 --dn-mint:#9FE3CF; --dn-chrome:#C9D2D9; --dn-ink:#33262E; --dn-sub:#8A7F92; --dn-paper:#FFFAFC;
@@ -799,7 +798,6 @@ isolation:isolate; line-height:1.7;
 .dn-checker{height:10px; border-radius:5px; margin:var(--dn-s4) 0;
 background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0/20px 20px}
 @media (prefers-reduced-motion: reduce){ .dn-root *{animation:none!important; transition:none!important} }
-}
 </style>
 </head>
 <body>
@@ -1443,13 +1441,13 @@ goIdle(ts, 1200, 2600);
 }
 /* レア出現：イケボ（訪問中1回まで） */
 var ikeboAudio = null;
-window.IKEBO = {played:false, src:'assets/voice/ikebo.mp3'};
+window.IKEBO = {played:false, src:'../assets/voice/ikebo.mp3'};
 function startIkebo(ts){
 C.state = 'ikebo'; C.ikeboDone = true; C.flip = 1; C.dash = false;
 setSheet('wave'); setFrame(1);
 charaEl.classList.add('ikebo');
 if (ikeboAudio){ ikeboAudio.pause();}
-ikeboAudio = new Audio('assets/voice/ikebo.mp3');
+ikeboAudio = new Audio('../assets/voice/ikebo.mp3');
 window.IKEBO.played = true;
 var p = ikeboAudio.play();
 if (p && p.catch) p.catch(function(){});
@@ -1782,12 +1780,12 @@ hintRings();
 
 /* ---------- スンスン：押すと喋る ---------- */
 var sunsunBtn = document.getElementById('sunsun');
-var VOICES = ['assets/voice/sun-1.mp3','assets/voice/sun-2.mp3','assets/voice/sun-3.mp3','assets/voice/sun-4.mp3'];
+var VOICES = ['../assets/voice/sun-1.mp3','../assets/voice/sun-2.mp3','../assets/voice/sun-3.mp3','../assets/voice/sun-4.mp3'];
 /* 声クリップの文そのままを吹き出しに出す（VOICES と同じ順） */
 var SUN_LINES = ['僕の名前はやトやです。よろしくお願いします。','今日はみんなに会えてとっても嬉しいです','バンボ、ボンボビ。','あの、皆さんこんばんは。にゃめやです。'];
 var SUN_RARE_LINE = '僕の名前はや乙女咲やです。よろしくお願いします。';
 var sunAudio = null, lastVoice = -1;
-var RARE_VOICE = 'assets/voice/sun-rare.mp3';
+var RARE_VOICE = '../assets/voice/sun-rare.mp3';
 window.SUNSUN = {playing:false, src:'', el:null, rare:false};
 function stopSun(){
 window.SUNSUN.playing = false;
