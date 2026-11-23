@@ -98,7 +98,7 @@ text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(
 .room-name b{color:var(--ink)}
 
 /* ---------- ヒーロースライダー（壁のポスター） ---------- */
-#hero{position:absolute;left:17%;top:12%;width:55%;z-index:2}
+#hero{position:absolute;left:12%;top:11%;width:67%;z-index:2}
 .hero-frame{
 position:relative;background:#fff;padding:5px;border-radius:12px;
 box-shadow:0 6px 18px rgba(43,36,48,.10);overflow:hidden;
@@ -113,7 +113,7 @@ background:rgba(255,255,255,.93);border-radius:99px;padding:3px 12px 3px 3px;
 box-shadow:0 2px 8px rgba(43,36,48,.18);
 }
 .hero-cap .tag{font-size:11px}
-.hero-cap .hero-ttl{font-size:13px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.hero-cap .hero-ttl{font-size:14.5px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
 .hero-arrow{
 position:absolute;top:50%;transform:translateY(-50%);z-index:3;
 width:44px;height:44px;display:flex;align-items:center;justify-content:center;
@@ -542,6 +542,9 @@ height:104px;position:relative;display:flex;align-items:flex-end;padding:12px;
 color:#fff;overflow:hidden;
 }
 .card .face svg{position:absolute;right:10px;top:10px;opacity:.9}
+.card.imgcard .face{height:158px;padding:0;align-items:stretch}
+.card.imgcard .face img.cardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card.imgcard .face .ttl{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(30,16,44,.72));font-size:18px}
 .card .face .ttl{font-size:19px;font-weight:800;letter-spacing:.04em;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
 .card .meta{display:flex;align-items:center;gap:8px;padding:10px 12px}
 .tag{
@@ -584,10 +587,12 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 .bonus-stat .l{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--sub);margin-top:3px}
 .bonus-stamps{display:flex;gap:6px;margin:10px 0 14px}
 .bonus-stamp{flex:1;aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--sub);background:#fff}
-.bonus-stamp.got{border-style:solid;border-color:#ffd0e4;background:#fff0f7;color:#d81b74}
+.bonus-stamp.got{border-style:solid;border-color:#ffd0e4;background:linear-gradient(160deg,#ffe9f4,#ffd9ec);color:#d81b74;position:relative}
+.bonus-stamp .getlbl{position:absolute;top:-7px;right:-4px;background:var(--pink);color:#fff;font-size:8.5px;font-weight:800;border-radius:99px;padding:2px 6px;transform:rotate(10deg);box-shadow:0 2px 6px rgba(255,46,136,.4)}
 .bonus-stamp.today{border-color:var(--pink)}
 .bonus-stamp .s-emoji{font-size:18px;line-height:1.2}
-.bonus-claim{display:block;width:100%;text-align:center;background:var(--pink);color:#fff;font-weight:800;font-size:16px;letter-spacing:.06em;border-radius:999px;padding:14px 16px;cursor:pointer;transition:transform var(--t-press) var(--ease-out)}
+.bonus-claim{display:block;width:100%;text-align:center;background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff;font-weight:800;font-size:16.5px;letter-spacing:.06em;border-radius:999px;padding:14px 16px;cursor:pointer;box-shadow:0 6px 18px rgba(255,46,136,.4);transition:transform var(--t-press) var(--ease-out)}
+.bonus-claim:disabled{background:#e9dfe8;color:#a08b9d;box-shadow:none}
 .bonus-claim:active{transform:scale(.97)}
 .bonus-claim[disabled]{background:#e8e0ea;color:var(--sub);cursor:default;transform:none}
 .bonus-reward{margin-top:14px;border:1.5px solid #ffd0e4;background:#fff6fa;border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.7;display:none}
@@ -899,36 +904,36 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>ゲーム機 ｜ <b>あそぶ</b></h2>
-<a class="card" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
-<div class="face f-usagori">
+<a class="card imgcard" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
+<div class="face f-usagori"><img class="cardimg" src="assets/parts/card-usagori.webp" alt="" draggable="false" loading="lazy">
 <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="13" cy="20" r="6" fill="#fff"/><path d="M10 15 q-2-7 1-9 q3 1 2 7 M16 15 q1-7 4-7 q2 2-1 8" fill="#fff"/></svg>
 <span class="ttl">うさぎ、ゴリラを殴る。3D</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>巨大ゴリラと75秒ボス戦</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
 </a>
-<a class="card" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
-<div class="face f-yu">
+<a class="card imgcard" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
+<div class="face f-yu"><img class="cardimg" src="assets/parts/card-yukagen.webp" alt="" draggable="false" loading="lazy">
 <svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 24 q5-4 10 0 t10 0 t6 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 16 q2-5 5-5 M19 13 q3-3 6-1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/></svg>
 <span class="ttl">ちょうどいい湯かげん</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>お湯の温度を合わせる</span><span class="go">あそぶ →</span></div>
 </a>
-<a class="card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
-<div class="face f-kani">
+<a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<div class="face f-kani"><img class="cardimg" src="assets/parts/card-kani.webp" alt="" draggable="false" loading="lazy">
 <svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
 <span class="ttl">カニ飛ばし</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>カニをぶっ飛ばす</span><span class="go">あそぶ →</span></div>
 </a>
-<a class="card" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
-<div class="face f-ebi">
+<a class="card imgcard" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
+<div class="face f-ebi"><img class="cardimg" src="assets/parts/work-ebikani.webp" alt="" draggable="false" loading="lazy">
 <svg width="34" height="34" viewBox="0 0 34 34"><text x="17" y="25" font-size="21" font-weight="800" fill="#fff" text-anchor="middle">?</text></svg>
 <span class="ttl">EBI KANI?</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>エビかカニか</span><span class="go">あそぶ →</span></div>
 </a>
-<a class="card" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
-<div class="face f-fairy">
+<a class="card imgcard" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
+<div class="face f-fairy"><img class="cardimg" src="assets/parts/card-fairytale.webp" alt="" draggable="false" loading="lazy">
 <svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 4 l2.5 7.5 L27 14 l-7.5 2.5 L17 24 l-2.5-7.5 L7 14 l7.5-2.5 Z" fill="#fff"/></svg>
 <span class="ttl">童話キャラ16タイプ診断</span>
 </div>
@@ -963,8 +968,8 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>机 ｜ <b>制作机</b></h2>
 <div class="desk-sec">いま作ってるもの</div>
-<a class="card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
-<div class="face f-kani">
+<a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<div class="face f-kani"><img class="cardimg" src="assets/parts/card-kani.webp" alt="" draggable="false" loading="lazy">
 <svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
 <span class="ttl">カニ飛ばし</span>
 </div>
@@ -2126,9 +2131,9 @@ function bonusRender(){
   document.getElementById('bonusPoints').textContent=st.points;
   document.getElementById('bonusTotal').textContent=st.total;
   var wrap=document.getElementById('bonusStamps'); var html='';
-  for(var i=6;i>=0;i--){ var d=new Date(); d.setDate(d.getDate()-i); var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); var got=st.days.indexOf(ds)>=0; html+='<div class="bonus-stamp'+(got?' got':'')+(i===0?' today':'')+'"><span class="s-emoji">'+(got?'★':'・')+'</span>'+(d.getMonth()+1)+'/'+d.getDate()+'</div>'; }
+  for(var i=6;i>=0;i--){ var d=new Date(); d.setDate(d.getDate()-i); var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); var got=st.days.indexOf(ds)>=0; html+='<div class="bonus-stamp'+(got?' got':'')+(i===0?' today':'')+'"><span class="s-emoji">'+(got?'🎁':'・')+'</span>'+(d.getMonth()+1)+'/'+d.getDate()+(got?'<span class="getlbl">GET!</span>':'')+'</div>'; }
   wrap.innerHTML=html;
-  var btn=document.getElementById('bonusClaim'); btn.disabled=claimed; btn.textContent=claimed?'受取済み｜明日また来てね':'ボーナスを受け取る';
+  var btn=document.getElementById('bonusClaim'); btn.disabled=claimed; btn.textContent=claimed?'受取済み｜明日また来てね':'🎁 ボーナスを受け取る！';
   var bb=document.getElementById('bonusBtn'); if(bb) bb.classList.toggle('claimed', claimed);
 }
 document.getElementById('bonusClaim').addEventListener('click', function(){
