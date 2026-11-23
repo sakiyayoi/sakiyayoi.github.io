@@ -2316,6 +2316,10 @@ syncFromHash();
 </script>
 
 <script>
+/* dn: 週間グリッドの今日マーカー（移植時に本体へ移す） */
+(function(){ var wl=document.getElementById('weekList'); if(!wl) return; var idx=(new Date().getDay()+6)%7; if(wl.children[idx]) wl.children[idx].classList.add('today'); })();
+</script>
+<script>
 /* preview-only: ?panel=tv などで実寸検証用に自動で開く */
 (function(){ var pn=new URLSearchParams(location.search).get('panel'); if(!pn) return;
 var op=document.getElementById('opening'); if(op) op.remove();
