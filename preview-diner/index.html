@@ -2309,5 +2309,14 @@ if (location.hash || params.get('enter') === '1') enter();
 syncFromHash();
 })();
 </script>
+
+<script>
+/* preview-only: ?panel=tv などで実寸検証用に自動で開く */
+(function(){ var pn=new URLSearchParams(location.search).get('panel'); if(!pn) return;
+var op=document.getElementById('opening'); if(op) op.remove();
+try{ enter(); }catch(e){}
+setTimeout(function(){ var b=document.querySelector('[data-panel="'+pn+'"]'); if(b) b.click(); }, 1000);
+})();
+</script>
 </body>
 </html>
