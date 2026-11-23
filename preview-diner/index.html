@@ -2322,12 +2322,15 @@ setTimeout(function(){ var b=document.querySelector('[data-panel="'+pn+'"]'); if
 <script>
 /* probe (temporary) */
 window.addEventListener('load', function(){ setTimeout(function(){
-  var bad = [];
-  document.querySelectorAll('#panel-tv *').forEach(function(el){
+  var panel = document.getElementById('panel-tv');
+  var pr = panel.getBoundingClientRect();
+  var items = [];
+  document.querySelectorAll('body *').forEach(function(el){
     var r = el.getBoundingClientRect();
-    if (r.right > 391 || r.width > 392) bad.push(el.tagName + '.' + (el.className.baseVal!==undefined?'svg':el.className) + ' w=' + Math.round(r.width) + ' r=' + Math.round(r.right));
+    if (r.width > 392) items.push(el.tagName + '.' + String(el.className).slice(0,24) + ' w=' + Math.round(r.width) + ' l=' + Math.round(r.left));
   });
-  document.title = 'PROBE[' + bad.slice(0,6).join(' | ') + ']';
+  items.sort(); 
+  document.title = 'PROBE[panel w=' + Math.round(pr.width) + ' l=' + Math.round(pr.left) + ' docSW=' + document.documentElement.scrollWidth + ' win=' + window.innerWidth + ' :: ' + items.slice(0,5).join(' | ') + ']';
 }, 2500); });
 </script>
 </body>
