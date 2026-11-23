@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Quicksand:wght@500;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>八乙女さきや</title>
+<meta name="description" content="八乙女さきやの公式サイト。ミラティブ配信者。YouTube動画・ゲーム・曲を全部自分で作る。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="八乙女さきや">
+<meta property="og:title" content="八乙女さきや｜公式サイト">
+<meta property="og:description" content="八乙女さきやの公式サイト。ミラティブ配信者。YouTube動画・ゲーム・曲を全部自分で作る。">
+<meta property="og:url" content="https://sakiyayoi.github.io/">
+<meta property="og:image" content="https://sakiyayoi.github.io/assets/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="八乙女さきや ミニキャラ">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="八乙女さきや｜公式サイト">
+<meta name="twitter:description" content="八乙女さきやの公式サイト。ミラティブ配信者。YouTube動画・ゲーム・曲を全部自分で作る。">
+<meta name="twitter:image" content="https://sakiyayoi.github.io/assets/og-card.jpg">
+<meta name="theme-color" content="#fffdfd">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff2e88'/%3E%3C/svg%3E">
+<style>
+:root{
+--pink:#ff2e88;
+--purple:#8b3dff;
+--ink:#2b2430;
+--sub:#8a8296;
+--paper:#fffdfd;
+--line:#f0e6ef;
+/* モーション仕様：出現=quint-out／長い出現=expo-out／画面内の移動=quart-in-out／退場=ease-exit（入口の約70%）。
+   オーバーシュート（bounce/elastic）は使わない。時間: 押下140ms／UI 240ms／パネル450ms／入室550ms */
+--ease-out:cubic-bezier(.22,1,.36,1);
+--ease-expo:cubic-bezier(.16,1,.3,1);
+--ease-inout:cubic-bezier(.76,0,.24,1);
+--ease-exit:cubic-bezier(.55,.06,.68,.19);
+--t-press:.14s;
+--t-ui:.24s;
+--t-panel:.45s;
+--t-enter:.55s;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+font-family:"Hiragino Maru Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+background:var(--paper);
+color:var(--ink);
+overflow:hidden;
+}
+button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
+a{color:inherit}
+
+/* ---------- 玄関 ---------- */
+#gate{
+position:fixed;inset:0;z-index:30;
+display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+background:var(--paper);
+transition:opacity var(--t-enter) var(--ease-expo), transform var(--t-enter) var(--ease-expo);
+}
+#gate.gone{opacity:0;transform:scale(1.06);pointer-events:none}
+#gate .name{font-size:15px;letter-spacing:.55em;color:var(--sub);text-indent:.55em;font-weight:400}
+#gate .name b{display:block;font-size:34px;letter-spacing:.14em;color:var(--ink);font-weight:800;margin-top:10px;text-indent:.14em}
+#gate .name b .p{color:var(--pink)}
+#gate .g-info{display:flex;flex-direction:column;align-items:center;gap:13px}
+#gate .g-role{font-size:13px;font-weight:800;letter-spacing:.34em;text-indent:.34em;color:var(--ink)}
+#gate .g-chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
+#gate .g-chips span{font-size:11.5px;font-weight:700;letter-spacing:.08em;color:var(--sub);border:1.5px solid var(--line);border-radius:99px;padding:4px 11px}
+#gate .g-live{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;letter-spacing:.1em;color:var(--pink)}
+#gate .g-live .dot{width:8px;height:8px;border-radius:50%;background:var(--pink);flex:none}
+#enterBtn{
+min-width:168px;min-height:56px;padding:14px 34px;
+border-radius:999px;border:2px solid var(--ink);
+font-size:17px;font-weight:700;letter-spacing:.3em;text-indent:.3em;
+transition:transform var(--t-press) var(--ease-out), background var(--t-ui) ease, color var(--t-ui) ease;
+}
+#enterBtn:active{transform:scale(.94);background:var(--pink);border-color:var(--pink);color:#fff}
+
+/* ---------- 部屋 ---------- */
+#room{
+position:fixed;inset:0;
+opacity:0;transform:scale(.965);
+transition:opacity var(--t-enter) var(--ease-expo), transform var(--t-enter) var(--ease-expo);
+pointer-events:none;
+}
+#room.on{opacity:1;transform:scale(1);pointer-events:auto}
+#stage{
+position:absolute;left:50%;top:50%;
+transform:translate(-50%,-50%);
+width:min(100vw, calc(100dvh * 0.7544));
+aspect-ratio:1376 / 1824;
+background:url('../assets/parts/room-bg.webp') center / 100% 100% no-repeat;
+}
+.room-name{
+position:absolute;top:3.2%;left:0;right:0;
+text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(--sub);
+}
+.room-name b{color:var(--ink)}
+
+/* ---------- ヒーロースライダー（壁のポスター） ---------- */
+#hero{position:absolute;left:12%;top:11%;width:67%;z-index:2}
+.hero-frame{
+position:relative;background:#fff;padding:5px;border-radius:12px;
+box-shadow:0 6px 18px rgba(43,36,48,.10);overflow:hidden;
+}
+.hero-view{overflow:hidden;border-radius:10px;touch-action:pan-y}
+.hero-track{display:flex;transition:transform .6s var(--ease-inout)}
+.hero-slide{position:relative;flex:0 0 100%;aspect-ratio:8/5;display:block;background:#f3eefc;-webkit-user-drag:none}
+.hero-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.hero-cap{
+position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:7px;
+background:rgba(255,255,255,.93);border-radius:99px;padding:3px 12px 3px 3px;
+box-shadow:0 2px 8px rgba(43,36,48,.18);
+}
+.hero-cap .tag{font-size:11px}
+.hero-cap .hero-ttl{font-size:14.5px;font-weight:800;letter-spacing:.03em;white-space:nowrap}
+.hero-arrow{
+position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+}
+.hero-arrow::after{
+content:'';position:absolute;width:34px;height:34px;border-radius:50%;
+background:rgba(255,255,255,.88);box-shadow:0 2px 8px rgba(43,36,48,.22);
+}
+.hero-arrow span{position:relative;z-index:1;font-size:21px;font-weight:800;color:var(--ink);line-height:1;margin-top:-2px}
+.hero-arrow.prev{left:0}
+.hero-arrow.next{right:0}
+.hero-arrow:active::after{background:var(--pink)}
+.hero-arrow:active span{color:#fff}
+.hero-dots{display:flex;justify-content:center;margin-top:0}
+.hero-dots button{width:32px;height:44px;display:flex;align-items:center;justify-content:center}
+.hero-dots button::after{
+content:'';width:7px;height:7px;border-radius:99px;background:#e0d0ea;
+transition:width var(--t-ui) var(--ease-out), background var(--t-ui) ease;
+}
+.hero-dots button.on::after{width:17px;background:var(--pink)}
+
+.obj{
+position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;
+padding:0;border-radius:20px;
+transition:transform var(--t-ui) var(--ease-out);
+}
+.obj:active{transform:scale(.94)}
+.obj::after,#chara::after{content:'';position:absolute;inset:-10px}
+.obj img{display:block;width:100%;pointer-events:none}
+.desk-sec{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin:2px 0 10px}
+.desk-sec.next{margin-top:18px}
+/* 輪郭線：常時は消えている。ツアー/ハイライトの間だけ柔らかく光り、背景タップのヒントで全体が短く光る */
+.obj .ring{
+position:absolute;inset:0;border-radius:20px;border:1.5px solid rgba(255,46,136,.55);
+opacity:0;pointer-events:none;
+}
+.obj.highlight .ring{animation:softPulse 1.2s var(--ease-out) 3}
+.obj.tour .ring{animation:softPulse 1.1s var(--ease-out) 1}
+@keyframes softPulse{0%{opacity:0;transform:scale(.985)}35%{opacity:.5}100%{opacity:0;transform:scale(1.012)}}
+#stage.hint .ring{animation:hintPulse .9s var(--ease-out) 1}
+@keyframes hintPulse{0%{opacity:0}30%{opacity:.3}100%{opacity:0}}
+
+#obj-tv{left:9.8%;bottom:19.9%;width:20.2%}
+#obj-game{left:19.4%;bottom:14.9%;width:19.5%}
+#obj-desk{left:38.8%;bottom:19.1%;width:31%}
+#obj-speaker{left:59.7%;bottom:31.5%;width:7.9%;z-index:3}
+#obj-post{left:2.6%;bottom:2.4%;width:8.6%;z-index:2}
+
+#plant{
+position:absolute;left:34.2%;bottom:22.3%;width:5.3%;
+pointer-events:none;z-index:1;
+}
+#plant img{display:block;width:100%}
+
+#chara{
+position:absolute;left:48%;bottom:9%;
+width:14.5%;padding:0;border-radius:22px;z-index:4;
+pointer-events:none;
+}
+#chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('../assets/parts/chara-idle.webp');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;transform-origin:50% 100%}
+#chara .notes{position:absolute;left:0;right:0;top:-13%;height:0;opacity:0;transition:opacity .45s var(--ease-out);pointer-events:none}
+#chara.music .notes{opacity:1}
+#chara .notes span{position:absolute;bottom:0;font-weight:800;line-height:1;animation:noteFloat 2.6s linear infinite}
+#chara .notes span:nth-child(1){left:14%;font-size:17px;color:var(--pink)}
+#chara .notes span:nth-child(2){left:52%;font-size:21px;color:var(--purple);animation-delay:.75s}
+#chara .notes span:nth-child(3){left:80%;font-size:15px;color:var(--pink);animation-delay:1.5s}
+#chara .hearts{position:absolute;left:0;right:0;top:-14%;height:0;opacity:0;transition:opacity .4s var(--ease-out);pointer-events:none}
+#chara.ikebo .hearts{opacity:1}
+#chara .hearts span{position:absolute;bottom:0;font-weight:800;line-height:1;color:var(--pink);animation:noteFloat 2.4s linear infinite}
+#chara .hearts span:nth-child(1){left:10%;font-size:16px}
+#chara .hearts span:nth-child(2){left:48%;font-size:21px;animation-delay:.7s}
+#chara .hearts span:nth-child(3){left:82%;font-size:14px;animation-delay:1.3s}
+@keyframes noteFloat{0%{transform:translate(0,0) rotate(-6deg) scale(.85);opacity:0}16%{opacity:1}55%{transform:translate(3px,-26px) rotate(4deg) scale(1)}100%{transform:translate(-2px,-50px) rotate(10deg) scale(1);opacity:0}}
+#chara .ring{position:absolute;inset:0;border-radius:22px;border:1.5px solid rgba(139,61,255,.55);opacity:0;pointer-events:none}
+#chara.highlight .ring{animation:softPulse 1.2s var(--ease-out) 3}
+#chara.tour .ring{animation:softPulse 1.1s var(--ease-out) 1}
+
+#sunsun{
+position:absolute;left:75.5%;bottom:2.5%;
+width:11%;padding:0;border-radius:20px;z-index:3;
+transform-origin:50% 100%;
+transition:transform var(--t-ui) var(--ease-out);
+}
+#sunsun:active{transform:scale(.94)}
+#sunsun img{width:100%;display:block;pointer-events:none}
+#sunsun::after{content:'';position:absolute;inset:-6px}
+/* ゾーン解決で転送されたタップの押し感（当たり判定の再設計） */
+.obj.zbp,#sunsun.zbp{transform:scale(.94)}
+/* スンスンのたまの動き：普段は静か。たまに傾く・揺れる・小さく跳ねる（鈍く、控えめに） */
+#sunsun.idle-tilt{animation:sunTilt 2.6s var(--ease-inout) 1}
+@keyframes sunTilt{0%,100%{transform:rotate(0deg)}30%,58%{transform:rotate(-2.4deg)}}
+#sunsun.idle-sway{animation:sunSway 3.4s ease-in-out 1}
+@keyframes sunSway{0%,100%{transform:rotate(0deg)}28%{transform:rotate(1.5deg)}64%{transform:rotate(-1.1deg)}}
+#sunsun.idle-hop{animation:sunHop .95s var(--ease-out) 1}
+@keyframes sunHop{0%,100%{transform:translateY(0) scale(1,1)}14%{transform:translateY(0) scale(1.04,.94)}42%{transform:translateY(-7%) scale(.99,1.02)}72%{transform:translateY(0) scale(1.03,.96)}88%{transform:translateY(0) scale(.995,1.01)}}
+#sunsun.talking.rare{animation:squishBig .5s ease-in-out infinite}
+@keyframes squishBig{0%,100%{transform:scale(1,1)}32%{transform:scale(1.11,.86)}64%{transform:scale(.95,1.06)}}
+
+/* ---------- 吹き出し：たまに短く出て、余韻を持って消える ---------- */
+.bubble{
+position:absolute;left:50%;bottom:calc(100% + 9px);z-index:6;
+transform:translateX(-50%) translateY(5px) scale(.92);
+background:#fff;border:1.5px solid var(--line);border-radius:14px;
+box-shadow:0 4px 14px rgba(43,36,48,.14);
+padding:6px 11px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--ink);
+white-space:nowrap;opacity:0;pointer-events:none;
+transition:opacity .2s var(--ease-exit), transform .2s var(--ease-exit);
+}
+.bubble.show{
+opacity:1;transform:translateX(-50%) translateY(0) scale(1);
+transition:opacity .26s var(--ease-out), transform .26s var(--ease-out);
+}
+.bubble::after{
+content:'';position:absolute;left:50%;bottom:-5px;width:9px;height:9px;
+transform:translateX(-50%) rotate(45deg);
+background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);
+}
+/* スンスンは右端寄り＆セリフが長いので、折り返し可にして幅を抑える */
+#sunsun .bubble{font-size:12px;white-space:normal;width:max-content;max-width:150px;text-align:center;line-height:1.5}
+/* テレビは左端寄りなので、ツアー案内の吹き出しも折り返し可にして幅を抑える */
+#obj-tv .bubble{font-size:12px;white-space:normal;width:max-content;max-width:132px;text-align:center;line-height:1.5}
+
+/* ---------- 床タップの印：歩行先に小さな輪が出て消える ---------- */
+#tapmark{
+position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;z-index:5;
+border:2px solid rgba(255,46,136,.6);border-radius:50%;
+opacity:0;pointer-events:none;
+}
+#tapmark.go{animation:tapRing .55s var(--ease-out) 1}
+@keyframes tapRing{0%{opacity:.85;transform:scale(.35)}100%{opacity:0;transform:scale(1.15)}}
+
+/* ---------- 右のドア（作品置き場へ） ---------- */
+#obj-door{left:81.4%;bottom:5.2%;width:15.1%;aspect-ratio:623/2783;z-index:2;perspective:520px}
+#obj-door .door-glow{
+position:absolute;inset:0;
+clip-path:polygon(0 0,100% 35.3%,100% 100%,0 64.7%);
+background:linear-gradient(160deg,#fff7da,#ffd9ec);
+opacity:0;transition:opacity .5s var(--ease-out);pointer-events:none;
+}
+#obj-door .door-leafwrap{
+position:absolute;inset:0;pointer-events:none;
+transform-origin:0% 32%;
+transition:transform .85s var(--ease-out);
+}
+#obj-door .door-leafwrap img{width:100%;display:block}
+#obj-door.opening .door-glow{opacity:1}
+#obj-door.opening .door-leafwrap{transform:rotateY(-72deg)}
+#obj-door.tour .door-leafwrap{animation:doorPulse 1.1s var(--ease-out) 1}
+#obj-door.highlight .door-leafwrap{animation:doorPulse 1.2s var(--ease-out) 3}
+@keyframes doorPulse{0%,100%{filter:drop-shadow(0 0 0 rgba(255,46,136,0))}50%{filter:drop-shadow(0 0 8px rgba(255,46,136,.45))}}
+.door-glint{
+position:absolute;left:86%;top:65%;margin:-7px 0 0 -7px;
+font-size:13px;line-height:1;color:#ffcf4d;opacity:0;pointer-events:none;
+animation:glintPulse 9.5s linear infinite;
+}
+@keyframes glintPulse{0%,90%,100%{opacity:0;transform:scale(.6) rotate(0deg)}94%{opacity:.75;transform:scale(1) rotate(24deg)}97%{opacity:.3}}
+
+/* ---------- 物のアニメーション（部屋が生きてる気配） ---------- */
+/* テレビ：画面に小さな映像が映っている（色と形がゆっくり変わるミニシーン＋走査線＋光の滲み）。
+   画面の位置は tv.webp 実測：左17.5%／上12.7%／幅66%／高さ48% の内側に合わせる。明滅はさせない */
+#obj-tv .tv-screen{
+position:absolute;left:18%;top:13.4%;width:65%;height:47.2%;
+border-radius:11% / 13%;overflow:hidden;pointer-events:none;z-index:1;
+background:#232733;
+box-shadow:inset 0 0 14px rgba(0,0,0,.45), 0 0 12px rgba(150,165,255,.13);
+}
+#obj-tv .tv-scene{position:absolute;inset:0;opacity:0;transition:opacity .45s var(--ease-out);animation:tvGlow 7.5s ease-in-out infinite}
+#obj-tv .tv-scene.on{opacity:1}
+@keyframes tvGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.07)}}
+#obj-tv .tv-scene::before,#obj-tv .tv-scene::after{
+content:'';position:absolute;border-radius:50%;filter:blur(2px);
+}
+#obj-tv .tv-scene::before{
+width:58%;height:58%;left:-8%;top:4%;
+background:radial-gradient(circle at 40% 40%, var(--b1), transparent 70%);
+animation:tvDrift 12s ease-in-out infinite alternate;
+}
+#obj-tv .tv-scene::after{
+width:50%;height:50%;right:-6%;bottom:0;
+background:radial-gradient(circle at 60% 60%, var(--b2), transparent 70%);
+animation:tvDrift 15s ease-in-out infinite alternate-reverse;
+}
+@keyframes tvDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(9%,6%) scale(1.12)}}
+#obj-tv .sc-a{--b1:rgba(255,110,180,.85);--b2:rgba(150,110,255,.8);background:linear-gradient(155deg,#43305e,#6d3a72)}
+#obj-tv .sc-b{--b1:rgba(140,220,255,.85);--b2:rgba(255,230,150,.75);background:linear-gradient(#2e6395 58%,#2c5240 58%)}
+#obj-tv .sc-c{--b1:rgba(255,190,120,.9);--b2:rgba(255,110,130,.75);background:linear-gradient(165deg,#8a4258,#cf743f)}
+#obj-tv .tv-lines{
+position:absolute;inset:0;pointer-events:none;opacity:.5;
+background:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 1px, transparent 1px 3px);
+}
+#obj-tv .tv-shine{
+position:absolute;inset:0;pointer-events:none;
+background:linear-gradient(115deg, rgba(255,255,255,.15), transparent 42%);
+}
+/* ゲーム機：電源ランプの呼吸（点滅でなく、ゆっくり明るさが揺れる） */
+#obj-game .lamp{
+position:absolute;left:43%;top:40%;width:7px;height:7px;border-radius:50%;
+background:#ff4d6d;box-shadow:0 0 7px 2px rgba(255,77,109,.55);
+animation:lampBreathe 3.6s ease-in-out infinite;pointer-events:none;z-index:2;
+}
+@keyframes lampBreathe{0%,100%{opacity:.55}50%{opacity:1}}
+/* スピーカー：本体は揺らさない。音符だけが、たまにゆっくり浮かんでは消える */
+#obj-speaker .notes{position:absolute;left:0;right:0;top:-40%;height:0;opacity:0;animation:spkNotes 12s linear infinite;pointer-events:none;z-index:4}
+@keyframes spkNotes{0%,76%{opacity:0}84%,93%{opacity:1}100%{opacity:0}}
+#obj-speaker .notes span{position:absolute;bottom:0;font-weight:800;line-height:1;animation:noteFloat 2.6s linear infinite}
+#obj-speaker .notes span:nth-child(1){left:16%;font-size:12px;color:var(--pink)}
+#obj-speaker .notes span:nth-child(2){left:56%;font-size:15px;color:var(--purple);animation-delay:.8s}
+/* 観葉植物：風のような揺れ（強弱のあるガスト型）。机は揺らさない（家具は静かに置く） */
+#plant img{animation:leafSway 7.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes leafSway{0%,100%{transform:rotate(-1.2deg)}32%{transform:rotate(.8deg)}52%{transform:rotate(1.25deg)}74%{transform:rotate(-.5deg)}}
+#plant.tapwiggle{animation:plantWiggle .45s var(--ease-out)}
+@keyframes plantWiggle{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-2.2deg)}65%{transform:rotate(1.8deg)}}
+#plant .flower{
+position:absolute;left:50%;top:9%;width:34%;max-width:30px;
+transform:translate(-50%,0) scale(0) rotate(-14deg);transition:transform .55s var(--ease-expo);
+pointer-events:none;
+}
+#plant.bloomed .flower{transform:translate(-50%,0) scale(1) rotate(0deg)}
+#plantHit{
+position:absolute;left:33.9%;bottom:21.7%;width:6.9%;height:11.2%;
+z-index:2;border-radius:16px;background:none;
+}
+#plantHit::after{content:'';position:absolute;inset:-8px -14px}
+/* ヒーロー：光の反射が流れる */
+.hero-frame::after{
+content:'';position:absolute;top:-10%;bottom:-10%;left:-32%;width:34%;z-index:2;
+background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);
+transform:skewX(-18deg);animation:heroShine 12s linear infinite;pointer-events:none;
+}
+@keyframes heroShine{0%,74%{left:-32%}94%,100%{left:114%}}
+
+/* ---------- 作品置き場 ---------- */
+#storageView{
+position:fixed;inset:0;z-index:26;background:var(--paper);
+opacity:0;visibility:hidden;transition:opacity var(--t-enter) var(--ease-expo), visibility 0s linear var(--t-enter);
+}
+#storageView.on{opacity:1;visibility:visible;transition:opacity var(--t-enter) var(--ease-expo), visibility 0s}
+#storageStage{
+position:absolute;left:50%;top:50%;
+transform:translate(-50%,-50%);
+width:min(100vw, calc(100dvh * 0.7544));
+aspect-ratio:1376 / 1824;
+background:linear-gradient(to bottom,#fdfbf9 0,#fdfbf9 75.7%,#d8ccd4 75.7%,#d8ccd4 75.95%,#f6eae9 75.95%,#f6eae9 100%);
+}
+.storage-name{
+position:absolute;top:3.2%;left:0;right:0;
+text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(--sub);
+}
+.storage-name b{color:var(--ink)}
+#storageTabs{
+position:absolute;top:7.4%;left:0;right:0;z-index:2;
+display:flex;justify-content:center;gap:7px;padding:0 4%;
+}
+#storageTabs button{
+position:relative;
+font:inherit;font-size:12px;font-weight:800;letter-spacing:.08em;
+padding:9px 14px;border-radius:999px;cursor:pointer;
+background:#fff;color:var(--ink);border:2px solid rgba(43,36,48,.22);
+transition:background var(--t-ui) ease,color var(--t-ui) ease,border-color var(--t-ui) ease,transform var(--t-press) var(--ease-out);
+}
+/* タブの当たりを44px相当まで広げる（見た目はそのまま） */
+#storageTabs button::after{content:'';position:absolute;inset:-5px -3px}
+#storageTabs button:active{transform:scale(.94)}
+#storageTabs button.on{background:var(--pink);border-color:var(--pink);color:#fff}
+#shelves{
+position:absolute;left:6%;right:6%;top:13.8%;bottom:26.5%;
+overflow-y:auto;overscroll-behavior:contain;padding:10px 2px 4px;
+}
+.sec-head{
+font-size:11px;letter-spacing:.24em;color:var(--sub);font-weight:800;
+margin:2px 0 10px 2px;
+}
+.sec-head b{color:var(--pink)}
+.storage-sec{margin-bottom:9%}
+.storage-sec:last-child{margin-bottom:2%}
+.shelf{margin-bottom:8.5%}
+.storage-sec .shelf:last-child{margin-bottom:0}
+.shelf:last-child{margin-bottom:2%}
+.shelf-items{display:flex;justify-content:center;align-items:flex-end;gap:5%}
+.shelf-board{
+height:9px;border-radius:5px;margin-top:7px;
+background:linear-gradient(#e6c69c,#cfa06e);
+box-shadow:0 3px 7px rgba(43,36,48,.16);
+}
+.work{width:29%;display:block;text-decoration:none;position:relative;transition:transform var(--t-press) var(--ease-out)}
+.wlink{display:block;text-decoration:none;color:inherit;transition:transform var(--t-press) var(--ease-out)}
+.wlink:active{transform:scale(.96)}
+/* 応援カウンター：作品ごとに1つ。外部APIが落ちたら .off で静かに消える */
+.cheer{
+position:relative;min-height:40px;
+display:flex;align-items:center;justify-content:center;gap:5px;
+margin:8px auto 0;padding:5px 13px;border-radius:999px;cursor:pointer;
+border:1.5px solid rgba(255,46,136,.45);background:#fff;color:var(--pink);
+font:inherit;font-size:11.5px;font-weight:800;letter-spacing:.04em;
+transition:transform var(--t-press) var(--ease-out), background .2s ease, color .2s ease;
+}
+.cheer:active{transform:scale(.93)}
+/* 応援ボタンの当たりを44px相当まで広げる（見た目はそのまま） */
+.cheer::after{content:'';position:absolute;inset:-4px -8px}
+.cheer .c-heart{font-size:12px;line-height:1}
+.cheer .cheer-n{font-variant-numeric:tabular-nums}
+.cheer.done{background:var(--pink);border-color:var(--pink);color:#fff;cursor:default}
+.cheer.off{display:none}
+.cheer.pop{animation:cheerPop .45s var(--ease-out) 1}
+@keyframes cheerPop{0%{transform:scale(1)}40%{transform:scale(1.16)}100%{transform:scale(1)}}
+/* 棚の作品の輪郭線も部屋と同じ扱い：常時は消え、置き場を開いた直後だけ薄く見え、背景タップで短く光る */
+.work::after{
+content:'';position:absolute;inset:-5px;border-radius:16px;
+border:1.5px solid rgba(255,46,136,.5);opacity:0;pointer-events:none;
+transition:opacity .7s var(--ease-out);
+}
+#storageView.touring .work::after{opacity:.16}
+#storageView.hint .work::after{animation:hintPulse .9s var(--ease-out) 1}
+/* --- 作品を「物」の形に --- */
+.obj3d{
+position:relative;display:block;z-index:0;
+box-shadow:0 10px 13px -8px rgba(43,36,48,.5);
+}
+.obj3d .cover{display:block;position:relative;z-index:1;overflow:hidden}
+.obj3d .cover img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.obj3d .wface{
+aspect-ratio:4/3;position:relative;
+display:flex;align-items:flex-end;padding:9px;overflow:hidden;color:#fff;
+}
+.obj3d .wface svg{position:absolute;right:8px;top:8px;opacity:.9}
+.obj3d .wface .fttl{font-size:13px;font-weight:800;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
+/* ゲーム：パッケージケース（左に背、濃色の筐体） */
+.o-game{
+background:linear-gradient(160deg,#3d3d4e,#23232f);
+padding:6px 6px 6px 15px;border-radius:5px 9px 9px 5px;
+}
+.o-game::before{
+content:"";position:absolute;left:6px;top:5px;bottom:5px;width:3px;border-radius:2px;
+background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.12));
+}
+.o-game::after{
+content:"";position:absolute;right:2px;top:4px;bottom:4px;width:2px;border-radius:2px;
+background:rgba(255,255,255,.16);
+}
+.o-game .cover{border-radius:3px 6px 6px 3px}
+/* 曲：CDケース（盤が上から覗く、透明プラケース） */
+.o-cd{background:transparent;box-shadow:none}
+.o-cd .disc{
+position:absolute;z-index:0;top:-11%;right:-4%;width:54%;aspect-ratio:1;border-radius:50%;
+background:radial-gradient(circle,#fdfdff 0 16%,#cfcfe0 17% 30%,#f6f6fa 31% 52%,#c2c2d2 53% 74%,#ececf2 75% 100%);
+box-shadow:0 2px 6px rgba(43,36,48,.25),inset 0 0 0 2px rgba(255,255,255,.5);
+}
+.o-cd .cover{
+background:rgba(255,255,255,.92);border:1.5px solid rgba(43,36,48,.2);
+padding:4px;border-radius:7px;
+box-shadow:0 10px 13px -8px rgba(43,36,48,.5),inset 0 1px 0 rgba(255,255,255,.9);
+}
+.o-cd .cover img{border-radius:4px}
+.o-cd .cover::after{
+content:"";position:absolute;inset:0;border-radius:7px;pointer-events:none;
+background:linear-gradient(115deg,transparent 55%,rgba(255,255,255,.35) 72%,transparent 88%);
+}
+/* サイト：本・アルバム（背表紙＋小口の紙） */
+.o-book{
+background:linear-gradient(90deg,#7c4f30,#9c663d 22%,#8a5836);
+padding:6px 8px 6px 16px;border-radius:4px 8px 8px 4px;
+}
+.o-book::before{
+content:"";position:absolute;left:5px;top:5px;bottom:5px;width:2px;border-radius:2px;
+background:linear-gradient(rgba(255,215,150,.85),rgba(255,215,150,.35));
+}
+.o-book::after{
+content:"";position:absolute;right:2px;top:5px;bottom:5px;width:4px;border-radius:1px;
+background:repeating-linear-gradient(to right,#fdfaf2 0 1px,#ddd3bd 1px 2px);
+}
+.o-book .cover{border-radius:2px 5px 5px 2px}
+.work .wttl{display:block;text-align:center;font-size:12px;font-weight:800;letter-spacing:.02em;margin-top:8px;line-height:1.35}
+.work .wtag{display:flex;justify-content:center;margin-top:5px}
+#storageDoor{
+position:absolute;left:5%;bottom:24.4%;width:12.5%;z-index:2;
+padding:0;border-radius:14px;transition:transform var(--t-press) var(--ease-out);
+}
+#storageDoor:active{transform:scale(.94)}
+#storageDoor img{width:100%;display:block;pointer-events:none}
+#storageDoor::after{content:'';position:absolute;inset:-8px}
+#storageDoor .cap{
+position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);
+font-size:11px;letter-spacing:.16em;color:var(--sub);font-weight:800;white-space:nowrap;
+}
+#sunsun .ring{position:absolute;inset:0;border-radius:20px;border:1.5px solid rgba(255,46,136,.55);opacity:0;pointer-events:none}
+#sunsun.highlight .ring{animation:softPulse 1.2s var(--ease-out) 3}
+#sunsun.tour .ring{animation:softPulse 1.1s var(--ease-out) 1}
+#sunsun.talking{animation:squish .44s ease-in-out infinite}
+@keyframes squish{0%,100%{transform:scale(1,1)}32%{transform:scale(1.05,.93)}64%{transform:scale(.975,1.03)}}
+
+/* ---------- パネル ---------- */
+#scrim{
+position:fixed;inset:0;z-index:40;background:rgba(43,36,48,.16);
+opacity:0;pointer-events:none;transition:opacity var(--t-ui) var(--ease-out);
+}
+#scrim.on{opacity:1;pointer-events:auto}
+.panel{
+position:fixed;left:0;right:0;bottom:0;z-index:50;
+max-height:82dvh;overflow-y:auto;overscroll-behavior:contain;
+background:#fff;border-radius:26px 26px 0 0;
+box-shadow:0 -12px 44px rgba(139,61,255,.13);
+padding:14px 20px calc(22px + env(safe-area-inset-bottom));
+transform:translateY(105%);opacity:.4;
+transition:transform var(--t-panel) var(--ease-inout), opacity var(--t-ui) var(--ease-out), visibility 0s linear var(--t-panel);
+visibility:hidden;
+}
+.panel.on{transform:translateY(0);opacity:1;visibility:visible;transition:transform var(--t-panel) var(--ease-inout), opacity var(--t-ui) var(--ease-out), visibility 0s}
+.panel .grab{width:42px;height:5px;border-radius:99px;background:var(--line);margin:0 auto 14px}
+.panel h2{font-size:13px;letter-spacing:.3em;color:var(--sub);margin-bottom:14px;font-weight:700}
+.panel h2 b{color:var(--ink);font-size:16px;letter-spacing:.08em}
+.closeBtn{
+position:absolute;top:12px;right:12px;width:44px;height:44px;border-radius:50%;
+font-size:19px;color:var(--sub);display:flex;align-items:center;justify-content:center;
+}
+.closeBtn:active{background:var(--line)}
+
+/* 実物カード */
+.card{
+display:block;text-decoration:none;border:1.5px solid var(--line);border-radius:18px;
+overflow:hidden;margin-bottom:12px;background:#fff;
+transition:transform var(--t-press) var(--ease-out);
+}
+.card:active{transform:scale(.975)}
+.card .face{
+height:104px;position:relative;display:flex;align-items:flex-end;padding:12px;
+color:#fff;overflow:hidden;
+}
+.card .face svg{position:absolute;right:10px;top:10px;opacity:.9}
+.card.imgcard .face{height:158px;padding:0;align-items:stretch}
+.card.imgcard .face img.cardimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card.imgcard .face .ttl{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(transparent,rgba(30,16,44,.72));font-size:18px}
+.card .face .ttl{font-size:19px;font-weight:800;letter-spacing:.04em;text-shadow:0 1px 8px rgba(0,0,0,.18);z-index:1}
+.card .meta{display:flex;align-items:center;gap:8px;padding:10px 12px}
+.tag{
+font-size:11px;font-weight:800;letter-spacing:.12em;color:#fff;
+background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
+}
+.tag.pink{background:var(--pink)}
+.tag.dark{background:var(--ink)}
+.card .meta .go{margin-left:auto;font-size:12px;color:var(--sub);font-weight:700;white-space:nowrap}
+.face.f-live{background:linear-gradient(120deg,var(--pink),var(--purple))}
+.face.f-yt{background:linear-gradient(120deg,#ff5c39,#ff2e88)}
+.face.f-song{background:linear-gradient(120deg,var(--purple),#5b8cff)}
+.face.f-ai{background:linear-gradient(120deg,#ff2e88,#8b3dff)}
+.face.f-yu{background:linear-gradient(120deg,#39c2ff,#8b3dff)}
+.face.f-kani{background:linear-gradient(120deg,#ff2e88,#ff9a3d)}
+.face.f-ebi{background:linear-gradient(120deg,#8b3dff,#ff2e88)}
+.face.f-usagori{background:linear-gradient(120deg,#ff783c,#ff2e88)}
+.face.f-fairy{background:linear-gradient(120deg,#8b3dff,#39c2ff)}
+.new-badge{position:absolute;top:10px;left:10px;z-index:2;background:#ffcf4d;color:#2b2430;font-size:11px;font-weight:800;letter-spacing:.14em;border-radius:99px;padding:4px 10px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
+.card{position:relative}
+.work .new-badge{top:8px;left:8px}
+.wdate{display:block;text-align:center;font-size:11px;color:var(--sub);font-weight:700;margin-top:4px;letter-spacing:.04em}
+.storage-updated{position:absolute;top:5.6%;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.14em;color:var(--sub);font-weight:700}
+.hero-live-badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--pink);color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;border-radius:99px;padding:5px 11px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
+.mirrativ-updated{font-size:11px;color:var(--sub);font-weight:700}
+.hero-new{position:absolute;top:10px;left:10px;z-index:2;background:#ffcf4d;color:#2b2430;font-size:11px;font-weight:800;letter-spacing:.14em;border-radius:99px;padding:4px 10px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
+.meta .date{font-size:11px;color:var(--sub);font-weight:700;white-space:nowrap}
+#dock{position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px, env(safe-area-inset-bottom));z-index:24;display:flex;gap:8px;background:rgba(255,255,255,.94);border:1.5px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 24px rgba(43,36,48,.18)}
+#dock a,#dock button{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;letter-spacing:.03em;border-radius:999px;padding:10px 14px;text-decoration:none;transition:transform var(--t-press) var(--ease-out);white-space:nowrap}
+#dock a:active,#dock button:active{transform:scale(.95)}
+#liveBtn{background:var(--pink);color:#fff}
+#liveBtn .live-dot{width:8px;height:8px;border-radius:50%;background:#fff;flex:none;animation:lampBreathe 1.8s ease-in-out infinite}
+#bonusBtn{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+#bonusBtn .bonus-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);flex:none}
+#bonusBtn.claimed{color:var(--sub);border-color:var(--line)}
+#bonusBtn.claimed .bonus-dot{background:#d8ccd4}
+.bonus-stats{display:flex;gap:8px;margin:12px 0}
+.bonus-stat{flex:1;background:#fff0f7;border:1.5px solid #ffd0e4;border-radius:14px;padding:10px 8px;text-align:center}
+.bonus-stat .n{font-size:22px;font-weight:800;color:#d81b74;line-height:1.1}
+.bonus-stat .l{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--sub);margin-top:3px}
+.bonus-stamps{display:flex;gap:6px;margin:10px 0 14px}
+.bonus-stamp{flex:1;aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--sub);background:#fff}
+.bonus-stamp.got{border-style:solid;border-color:#ffd0e4;background:linear-gradient(160deg,#ffe9f4,#ffd9ec);color:#d81b74;position:relative}
+.bonus-stamp .getlbl{position:absolute;top:-7px;right:-4px;background:var(--pink);color:#fff;font-size:8.5px;font-weight:800;border-radius:99px;padding:2px 6px;transform:rotate(10deg);box-shadow:0 2px 6px rgba(255,46,136,.4)}
+.bonus-stamp.today{border-color:var(--pink)}
+.bonus-stamp .s-emoji{font-size:18px;line-height:1.2}
+.bonus-claim{display:block;width:100%;text-align:center;background:var(--pink);color:#fff;font-weight:800;font-size:16px;letter-spacing:.06em;border-radius:999px;padding:14px 16px;cursor:pointer;transition:transform var(--t-press) var(--ease-out)}
+.bonus-claim:disabled{background:#e9dfe8;color:#a08b9d;box-shadow:none}
+.bonus-claim:active{transform:scale(.97)}
+.bonus-claim[disabled]{background:#e8e0ea;color:var(--sub);cursor:default;transform:none}
+.bonus-reward{margin-top:14px;border:1.5px solid #ffd0e4;background:#fff6fa;border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.7;display:none}
+.bonus-reward.show{display:block;animation:bonusPop .45s var(--ease-out) 1}
+@keyframes bonusPop{0%{transform:scale(.92);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.bonus-next{font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px;text-align:center}
+
+/* テレビパネル先頭の「まず見て」：実物サムネイルのカード */
+.pick-label{font-size:11px;letter-spacing:.2em;color:var(--pink);font-weight:800;margin:2px 0 10px}
+.card-first .face{height:150px;padding:0}
+.card-first .face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card-first .play{
+position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;
+width:52px;height:52px;border-radius:50%;background:rgba(255,46,136,.92);
+box-shadow:0 4px 16px rgba(0,0,0,.25);
+}
+.card-first .play::after{
+content:'';position:absolute;left:50%;top:50%;transform:translate(-36%,-50%);
+border-left:16px solid #fff;border-top:10px solid transparent;border-bottom:10px solid transparent;
+}
+.card-first .meta .clip-ttl{font-weight:700;line-height:1.45}
+
+/* テレビパネル末尾：配信で会うための大きめの出口 */
+.meet-cta{margin-top:16px;background:linear-gradient(120deg,var(--pink),var(--purple));border-radius:18px;padding:18px 16px;text-align:center;color:#fff}
+.meet-txt{font-size:16px;font-weight:800;letter-spacing:.06em;margin-bottom:12px}
+.meet-btn{
+display:flex;align-items:center;justify-content:center;min-height:52px;
+background:#fff;color:var(--pink);border-radius:99px;text-decoration:none;
+font-size:15px;font-weight:800;letter-spacing:.08em;
+transition:transform var(--t-press) var(--ease-out);
+}
+.meet-btn:active{transform:scale(.97)}
+
+.mini-link{
+display:flex;align-items:center;gap:10px;text-decoration:none;
+min-height:52px;padding:10px 4px;border-bottom:1px solid var(--line);
+font-size:15px;font-weight:700;
+}
+.mini-link .go{margin-left:auto;color:var(--sub);font-size:12px}
+.mini-link:active{color:var(--pink)}
+
+.facts{list-style:none}
+.facts li{
+display:flex;gap:10px;align-items:baseline;padding:9px 2px;
+border-bottom:1px solid var(--line);font-size:15px;
+}
+.facts li:last-child{border-bottom:none}
+.facts .k{font-size:11px;letter-spacing:.14em;color:var(--sub);font-weight:800;white-space:nowrap;min-width:74px}
+.note{font-size:12px;color:var(--sub);line-height:1.7;margin-top:6px}
+
+/* 応援メッセージ（ポストのパネル） */
+.msg-list{display:flex;flex-direction:column;gap:10px;margin:12px 0 14px}
+.msg-card{border:1.5px solid var(--line);border-radius:14px;padding:10px 12px}
+.msg-head{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.msg-name{font-weight:800;font-size:13px}
+.msg-to{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:#fff;background:var(--purple);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.msg-text{font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.msg-date{font-size:11px;color:var(--sub);margin-top:4px}
+.msg-empty{font-size:13.5px;color:var(--sub);line-height:1.7;border:1.5px dashed var(--line);border-radius:14px;padding:12px 14px}
+.msg-send{
+display:block;text-align:center;text-decoration:none;
+background:var(--pink);color:#fff;font-weight:800;font-size:15px;letter-spacing:.06em;
+border-radius:999px;padding:13px 16px;
+transition:transform var(--t-press) var(--ease-out);
+}
+.msg-send:active{transform:scale(.97)}
+.msg-form{display:flex;flex-direction:column;gap:9px}
+.msg-form input,.msg-form textarea{
+font-family:inherit;font-size:14.5px;color:var(--ink);
+border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;
+width:100%;box-sizing:border-box;
+}
+.msg-form textarea{resize:vertical;min-height:84px;line-height:1.6}
+.msg-form input:focus,.msg-form textarea:focus{outline:none;border-color:var(--pink)}
+.msg-form .msg-send{border:none;font-family:inherit;cursor:pointer;width:100%}
+.msg-form .msg-send[disabled]{opacity:.55;cursor:default;transform:none}
+.msg-status{font-size:12.5px;color:var(--sub);line-height:1.6;margin:0}
+.msg-status.ok{color:#d81b74;font-weight:700}
+
+/* プロフィール */
+.prof-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.prof-head .thumb{
+flex:none;width:78px;height:92px;border-radius:20px;
+background:linear-gradient(150deg,#ffeef6,#f1eaff);
+display:flex;align-items:flex-end;justify-content:center;overflow:hidden;
+}
+.prof-head .thumb img{width:88%;display:block}
+.prof-name{font-size:21px;font-weight:800;letter-spacing:.06em}
+.prof-name span{color:var(--pink)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.chip{
+font-size:13px;font-weight:800;letter-spacing:.04em;line-height:1;
+padding:9px 14px;border-radius:99px;white-space:nowrap;
+background:#fff0f7;color:#d81b74;border:1.5px solid #ffd0e4;
+}
+.chip.purple{background:#f2ecff;color:#6d28d9;border-color:#dcc8ff}
+.chip.dark{background:#f3f0f5;color:var(--ink);border-color:#e2dbe8}
+.facts a{color:var(--pink);font-weight:700;text-decoration:none}
+.facts a:active{text-decoration:underline}
+.likes{margin-top:20px}
+.likes .ttl{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin-bottom:2px}
+
+/* プロフィール（名刺＋紹介） */
+.prof-yomi{font-size:12px;color:var(--sub);letter-spacing:.18em;font-weight:700;margin-top:3px}
+.live-badge{display:inline-flex;align-items:center;gap:7px;margin-top:9px;background:var(--pink);color:#fff;font-size:12.5px;font-weight:800;letter-spacing:.05em;line-height:1;padding:8px 13px;border-radius:99px}
+.live-badge .dot{width:8px;height:8px;border-radius:50%;background:#fff;flex:none}
+.chip.badge{background:#fff6d8;color:#7c5c00;border-color:#ecc95c}
+.prof-intro{font-size:16px;line-height:1.85;margin:6px 0 16px}
+.prof-sec{font-size:11px;letter-spacing:.2em;color:var(--sub);font-weight:800;margin:16px 0 2px}
+.achv{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.prof-links{display:flex;gap:10px;margin-top:22px}
+.prof-links a{
+flex:1;display:flex;align-items:center;justify-content:center;
+min-height:50px;border-radius:14px;text-decoration:none;
+font-size:14px;font-weight:800;letter-spacing:.03em;
+transition:transform var(--t-press) var(--ease-out);
+}
+.prof-links a:active{transform:scale(.97)}
+.prof-links .pl-live{background:var(--pink);color:#fff}
+.prof-links .pl-yt{background:var(--ink);color:#fff}
+.prof-works{
+display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;
+min-height:52px;padding:10px 14px;border-radius:14px;border:1.5px solid var(--line);
+background:#fff;font-size:14.5px;font-weight:800;color:var(--ink);text-align:left;cursor:pointer;
+transition:transform var(--t-press) var(--ease-out);
+}
+.prof-works:active{transform:scale(.98)}
+.prof-works .go{margin-left:auto;color:var(--sub);font-size:12px}
+
+@media (prefers-reduced-motion: reduce){
+*,*::before,*::after{transition:none!important;animation:none!important}
+#gate.gone{display:none}
+.panel{transform:none;opacity:0}
+.panel.on{opacity:1}
+}
+
+/* --- 取り入れた型：英語小ラベル＋日本語見出し／お知らせ／予定／運勢／オープニング --- */
+.p-en{font-size:10px;letter-spacing:.32em;color:var(--pink);font-weight:800;margin-bottom:2px}
+.news-list{list-style:none;margin:2px 0 14px}
+.news-list li{display:flex;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.6}
+.news-list time{color:var(--pink);font-weight:800;font-size:12px;white-space:nowrap;padding-top:2px}
+.sched{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.sched .sched-en{font-size:10px;letter-spacing:.28em;color:var(--pink);font-weight:800}
+.sched b{font-size:19px;letter-spacing:.03em}
+.sched span{font-size:12px;color:var(--sub);font-weight:700}
+#opening{position:fixed;inset:0;z-index:80;background:var(--paper,#fff7fa);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:opacity .6s ease, visibility .6s}
+#opening.hide{opacity:0;visibility:hidden}
+#opening img{width:148px;height:148px;object-fit:cover;object-position:top;border-radius:50%;box-shadow:0 10px 30px rgba(43,36,48,.18);animation:opIn .8s ease both}
+#opening .op-en{font-size:11px;letter-spacing:.34em;color:var(--pink);font-weight:800;animation:opIn .8s .1s ease both}
+#opening .op-name{font-size:30px;font-weight:800;letter-spacing:.1em;animation:opIn .8s .2s ease both}
+#opening .op-tap{font-size:12px;color:var(--sub);letter-spacing:.14em;animation:opIn .8s .35s ease both}
+@keyframes opIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.fortune{margin-top:16px;border-top:1.5px dashed var(--line);padding-top:14px}
+.fortune .f-res{font-size:15px;font-weight:800;text-align:center;min-height:24px;margin-top:10px}
+.fortune .f-line{font-size:12.5px;color:var(--sub);text-align:center;margin-top:4px}
+.fortune button{display:block;width:100%;background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:800;font-size:14.5px;border-radius:999px;padding:12px;cursor:pointer}
+.fortune button:disabled{color:var(--sub);background:#faf3f8}
+.reqcard{margin-top:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px}
+.reqcard .r-ttl{font-weight:800;font-size:14px}
+.reqcard .r-note{font-size:12px;color:var(--sub);margin-top:2px}
+.reqcard button{margin-top:9px;background:var(--pink);color:#fff;border:none;font-weight:800;font-size:13.5px;border-radius:999px;padding:9px 16px;cursor:pointer}
+.reqcard .r-done{font-size:12px;color:#d81b74;font-weight:700;margin-left:8px}
+
+/* ===== DINER SAKIYA design system (dn-) : panel-first build ===== */
+@layer dn {
+.dn-root{
+--dn-pink:#FF2E88; --dn-pink-deep:#D81B74; --dn-pink-soft:#FFD9E8; --dn-cream:#FFF6EC;
+--dn-mint:#9FE3CF; --dn-chrome:#C9D2D9; --dn-ink:#33262E; --dn-sub:#8A7F92; --dn-paper:#FFFAFC;
+--dn-line:#F3C6DA; --dn-ok:#1F9D66; --dn-err:#D64545;
+--dn-s1:4px; --dn-s2:8px; --dn-s3:12px; --dn-s4:16px; --dn-s5:24px; --dn-s6:32px; --dn-s7:56px;
+--dn-r:18px; --dn-shadow:0 8px 22px rgba(51,38,46,.10); --dn-t:.18s ease;
+font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif; color:var(--dn-ink);
+isolation:isolate; line-height:1.7;
+}
+.dn-root *, .dn-root *::before, .dn-root *::after{box-sizing:border-box; min-width:0}
+.dn-root img{max-width:100%; display:block}
+.dn-head{margin:var(--dn-s2) 0 var(--dn-s4)}
+.dn-head .dn-en{font-family:"Quicksand",sans-serif; font-size:11px; letter-spacing:.32em; color:var(--dn-pink); font-weight:700}
+.dn-head .dn-jp{font-size:clamp(20px,6vw,24px); font-weight:900; letter-spacing:.04em; margin-top:2px}
+.dn-head .dn-rule{width:34px; height:3px; border-radius:2px; background:var(--dn-pink); margin-top:var(--dn-s2)}
+.dn-card{background:var(--dn-cream); border:1px solid var(--dn-line); border-radius:var(--dn-r); box-shadow:var(--dn-shadow); overflow:hidden; margin-bottom:var(--dn-s4); text-decoration:none; color:var(--dn-ink); display:block}
+.dn-card .dn-thumb{aspect-ratio:16/7; object-fit:cover; width:100%}
+.dn-card .dn-cbody{padding:var(--dn-s3) var(--dn-s4) var(--dn-s4)}
+.dn-card .dn-cttl{font-weight:900; font-size:16px}
+.dn-card .dn-csub{font-size:12px; color:var(--dn-sub); margin-top:2px}
+.dn-btn{display:flex; align-items:center; justify-content:center; gap:8px; background:var(--dn-pink); color:#fff; font-weight:900; font-size:16px; border-radius:999px; padding:14px 20px; text-decoration:none; transition:transform var(--dn-t); margin:var(--dn-s3) 0 var(--dn-s4)}
+.dn-btn:active{transform:scale(.97)}
+.dn-badge{display:inline-block; font-size:10.5px; font-weight:900; letter-spacing:.08em; color:#fff; background:var(--dn-pink-deep); border-radius:999px; padding:2px 9px}
+.dn-badge.mint{background:var(--dn-mint); color:var(--dn-ink)}
+.dn-sched{background:var(--dn-ink); color:#fff; border-radius:var(--dn-r); padding:var(--dn-s5) var(--dn-s4); text-align:center; margin-bottom:var(--dn-s4); box-shadow:var(--dn-shadow)}
+.dn-sched .dn-en{font-family:"Quicksand",sans-serif; font-size:11px; letter-spacing:.3em; color:var(--dn-pink-soft); font-weight:700}
+.dn-sched .dn-big{font-size:clamp(30px,9vw,40px); font-weight:900; letter-spacing:.03em; line-height:1.3; margin-top:var(--dn-s1)}
+.dn-sched .dn-note{font-size:12px; color:var(--dn-pink-soft); margin-top:var(--dn-s1)}
+.dn-week{list-style:none; display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin:var(--dn-s4) 0 0; padding:0}
+.dn-week li{text-align:center; font-size:10.5px; background:rgba(255,255,255,.12); border-radius:8px; padding:5px 0; color:#F6DCE9; font-weight:700}
+.dn-week li b{display:block; font-size:12.5px; color:#fff}
+.dn-week li.today{background:var(--dn-mint); color:var(--dn-ink)}
+.dn-week li.today b{color:var(--dn-ink)}
+.dn-sec{font-size:12px; font-weight:900; letter-spacing:.14em; color:var(--dn-sub); margin:var(--dn-s5) 0 var(--dn-s2)}
+.dn-row{display:flex; gap:var(--dn-s3); padding:10px 2px; border-bottom:1px solid var(--dn-line); font-size:13.5px; text-decoration:none; color:var(--dn-ink)}
+.dn-row time{color:var(--dn-pink); font-weight:900; font-size:12px; white-space:nowrap; padding-top:2px}
+.dn-checker{height:10px; border-radius:5px; margin:var(--dn-s4) 0;
+background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0/20px 20px}
+@media (prefers-reduced-motion: reduce){ .dn-root *{animation:none!important; transition:none!important} }
+}
+</style>
+</head>
+<body>
+
+<!-- 玄関 -->
+<div id="opening" role="button" aria-label="タップではじめる">
+<img src="../assets/parts/mirrativ-emomo.webp" alt="">
+<div class="op-en">SAKIYA OFFICIAL ROOM</div>
+<div class="op-name">八乙女さきや</div>
+<div class="op-tap">タップではじめる</div>
+</div>
+<div id="gate">
+<h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
+<div class="g-info">
+<div class="g-role">ミラティブ配信者</div>
+<div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span></div>
+<div class="g-live"><span class="dot"></span>毎晩22時 配信中</div>
+</div>
+<button id="enterBtn" type="button">入る</button>
+</div>
+
+<!-- 部屋 -->
+<main id="room" aria-hidden="true">
+<div id="stage">
+<div class="room-name"><b>八乙女さきや</b> の部屋</div>
+
+<div id="hero" aria-label="ピックアップ">
+<div class="hero-frame" id="heroFrame">
+<div class="hero-view">
+<div class="hero-track" id="heroTrack">
+<a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
+<img src="../assets/parts/mirrativ-emomo.webp" alt="" draggable="false" loading="lazy" decoding="async">
+<span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
+</a>
+<a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener" aria-label="ゲーム：うさぎ、ゴリラを殴る。3D">
+<img src="../assets/parts/hero-usagori-real.webp" alt="" draggable="false">
+<span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">うさぎ、ゴリラを殴る。3D</span></span>
+</a>
+<a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
+<img src="../assets/parts/hero-yukagen-real.webp" alt="" draggable="false" loading="lazy" decoding="async">
+<span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">ちょうどいい湯かげん</span></span>
+</a>
+<a class="hero-slide" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
+<img src="../assets/parts/hero-song-real.webp" alt="" draggable="false">
+<span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
+</a>
+</div>
+</div>
+<button class="hero-arrow prev" id="heroPrev" type="button" aria-label="前のポスター"><span>‹</span></button>
+<button class="hero-arrow next" id="heroNext" type="button" aria-label="次のポスター"><span>›</span></button>
+</div>
+<div class="hero-dots" id="heroDots">
+<button type="button" aria-label="ポスター1：Mirrativ 配信"></button>
+<button type="button" aria-label="ポスター2：うさぎ、ゴリラを殴る。3D"></button>
+<button type="button" aria-label="ポスター3：ちょうどいい湯かげん"></button>
+<button type="button" aria-label="ポスター4：そばにいて"></button>
+</div>
+</div>
+
+<button class="obj" id="obj-tv" type="button" data-panel="tv" aria-label="テレビ：配信と動画">
+<span class="ring"></span>
+<span class="bubble" id="tvBubble" aria-hidden="true"></span>
+<img src="../assets/parts/tv.webp" alt="">
+<span class="tv-screen" aria-hidden="true">
+<span class="tv-scene sc-a on"></span>
+<span class="tv-scene sc-b"></span>
+<span class="tv-scene sc-c"></span>
+<span class="tv-lines"></span>
+<span class="tv-shine"></span>
+</span>
+</button>
+
+<button class="obj" id="obj-game" type="button" data-panel="game" aria-label="ゲーム機：ゲーム">
+<span class="ring"></span>
+<img src="../assets/parts/console.webp" alt="">
+<span class="lamp" aria-hidden="true"></span>
+</button>
+
+<div id="plant" aria-hidden="true">
+<img src="../assets/parts/plant.webp" alt="" loading="lazy" decoding="async">
+<span class="flower"><svg viewBox="0 0 40 40" width="100%" height="100%"><circle cx="20" cy="11" r="6.4" fill="#ff7eb6"/><circle cx="28.6" cy="17.2" r="6.4" fill="#ff7eb6"/><circle cx="25.3" cy="27.8" r="6.4" fill="#ff7eb6"/><circle cx="14.7" cy="27.8" r="6.4" fill="#ff7eb6"/><circle cx="11.4" cy="17.2" r="6.4" fill="#ff7eb6"/><circle cx="20" cy="19.5" r="4.4" fill="#ffcf4d"/></svg></span>
+</div>
+<button id="plantHit" type="button" aria-label="観葉植物"></button>
+
+<button class="obj" id="obj-desk" type="button" data-panel="desk" aria-label="机：制作机">
+<span class="ring"></span>
+<img src="../assets/parts/desk.webp" alt="">
+</button>
+
+<button class="obj" id="obj-speaker" type="button" data-panel="speaker" aria-label="スピーカー：曲">
+<span class="ring"></span>
+<img src="../assets/parts/speaker.webp" alt="">
+<span class="notes" aria-hidden="true"><span>♪</span><span>♫</span></span>
+</button>
+
+<button id="chara" type="button" data-panel="profile" aria-label="さきや：プロフィール">
+<span class="ring"></span>
+<span class="notes" aria-hidden="true"><span>♪</span><span>♫</span><span>♪</span></span>
+<span class="hearts" aria-hidden="true"><span>♥</span><span>♥</span><span>♥</span></span>
+<span class="bubble" id="charaBubble" aria-hidden="true"></span>
+<span class="bob" role="img" aria-label="八乙女さきや ミニキャラ"></span>
+</button>
+
+<button id="sunsun" type="button" aria-label="スンスン：押すと喋る">
+<span class="ring"></span>
+<img src="../assets/parts/sunsun.webp" alt="ピンクのミニスンスン" loading="lazy" decoding="async">
+<span class="bubble" id="sunBubble" aria-hidden="true"></span>
+</button>
+
+<button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
+<span class="door-glow" aria-hidden="true"></span>
+<span class="door-leafwrap" aria-hidden="true"><img src="../assets/parts/door.webp" alt=""><span class="door-glint">✦</span></span>
+</button>
+
+<button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
+<span class="ring"></span>
+<img src="../assets/parts/post.webp" alt="" loading="lazy" decoding="async">
+</button>
+<div id="tapmark" aria-hidden="true"></div>
+</div>
+</main>
+<div id="dock">
+<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>Mirrativ 毎晩22時</a>
+<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のボーナス</button>
+</div>
+
+<!-- 作品置き場 -->
+<div id="storageView" aria-hidden="true">
+<div id="storageStage">
+<div class="storage-name">さきやの <b>作品置き場</b></div>
+<div id="storageTabs" aria-label="カテゴリ"></div>
+<div id="shelves"></div>
+<button id="storageDoor" type="button" aria-label="部屋にもどる">
+<img src="../assets/parts/door-front.webp" alt="">
+<span class="cap">部屋へもどる</span>
+</button>
+</div>
+</div>
+
+<div id="scrim"></div>
+
+<!-- テレビ：面白い実物を先頭に -->
+<section class="panel" id="panel-tv" aria-label="配信と動画">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="dn-root">
+<div class="dn-head"><div class="dn-en">STREAM</div><div class="dn-jp">配信と動画</div><div class="dn-rule"></div></div>
+<div class="dn-sched">
+<div class="dn-en">EVERY NIGHT ON MIRRATIV</div>
+<div class="dn-big">毎晩 22:00〜</div>
+<div class="dn-note">連続配信 445日（2026.11.23時点）｜雑談・ゲーム・歌</div>
+<ul class="dn-week" id="weekList">
+<li><b>月</b>22時</li><li><b>火</b>22時</li><li><b>水</b>22時</li><li><b>木</b>22時</li><li><b>金</b>22時</li><li><b>土</b>22時</li><li><b>日</b>22時</li>
+</ul>
+</div>
+<a class="dn-btn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ で会いにいく →</a>
+<a class="dn-card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
+<img class="dn-thumb" src="../assets/parts/mirrativ-emomo-banner.webp" alt="八乙女さきやのエモモ">
+<div class="dn-cbody"><span class="dn-badge">LIVE</span><div class="dn-cttl">Mirrativ｜八乙女さきや</div><div class="dn-csub">フォロワー 596人（2026.11.23時点）</div></div>
+</a>
+<div class="dn-sec">お知らせ</div>
+<a class="dn-row" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」と「童話キャラ16タイプ診断」を公開しました</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><time>2026.11.18</time><span>ゲーム「ちょうどいい湯かげん」を公開しました</span></a>
+<div class="dn-sec">切り抜き</div>
+<a class="dn-card" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
+<img class="dn-thumb" src="../assets/parts/tv-clip.webp" alt="配信切り抜きShortsのサムネイル">
+<div class="dn-cbody"><div class="dn-cttl">雪山にスーツで出張!? ホラゲで働き方を心配し始めた</div><div class="dn-csub">YouTube 切り抜きShorts</div></div>
+</a>
+<a class="dn-row" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener"><time>動画</time><span>YouTube チャンネル「八乙女さきや【公式】」をひらく →</span></a>
+<div class="dn-checker"></div>
+</div>
+</section>
+
+<!-- ゲーム機：各ゲームを実物カードで -->
+<section class="panel" id="panel-game" aria-label="ゲーム">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">GAMES</div>
+<h2>ゲーム機 ｜ <b>あそぶ</b></h2>
+<a class="card imgcard" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
+<div class="face f-usagori"><img class="cardimg" src="../assets/parts/card-usagori.webp" alt="" draggable="false" loading="lazy">
+<svg width="34" height="34" viewBox="0 0 34 34"><circle cx="13" cy="20" r="6" fill="#fff"/><path d="M10 15 q-2-7 1-9 q3 1 2 7 M16 15 q1-7 4-7 q2 2-1 8" fill="#fff"/></svg>
+<span class="ttl">うさぎ、ゴリラを殴る。3D</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>巨大ゴリラと75秒ボス戦</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
+</a>
+<a class="card imgcard" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
+<div class="face f-yu"><img class="cardimg" src="../assets/parts/card-yukagen.webp" alt="" draggable="false" loading="lazy">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 24 q5-4 10 0 t10 0 t6 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 16 q2-5 5-5 M19 13 q3-3 6-1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/></svg>
+<span class="ttl">ちょうどいい湯かげん</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>お湯の温度を合わせる</span><span class="go">あそぶ →</span></div>
+</a>
+<a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<div class="face f-kani"><img class="cardimg" src="../assets/parts/card-kani.webp" alt="" draggable="false" loading="lazy">
+<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
+<span class="ttl">カニ飛ばし</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>カニをぶっ飛ばす</span><span class="go">あそぶ →</span></div>
+</a>
+<a class="card imgcard" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
+<div class="face f-ebi"><img class="cardimg" src="../assets/parts/work-ebikani.webp" alt="" draggable="false" loading="lazy">
+<svg width="34" height="34" viewBox="0 0 34 34"><text x="17" y="25" font-size="21" font-weight="800" fill="#fff" text-anchor="middle">?</text></svg>
+<span class="ttl">EBI KANI?</span>
+</div>
+<div class="meta"><span class="tag">ゲーム</span><span>エビかカニか</span><span class="go">あそぶ →</span></div>
+</a>
+<a class="card imgcard" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
+<div class="face f-fairy"><img class="cardimg" src="../assets/parts/card-fairytale.webp" alt="" draggable="false" loading="lazy">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 4 l2.5 7.5 L27 14 l-7.5 2.5 L17 24 l-2.5-7.5 L7 14 l7.5-2.5 Z" fill="#fff"/></svg>
+<span class="ttl">童話キャラ16タイプ診断</span>
+</div>
+<div class="meta"><span class="tag">診断</span><span>20問でわかる童話診断</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
+</a>
+</section>
+
+<!-- スピーカー：曲の面を先頭に -->
+<section class="panel" id="panel-speaker" aria-label="曲">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">MUSIC</div>
+<h2>スピーカー ｜ <b>きく</b></h2>
+<a class="card" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">
+<div class="face f-song" style="height:128px">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M13 26 V10 l14-3 v15" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="9.5" cy="26" r="4" fill="#fff"/><circle cx="23.5" cy="22" r="4" fill="#fff"/></svg>
+<span class="ttl">そばにいて</span>
+</div>
+<div class="meta"><span class="tag pink">曲・MV</span><span>ミュージックビデオ</span><span class="go">聴く →</span></div>
+</a>
+<a class="card" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener">
+<div class="face f-ai">
+<svg width="34" height="34" viewBox="0 0 34 34"><path d="M13 26 V10 l14-3 v15" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="9.5" cy="26" r="4" fill="#fff"/><circle cx="23.5" cy="22" r="4" fill="#fff"/></svg>
+<span class="ttl">空っぽの愛</span>
+</div>
+<div class="meta"><span class="tag pink">曲</span><span>HYSTERIC ZOMBIES</span><span class="go">聴く →</span></div>
+</a>
+<div class="reqcard">
+<div class="r-ttl">歌リクエスト</div>
+<div class="r-note">配信で歌ってほしい曲は、この文をコピーして配信のコメントに貼ってね。</div>
+<button type="button" id="reqCopy">リクエスト文をコピー</button><span class="r-done" id="reqDone"></span>
+</div>
+</section>
+
+<!-- 机：制作机（いま作ってるもの＋作ったもの） -->
+<section class="panel" id="panel-desk" aria-label="制作机">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">STUDIO</div>
+<h2>机 ｜ <b>制作机</b></h2>
+<div class="desk-sec">いま作ってるもの</div>
+<a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<div class="face f-kani"><img class="cardimg" src="../assets/parts/card-kani.webp" alt="" draggable="false" loading="lazy">
+<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
+<span class="ttl">カニ飛ばし</span>
+</div>
+<div class="meta"><span class="tag pink">制作中</span><span>カニをぶっ飛ばすゲーム</span><span class="go">あそぶ →</span></div>
+</a>
+<div class="desk-sec next">作ったもの</div>
+<a class="mini-link" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>うさぎ、ゴリラを殴る。3D<span class="go">→</span></a>
+<a class="mini-link" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>ちょうどいい湯かげん<span class="go">→</span></a>
+<a class="mini-link" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>EBI KANI?<span class="go">→</span></a>
+<a class="mini-link" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener"><span class="tag">診断</span>童話キャラ16タイプ診断<span class="go">→</span></a>
+<a class="mini-link" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener"><span class="tag pink">曲</span>そばにいて（MV）<span class="go">→</span></a>
+<a class="mini-link" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="tag pink">曲</span>空っぽの愛<span class="go">→</span></a>
+</section>
+
+<!-- ミニキャラ：プロフィール（配信者カード／事実のみ） -->
+<section class="panel" id="panel-profile" aria-label="プロフィール">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">PROFILE</div>
+<h2>さきや ｜ <b>プロフィール</b></h2>
+<div class="prof-head">
+<div class="thumb"><img src="../assets/parts/chara.webp" alt="八乙女さきや ミニキャラ" loading="lazy" decoding="async"></div>
+<div>
+<div class="prof-name">八乙女<span>さきや</span></div>
+<div class="prof-yomi">やおとめ さきや</div>
+<div class="live-badge"><span class="dot"></span>Mirrativ 毎晩22時 配信中</div>
+</div>
+</div>
+<p class="prof-intro">ミラティブ配信者。ゲーム・曲・動画を全部ひとりで作って、配信と投稿をしている。</p>
+<div class="likes">
+<div class="ttl">合言葉・FM</div>
+<div class="chips">
+<span class="chip">合言葉：やにかすおとめ</span>
+<span class="chip purple">FM：🩷🌈💜</span>
+</div>
+</div>
+<div class="chips">
+<span class="chip purple">天使と悪魔の少年・女装男子</span>
+</div>
+<div class="likes">
+<div class="ttl">配信でやってること</div>
+<div class="chips">
+<span class="chip">歌</span>
+<span class="chip purple">ゲーム</span>
+<span class="chip purple">雑談</span>
+</div>
+</div>
+<div class="likes">
+<div class="ttl">実績</div>
+<div class="chips">
+<span class="chip badge">イケボ🌈 1位</span>
+<span class="chip badge">スタークラスB 達成</span>
+<span class="chip badge">週デビュー 1位</span>
+<span class="chip badge">月デビュー 1位</span>
+<span class="chip badge">ロイヤル候補生 申請中</span>
+</div>
+</div>
+<div class="likes">
+<div class="ttl">とくいなこと</div>
+<div class="chips">
+<span class="chip">声と喋り</span>
+<span class="chip purple">場をまとめる</span>
+<span class="chip purple">目標を立てて分解する</span>
+<span class="chip purple">相手の気持ちに立つ</span>
+<span class="chip purple">組織を回す</span>
+<span class="chip purple">療育の知識</span>
+</div>
+</div>
+<div class="likes">
+<div class="ttl">すきなもの</div>
+<div class="chips">
+<span class="chip">ミルクティー（いちばん好き）</span>
+<span class="chip purple">ラーメン</span>
+<span class="chip purple">カツ丼</span>
+<span class="chip purple">寿司</span>
+</div>
+</div>
+<div class="prof-links">
+<a class="pl-live" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ ↗</a>
+<a class="pl-yt" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube ↗</a>
+</div>
+<button class="prof-works" id="profWorks" type="button">作品置き場へ（ゲーム・曲・記念サイト）<span class="go">→</span></button>
+</section>
+
+<!-- ポスト：応援メッセージ（投稿は部屋APIへ直接送信し未承認で保存／表示は承認済みのみ） -->
+<section class="panel" id="panel-post" aria-label="応援メッセージ">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">MESSAGE</div>
+<h2>ポスト ｜ <b>応援メッセージ</b></h2>
+<p class="note">送ってくれたメッセージは、内容を確認してからここに飾られます。すぐには表示されません。</p>
+<div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
+<form class="msg-form" id="msgForm">
+<input type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off">
+<textarea id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ"></textarea>
+<button class="msg-send" id="msgSubmit" type="submit">メッセージを送る</button>
+<p class="msg-status" id="msgStatus" role="status"></p>
+</form>
+</section>
+
+<!-- ログインボーナス：毎日触れる日替わり報酬（端末に記録） -->
+<section class="panel" id="panel-bonus" aria-label="今日のボーナス">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<div class="p-en">DAILY</div>
+<h2>今日のボーナス ｜ <b>まいにち特典</b></h2>
+<p class="note" id="bonusToday">今日の日付を確認中…</p>
+<div class="bonus-stats">
+<div class="bonus-stat"><div class="n" id="bonusStreak">0</div><div class="l">連続日数</div></div>
+<div class="bonus-stat"><div class="n" id="bonusPoints">0</div><div class="l">応援ポイント</div></div>
+<div class="bonus-stat"><div class="n" id="bonusTotal">0</div><div class="l">通算受取</div></div>
+</div>
+<div class="desk-sec">直近7日間のスタンプ</div>
+<div class="bonus-stamps" id="bonusStamps"></div>
+<button class="bonus-claim" id="bonusClaim" type="button">ボーナスを受け取る</button>
+<div class="bonus-reward" id="bonusReward" role="status"></div>
+<div class="fortune">
+<div class="desk-sec">今日の運勢（1日1回）</div>
+<button type="button" id="fortuneBtn">運勢をひく</button>
+<div class="f-res" id="fortuneRes"></div>
+<div class="f-line" id="fortuneLine"></div>
+</div>
+<p class="bonus-next">毎日0時に切り替わります。7日連続で特別報酬、ポイントは100ごとに称号が上がります。この端末にだけ記録されます。</p>
+</section>
+
+<script>
+(function(){
+"use strict";
+var gate = document.getElementById('gate');
+var room = document.getElementById('room');
+var scrim = document.getElementById('scrim');
+var entered = false;
+var PANELS = ['tv','game','speaker','desk','profile','post','bonus'];
+
+function panelEl(id){ return document.getElementById('panel-' + id);}
+
+function highlightTarget(){
+var from = new URLSearchParams(location.search).get('from');
+if (from === 'game') return document.getElementById('obj-game');
+if (from === 'live') return document.getElementById('obj-tv');
+return document.getElementById('obj-tv');
+}
+
+function enter(){
+if (entered) return;
+entered = true;
+gate.classList.add('gone');
+gate.setAttribute('aria-hidden','true');
+setTimeout(function(){ gate.style.display = 'none';}, 650);
+room.classList.add('on');
+room.setAttribute('aria-hidden','false');
+// 入室直後：物が順に1回ずつ光って「触れる」ことを示す
+// 入口（?from=）がある時は、その対象をツアーの先頭にする（最初に光る物＝入口の物）
+var t = highlightTarget();
+var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun','obj-post','obj-door'];
+var fromParam = new URLSearchParams(location.search).get('from');
+if (fromParam){
+tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
+}
+var tvBubble = document.getElementById('tvBubble');
+tour.forEach(function(id, i){
+var el = document.getElementById(id);
+var at = 800 + i * 430;
+setTimeout(function(){ el.classList.add('tour');}, at);
+setTimeout(function(){ el.classList.remove('tour');}, at + 1100);
+// ツアーの案内：テレビでは「まず声と笑い」、スンスンでは声が出ることに触れる
+if (id === 'obj-tv'){
+setTimeout(function(){ bubbleShow(tvBubble, 'まずはここから。声と笑い');}, at);
+setTimeout(function(){ tvBubble.classList.remove('show');}, at + 2100);
+}
+if (id === 'sunsun'){
+setTimeout(function(){ bubbleShow(sunBubble, 'おすと声がでる');}, at);
+setTimeout(function(){ sunBubble.classList.remove('show');}, at + 1600);
+}
+});
+var start = 800 + tour.length * 430 + 300;
+setTimeout(function(){ t.classList.add('highlight');}, start);
+setTimeout(function(){ t.classList.remove('highlight');}, start + 3600);
+startChara();
+scheduleSunIdle();
+}
+
+var pushedCount = 0;
+var lastPushedHash = '';
+function openPanel(id, push){
+PANELS.forEach(function(p){ panelEl(p).classList.toggle('on', p === id);});
+scrim.classList.add('on');
+if (push!== false && location.hash!== '#' + id){
+pushedCount++;
+lastPushedHash = '#' + id;
+location.hash = id;
+}
+}
+function closePanels(push){
+PANELS.forEach(function(p){ panelEl(p).classList.remove('on');});
+scrim.classList.remove('on');
+if (push === false) return;
+if (pushedCount > 0){
+var n = pushedCount;
+pushedCount = 0;
+lastPushedHash = '';
+history.go(-n);
+} else if (location.hash){
+history.replaceState(null, '', location.pathname + location.search);
+}
+}
+function syncFromHash(){
+var id = location.hash.replace('#','');
+if (location.hash!== lastPushedHash) pushedCount = 0;
+if (id === 'storage'){
+if (!entered) enter();
+closePanels(false);
+showStorage();
+return;
+}
+if (storageOpen) hideStorage();
+if (PANELS.indexOf(id) >= 0){
+if (!entered) enter();
+openPanel(id, false);
+} else {
+closePanels(false);
+}
+}
+
+/* ---------- ヒーロースライダー ---------- */
+var heroTrack = document.getElementById('heroTrack');
+var heroFrame = document.getElementById('heroFrame');
+var heroDots = document.querySelectorAll('#heroDots button');
+var HERO_N = 3;
+var heroIdx = 0;
+function heroGo(i){
+heroIdx = ((i % HERO_N) + HERO_N) % HERO_N;
+heroTrack.style.transform = 'translateX(' + (-heroIdx * 100) + '%)';
+heroDots.forEach(function(d, j){ d.classList.toggle('on', j === heroIdx);});
+}
+document.getElementById('heroPrev').addEventListener('click', function(){ heroGo(heroIdx - 1);});
+document.getElementById('heroNext').addEventListener('click', function(){ heroGo(heroIdx + 1);});
+heroDots.forEach(function(d, j){ d.addEventListener('click', function(){ heroGo(j);});});
+// スワイプ：横移動が大きければスライド切替、その後のクリック（リンク遷移）を1回止める
+var dragX = null, dragMoved = false, suppressUntil = 0;
+heroFrame.addEventListener('dragstart', function(e){ e.preventDefault();});
+heroFrame.addEventListener('pointerdown', function(e){
+if (e.target.closest('.hero-arrow')) return; // 矢印は通常のクリックに任せる
+dragX = e.clientX; dragMoved = false;
+// ※ setPointerCapture は使わない：捕捉すると click の宛先がフレームに変わり、スライドのリンクが開かなくなる
+});
+window.addEventListener('pointermove', function(e){
+if (dragX === null) return;
+if (Math.abs(e.clientX - dragX) > 10) dragMoved = true;
+});
+window.addEventListener('pointerup', function(e){
+if (dragX === null) return;
+var dx = e.clientX - dragX;
+dragX = null;
+if (dx <= -42) heroGo(heroIdx + 1);
+else if (dx >= 42) heroGo(heroIdx - 1);
+if (dragMoved) suppressUntil = Date.now() + 400; // 直後のクリックだけ止める（フレーム外で起きたクリックに残留させない）
+});
+window.addEventListener('pointercancel', function(){ dragX = null; dragMoved = false;});
+heroFrame.addEventListener('click', function(e){
+if (Date.now() < suppressUntil){ e.preventDefault(); e.stopPropagation(); suppressUntil = 0;}
+}, true);
+// 初期スライドは入口に合わせる（game→湯かげん、live→Mirrativ）
+(function(){
+var from = new URLSearchParams(location.search).get('from');
+heroGo(from === 'game' ? 1 : from === 'live' ? 0 : 0);
+})();
+
+/* ---------- ミニキャラ：独立オブジェクト（状態機械） ---------- */
+var charaEl = document.getElementById('chara');
+var bobEl = charaEl.querySelector('.bob');
+var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* スプライトシート定義（n=フレーム数、ar=セル縦横比） */
+var SHEETS = {
+walk:{src:'../assets/parts/chara-walk.webp', n:4, ar:'356/560'},
+back:{src:'../assets/parts/chara-back.webp', n:4, ar:'356/560'},
+front:{src:'../assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
+idle:{src:'../assets/parts/chara-idle.webp', n:2, ar:'356/560'},
+wave:{src:'../assets/parts/chara-wave.webp', n:2, ar:'356/560'},
+stretch:{src:'../assets/parts/chara-stretch.webp', n:2, ar:'356/560'},
+sitgame:{src:'../assets/parts/chara-sit-game.webp', n:2, ar:'520/520', w:19},
+sittv:{src:'../assets/parts/chara-sit-tv.webp', n:2, ar:'520/520', w:19},
+sitdesk:{src:'../assets/parts/chara-sit-desk.webp', n:2, ar:'520/520', w:19},
+sitrelax:{src:'../assets/parts/chara-sitrelax.webp', n:2, ar:'520/520', w:19}
+};
+Object.keys(SHEETS).forEach(function(k){ var im = new Image(); im.src = SHEETS[k].src;});
+var curSheet = null, curFrame = -1;
+function setSheet(name){
+if (curSheet === name) return;
+curSheet = name; curFrame = -1;
+var s = SHEETS[name];
+bobEl.style.backgroundImage = "url('" + s.src + "')";
+bobEl.style.backgroundSize = (s.n * 100) + '% 100%';
+bobEl.style.aspectRatio = s.ar;
+charaEl.style.width = (s.w || 14.5) + '%';
+}
+function setFrame(i){
+if (i === curFrame) return;
+curFrame = i;
+var s = SHEETS[curSheet];
+bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0';
+}
+
+/* 床エリア（ステージ%）：壁/床の境界は実測で bottom 24.12%（上から75.88%）。足元はその手前に収め、壁にめり込ませない。
+   x1 はスンスン（left 75.5%）にキャラの右端（x＋幅14.5%）が届かない上限 */
+var FLOOR = {x0:2, x1:58, y0:6, y1:16.5};
+var SPOTS = {
+game:{x:20, y:11, sheet:'sitgame'},
+tv:{x:10.5, y:13.5, sheet:'sittv'},
+music:{x:56.5, y:13.5, sheet:'wave'},
+desk:{x:45, y:12.5, sheet:'sitdesk'}
+};
+/* 移動ベクトル→向き：奥（画面上）=背面／手前（画面下）=正面／横=側面（歩行シートは左向き原画、右移動で反転） */
+function faceWalk(dx, dy){
+var dxPx = dx, dyPx = dy * 1.3256;
+if (dyPx > 0 && dyPx > Math.abs(dxPx) * 1.15) return {sheet:'back', flip:1};
+if (dyPx < 0 && -dyPx > Math.abs(dxPx) * 1.15) return {sheet:'front', flip:1};
+return {sheet:'walk', flip: dxPx >= 0 ? -1 : 1};
+}
+var C = {
+x:48, y:9, tx:48, ty:9, flip:1,
+state:'idle', until:0, started:false, last:0,
+walkDist:0, actAfter:null, actNext:0, actFrame:0,
+blinkAt:0, blinkOff:0, hopFrom:0, pendingOpen:false,
+lastAct:'', waveStep:0, waveAt:0, dash:false,
+ikeboDone:false, begin:0,
+v:0, faceKey:'', faceWant:'', faceSince:0, settleFrom:0, turnFrom:0
+};
+function setPos(){ charaEl.style.left = C.x + '%'; charaEl.style.bottom = C.y + '%';}
+function depthScale(){ return 1.07 - (C.y - FLOOR.y0) * (0.19 / (FLOOR.y1 - FLOOR.y0));}
+function charaActive(){
+return entered && !document.hidden && !scrim.classList.contains('on') && !storageOpen;
+}
+function goIdle(ts, min, max){
+C.state = 'idle'; C.flip = 1; C.dash = false;
+setSheet('idle'); setFrame(0);
+C.until = ts + min + Math.random() * (max - min);
+C.blinkAt = ts + 1400 + Math.random() * 2000;
+C.blinkOff = 0;
+}
+function startWalkTo(tx, ty, act, dash){
+C.tx = Math.max(FLOOR.x0, Math.min(FLOOR.x1, tx));
+C.ty = Math.max(FLOOR.y0, Math.min(FLOOR.y1, ty));
+C.actAfter = act || null;
+C.dash = !!dash;
+C.state = 'walk';
+C.v = 0;
+var f = faceWalk(C.tx - C.x, C.ty - C.y);
+setSheet(f.sheet); C.flip = f.flip;
+C.faceKey = f.sheet + '/' + f.flip; C.faceWant = '';
+}
+function actInterval(key){
+if (key === 'game') return 340;
+if (key === 'desk') return 850;
+if (key === 'tv') return 1600;
+if (key === 'music') return 200;
+if (key === 'sitrelax') return 1400;
+return 500;
+}
+function startActivity(key, ts){
+var spot = SPOTS[key];
+C.state = key; C.lastAct = key; C.dash = false;
+C.x = spot.x; C.y = spot.y; setPos();
+C.flip = 1;
+setSheet(spot.sheet); setFrame(0);
+C.actFrame = 0;
+C.actNext = ts + actInterval(key);
+C.until = ts + 7000 + Math.random() * 7000;
+charaEl.classList.toggle('music', key === 'music');
+if (Math.random() < 0.6) charaSay(ACT_LINES[key], false);
+}
+function startStretch(ts){
+C.state = 'stretch'; C.flip = 1;
+setSheet('stretch'); setFrame(0); C.actFrame = 0;
+C.actNext = ts + 380;
+C.until = ts + 2100;
+}
+function startSitRelax(ts){
+C.state = 'sitrelax'; C.flip = 1;
+setSheet('sitrelax'); setFrame(0); C.actFrame = 0;
+C.actNext = ts + actInterval('sitrelax');
+C.until = ts + 6000 + Math.random() * 5000;
+if (Math.random() < 0.6) charaSay(ACT_LINES.sitrelax, false);
+}
+function endActivity(ts){
+charaEl.classList.remove('music');
+goIdle(ts, 1200, 2600);
+}
+/* レア出現：イケボ（訪問中1回まで） */
+var ikeboAudio = null;
+window.IKEBO = {played:false, src:'assets/voice/ikebo.mp3'};
+function startIkebo(ts){
+C.state = 'ikebo'; C.ikeboDone = true; C.flip = 1; C.dash = false;
+setSheet('wave'); setFrame(1);
+charaEl.classList.add('ikebo');
+if (ikeboAudio){ ikeboAudio.pause();}
+ikeboAudio = new Audio('assets/voice/ikebo.mp3');
+window.IKEBO.played = true;
+var p = ikeboAudio.play();
+if (p && p.catch) p.catch(function(){});
+C.until = ts + 6600;
+}
+function endIkebo(ts){
+charaEl.classList.remove('ikebo');
+if (ikeboAudio){ ikeboAudio.pause(); ikeboAudio = null;}
+goIdle(ts, 2500, 5000);
+}
+function startWave(ts){
+C.state = 'wave'; C.flip = 1;
+setSheet('wave'); C.waveStep = 0; setFrame(0);
+C.waveAt = ts + 210; C.until = ts + 210 * 7;
+if (Math.random() < 0.5) charaSay(greetingLine(), false);
+}
+function startHop(ts, open){
+C.state = 'hop'; C.hopFrom = ts; C.pendingOpen = !!open; C.flip = 1;
+charaEl.classList.remove('music');
+setSheet('idle'); setFrame(0);
+}
+function applyTransform(ts){
+var hopY = 0, sx = 1, sy = 1, rot = 0;
+if (C.state === 'hop'){
+var p = Math.min(1, (ts - C.hopFrom) / 550);
+hopY = -Math.sin(Math.PI * p) * 30;
+if (p > 0.8){ var s = Math.sin((p - 0.8) / 0.2 * Math.PI); sy = 1 - 0.13 * s; sx = 1 + 0.10 * s;}
+else if (p < 0.14){ var s2 = Math.sin(p / 0.14 * Math.PI); sy = 1 - 0.07 * s2; sx = 1 + 0.05 * s2;}
+}
+if (C.state === 'music'){ rot = Math.sin(ts / 210) * 2.6; hopY = -Math.abs(Math.sin(ts / 205)) * 5.5;}
+if (C.state === 'ikebo'){ rot = Math.sin(ts / 320) * 1.6;}
+if (C.state === 'game') rot = Math.sin(ts / 300) * 1.1;
+if (C.state === 'sitrelax') rot = Math.sin(ts / 900) * 1.2;
+if (C.state === 'walk'){
+/* 歩行の余韻：速度に比例した小さな上下動と、進む向きへの体の傾き */
+var vf = Math.min(1, C.v + .15);
+hopY = -Math.abs(Math.sin(C.walkDist * 1.396)) * 1.7 * vf;
+if (curSheet === 'walk') rot = -2.1 * vf;
+}
+if (C.state === 'idle' && C.settleFrom){
+/* 止まった直後の小さな沈み込み（着地の余韻） */
+if (ts - C.settleFrom < 280){ var sp2 = (ts - C.settleFrom) / 280; sy = 1 - .045 * Math.sin(Math.PI * sp2); sx = 1 + .03 * Math.sin(Math.PI * sp2);}
+else C.settleFrom = 0;
+}
+if (C.turnFrom){
+/* 向きを変えた瞬間の一瞬の縮み（回転の表現） */
+if (ts - C.turnFrom < 160){ var tp = (ts - C.turnFrom) / 160; sx *= 1 - .16 * Math.sin(Math.PI * tp);}
+else C.turnFrom = 0;
+}
+var d = depthScale();
+bobEl.style.transform = 'translateY(' + hopY + '%) rotate(' + rot + 'deg) scale(' + (C.flip * d * sx) + ',' + (d * sy) + ')';
+}
+var FRAME_STEP = 2.25; /* 移動量（%）ごとに歩行1フレーム */
+function charaLoop(ts){
+requestAnimationFrame(charaLoop);
+if (!C.last) C.last = ts;
+var dt = Math.min(0.05, (ts - C.last) / 1000);
+C.last = ts;
+if (reduceMotion){ setSheet('idle'); setFrame(0); return;}
+if (!charaActive()){
+if (C.state!== 'frozen'){
+C.state = 'frozen';
+charaEl.classList.remove('music');
+charaEl.classList.remove('ikebo');
+if (ikeboAudio){ ikeboAudio.pause(); ikeboAudio = null;}
+setSheet('idle'); setFrame(0);
+bobEl.style.transform = '';
+}
+return;
+}
+if (C.state === 'frozen') goIdle(ts, 600, 1400);
+switch (C.state){
+case 'idle':
+if (C.blinkOff && ts >= C.blinkOff){ setFrame(0); C.blinkOff = 0; C.blinkAt = ts + 2200 + Math.random() * 2600;}
+else if (!C.blinkOff && ts >= C.blinkAt){ setFrame(1); C.blinkOff = ts + 130;}
+if (ts >= C.until){
+if (!C.ikeboDone && ts - C.begin > 20000 && Math.random() < 0.06){ startIkebo(ts); break;}
+var r = Math.random();
+var dash = Math.random() < 0.22;
+if (r < 0.40){
+var keys = Object.keys(SPOTS).filter(function(k){ return k!== C.lastAct;});
+var key = keys[Math.floor(Math.random() * keys.length)];
+startWalkTo(SPOTS[key].x, SPOTS[key].y, key, dash);
+} else if (r < 0.58){
+startWalkTo(FLOOR.x0 + Math.random() * (FLOOR.x1 - FLOOR.x0), FLOOR.y0 + Math.random() * (FLOOR.y1 - FLOOR.y0), null, dash);
+} else if (r < 0.68){ startWave(ts);}
+else if (r < 0.76){ startHop(ts, false);}
+else if (r < 0.85){ startStretch(ts);}
+else { startSitRelax(ts);}
+}
+break;
+case 'walk': {
+var dx = C.tx - C.x, dy = C.ty - C.y;
+var distPx = Math.sqrt(dx * dx + Math.pow(dy * 1.326, 2));
+if (distPx < 0.35){
+C.dash = false; C.v = 0; C.settleFrom = ts;
+if (C.actAfter){ var a = C.actAfter; C.actAfter = null; startActivity(a, ts);}
+else goIdle(ts, 2500, 5500);
+} else {
+/* 速度モデル：歩き出しは加速し、目的地が近づくと減速する（等速の直線移動にしない） */
+var maxSp = C.dash ? 10.5 : 5.4;
+var desired = Math.max(.22, Math.min(1, distPx / 2.4));
+C.v += (desired - C.v) * Math.min(1, dt * 4.2);
+var step = Math.min(distPx, maxSp * C.v * dt);
+var f = step / distPx;
+C.x += dx * f; C.y += dy * f;
+C.walkDist += step;
+/* 向き：新しい向きが 180ms 続いてから切り替える（唐突な反転を防ぐ） */
+var fc = faceWalk(dx, dy);
+var fkey = fc.sheet + '/' + fc.flip;
+if (fkey === C.faceKey){ C.faceWant = ''; }
+else if (C.faceWant !== fkey){ C.faceWant = fkey; C.faceSince = ts; }
+else if (ts - C.faceSince > 180){
+var prevFlip = C.flip;
+setSheet(fc.sheet); C.flip = fc.flip; C.faceKey = fkey; C.faceWant = '';
+if (fc.sheet === 'walk' && fc.flip !== prevFlip) C.turnFrom = ts;
+}
+setFrame(Math.floor(C.walkDist / (C.dash ? 1.3 : FRAME_STEP)) % 4);
+setPos();
+}
+break;
+}
+case 'stretch':
+if (C.actFrame === 0 && ts >= C.actNext){ C.actFrame = 1; setFrame(1);}
+if (ts >= C.until) goIdle(ts, 2500, 5000);
+break;
+case 'wave':
+if (ts >= C.waveAt && C.waveStep < 6){
+C.waveStep++; setFrame(C.waveStep % 2); C.waveAt = ts + 210;
+}
+if (ts >= C.until) goIdle(ts, 2500, 5000);
+break;
+case 'hop':
+if (ts - C.hopFrom >= 550){
+var open = C.pendingOpen; C.pendingOpen = false;
+goIdle(ts, 2000, 4500);
+if (open) openPanel('profile');
+}
+break;
+case 'ikebo':
+if (ts >= C.until) endIkebo(ts);
+break;
+case 'game': case 'tv': case 'desk': case 'music': case 'sitrelax':
+if (ts >= C.actNext){
+C.actFrame = (C.actFrame + 1) % 2; setFrame(C.actFrame); C.actNext = ts + actInterval(C.state);
+}
+if (ts >= C.until) endActivity(ts);
+break;
+}
+applyTransform(ts);
+}
+function startChara(){
+if (C.started) return;
+C.started = true;
+C.begin = performance.now();
+setSheet('idle'); setFrame(0); setPos();
+C.until = performance.now() + 1600;
+C.blinkAt = performance.now() + 1800;
+requestAnimationFrame(charaLoop);
+}
+/* ---------- 輪郭線のヒント：背景タップで全体が短くうっすら光る（常駐させない） ---------- */
+var stageEl = document.getElementById('stage');
+var hintTimer = 0;
+function hintRings(){
+if (reduceMotion) return;
+stageEl.classList.remove('hint');
+void stageEl.offsetWidth;
+stageEl.classList.add('hint');
+clearTimeout(hintTimer);
+hintTimer = setTimeout(function(){ stageEl.classList.remove('hint');}, 950);
+}
+
+/* ---------- 時間帯：吹き出しのあいさつだけに使う（部屋の色味ティントは撤去済み） ---------- */
+function todKey(){
+var h = new Date().getHours();
+if (h >= 5 && h < 11) return 'morning';
+if (h >= 11 && h < 16) return 'day';
+if (h >= 16 && h < 19) return 'evening';
+return 'night';
+}
+function greetingLine(){
+var k = todKey();
+if (k === 'morning') return 'おはよう';
+if (k === 'day') return 'こんにちは';
+return 'こんばんは';
+}
+
+/* ---------- 吹き出し：短い一言だけ。キャラはタップ時＋活動の節目（間引きあり）、スンスンは声と同時のみ ---------- */
+var charaBubble = document.getElementById('charaBubble');
+var sunBubble = document.getElementById('sunBubble');
+var charaBubbleTimer = 0, lastCharaSay = 0;
+var ACT_LINES = {game:'ゲームしてる', tv:'テレビ見てる', music:'曲きいてる', desk:'つくってる', sitrelax:'ひとやすみ'};
+function bubbleShow(el, text){
+el.textContent = text;
+el.classList.remove('show');
+void el.offsetWidth;
+el.classList.add('show');
+}
+function charaSay(text, force){
+if (!text) return;
+var now = performance.now();
+if (!force && now - lastCharaSay < 18000) return;
+lastCharaSay = now;
+bubbleShow(charaBubble, text);
+clearTimeout(charaBubbleTimer);
+charaBubbleTimer = setTimeout(function(){ charaBubble.classList.remove('show');}, 2500);
+}
+function sunSay(text){ bubbleShow(sunBubble, text);}
+function sunHush(){ sunBubble.classList.remove('show');}
+
+/* ---------- 遊び：床の素の部分をタップすると、キャラがそこまで歩く ---------- */
+var tapmarkEl = document.getElementById('tapmark');
+var charaOpenTimer = 0;
+function showTapmark(px, py){
+if (reduceMotion) return;
+tapmarkEl.style.left = px + '%';
+tapmarkEl.style.bottom = py + '%';
+tapmarkEl.classList.remove('go');
+void tapmarkEl.offsetWidth;
+tapmarkEl.classList.add('go');
+}
+function walkToTap(px, py){
+if (C.state === 'ikebo' || C.state === 'hop') return;
+clearTimeout(charaOpenTimer);
+charaEl.classList.remove('music');
+var w = (SHEETS[curSheet] && SHEETS[curSheet].w) || 14.5;
+startWalkTo(px - w / 2, py, null, false);
+showTapmark(px, py);
+}
+
+/* キャラのタップ：#chara は pointer-events:none（物のタップを通す）ため、
+   背景クリックの座標でキャラ本体に当たったか判定する。
+   タップ時はあいさつの吹き出しを出してから、少し遅れてプロフィールを開く */
+function charaTap(){
+if (C.state === 'hop' || C.state === 'ikebo') return;
+charaSay(greetingLine(), true);
+if (reduceMotion){ openPanel('profile'); return;}
+startHop(performance.now(), false);
+clearTimeout(charaOpenTimer);
+charaOpenTimer = setTimeout(function(){
+if (!scrim.classList.contains('on') && !storageOpen) openPanel('profile');
+}, 1350);
+}
+/* ---------- 当たり判定：ゾーン解決（ステージへの capture で背景ハンドラより先に判定） ----------
+   重なる場所では「見た目で手前にある物」が必ず勝つよう、タップ位置を優先順位つきの
+   ゾーンで解決する。ゾーンは各オブジェクトの見た目の矩形（live rect）を少し広げた範囲で、
+   最小44px相当を確保する。ドアだけは箱ではなく、透視で描かれた四角形そのもので判定する。
+   ゾーン外のタップは従来どおり、下の背景ハンドラ（床＝歩行／壁＝ヒント）へ流す。
+   優先順位（手前→奥）：キャラ／スピーカー／スンスン／ポスト／ドア／ゲーム機／植物／机／テレビ */
+var HIT_MIN = 44, HIT_PAD = 6;
+var zbBusy = false;
+function zbRect(el, pl, pr, pt, pb){
+var r = el.getBoundingClientRect();
+var x1 = r.left - pl, x2 = r.right + pr, y1 = r.top - pt, y2 = r.bottom + pb;
+if (x2 - x1 < HIT_MIN){ var cx = (x1 + x2) / 2; x1 = cx - HIT_MIN / 2; x2 = cx + HIT_MIN / 2; }
+if (y2 - y1 < HIT_MIN){ var cy = (y1 + y2) / 2; y1 = cy - HIT_MIN / 2; y2 = cy + HIT_MIN / 2; }
+return {x1: x1, x2: x2, y1: y1, y2: y2};
+}
+function zbIn(r, x, y){ return x >= r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2; }
+/* ドア：clip-path と同じ斜め四角形（上辺 v=.353u／下辺 v=.647+.353u、vは上からの比率）で判定 */
+function zbDoorHit(x, y){
+var r = doorBtn.getBoundingClientRect();
+if (!r.width || !r.height) return false;
+var pad = HIT_PAD + 2;
+if (x < r.left - pad || x > r.right + pad || y < r.top - pad || y > r.bottom + pad) return false;
+var u = (x - r.left) / r.width, v = (y - r.top) / r.height;
+var dv = pad / r.height;
+return v >= 0.353 * u - dv && v <= 0.647 + 0.353 * u + dv;
+}
+function zbResolve(x, y){
+var cr = charaEl.getBoundingClientRect();
+if (x > cr.left + cr.width * 0.08 && x < cr.right - cr.width * 0.08 &&
+y > cr.top + cr.height * 0.03 && y < cr.bottom + 6) return 'chara';
+if (zbIn(zbRect(document.getElementById('obj-speaker'), 7, 7, 7, 7), x, y)) return 'obj-speaker';
+if (zbIn(zbRect(sunsunBtn, HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'sunsun';
+if (zbIn(zbRect(document.getElementById('obj-post'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-post';
+if (zbDoorHit(x, y)) return 'obj-door';
+if (zbIn(zbRect(document.getElementById('obj-game'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-game';
+if (zbIn(zbRect(plantEl, 16, 5, 6, 6), x, y)) return 'plantHit';
+if (zbIn(zbRect(document.getElementById('obj-desk'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-desk';
+if (zbIn(zbRect(document.getElementById('obj-tv'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-tv';
+return null;
+}
+stageEl.addEventListener('click', function(e){
+if (zbBusy || !entered || storageOpen) return;
+if (!e.detail) return; /* キーボード／プログラム発火の click は従来の経路へ */
+if (scrim.classList.contains('on')) return;
+var win = zbResolve(e.clientX, e.clientY);
+if (!win) return; /* ゾーン外：床歩行／壁ヒントは背景ハンドラへ */
+if (win === 'chara'){
+e.stopPropagation();
+e.preventDefault();
+charaTap();
+return;
+}
+var el = document.getElementById(win);
+var cur = (e.target && e.target.closest) ? e.target.closest('button, a') : null;
+if (cur === el) return; /* 自然な対象と一致していればそのまま流す */
+e.stopPropagation();
+e.preventDefault();
+el.classList.add('zbp');
+setTimeout(function(){ el.classList.remove('zbp'); }, 180);
+zbBusy = true;
+el.click();
+zbBusy = false;
+}, true);
+
+/* 背景タップの判定順序：⓪ゾーン解決（上の capture）→①物・リンク（各要素のハンドラ／ここでは除外）→②キャラ本体（ゾーンの取りこぼし用）→③ヒーロー→④床の素の部分＝歩行→⑤壁側＝ヒント */
+document.addEventListener('click', function(e){
+if (!entered) return;
+if (storageOpen) return;
+if (scrim.classList.contains('on')) return;
+if (e.target.closest('button, a, .panel')) return;
+var r = charaEl.getBoundingClientRect();
+if (e.clientX > r.left + r.width * 0.08 && e.clientX < r.right - r.width * 0.08 &&
+e.clientY > r.top + r.height * 0.03 && e.clientY < r.bottom + 6){
+charaTap();
+return;
+}
+if (e.target.closest('#hero')) return;
+var sr = stageEl.getBoundingClientRect();
+var px = (e.clientX - sr.left) / sr.width * 100;
+var py = (sr.bottom - e.clientY) / sr.height * 100;
+if (!reduceMotion && px >= 0 && px <= 100 && py >= 0 && py <= 24.5){
+walkToTap(px, py);
+} else {
+hintRings();
+}
+});
+
+/* ---------- スンスン：押すと喋る ---------- */
+var sunsunBtn = document.getElementById('sunsun');
+var VOICES = ['assets/voice/sun-1.mp3','assets/voice/sun-2.mp3','assets/voice/sun-3.mp3','assets/voice/sun-4.mp3'];
+/* 声クリップの文そのままを吹き出しに出す（VOICES と同じ順） */
+var SUN_LINES = ['僕の名前はやトやです。よろしくお願いします。','今日はみんなに会えてとっても嬉しいです','バンボ、ボンボビ。','あの、皆さんこんばんは。にゃめやです。'];
+var SUN_RARE_LINE = '僕の名前はや乙女咲やです。よろしくお願いします。';
+var sunAudio = null, lastVoice = -1;
+var RARE_VOICE = 'assets/voice/sun-rare.mp3';
+window.SUNSUN = {playing:false, src:'', el:null, rare:false};
+function stopSun(){
+window.SUNSUN.playing = false;
+window.SUNSUN.rare = false;
+sunsunBtn.classList.remove('talking');
+sunsunBtn.classList.remove('rare');
+sunHush();
+}
+/* スンスンのたまの動き：低頻度で、傾く・揺れる・小さく跳ねる。喋っている間は出さない */
+var SUN_IDLES = ['idle-tilt','idle-sway','idle-hop'];
+var sunIdleTimer = 0;
+function scheduleSunIdle(){
+clearTimeout(sunIdleTimer);
+sunIdleTimer = setTimeout(sunIdleTick, 9000 + Math.random() * 8000);
+}
+function sunIdleTick(){
+if (!reduceMotion && entered && !document.hidden && !storageOpen && !sunsunBtn.classList.contains('talking')){
+var cls = SUN_IDLES[Math.floor(Math.random() * SUN_IDLES.length)];
+sunsunBtn.classList.add(cls);
+setTimeout(function(){ sunsunBtn.classList.remove(cls);}, 3600);
+}
+scheduleSunIdle();
+}
+sunsunBtn.addEventListener('click', function(){
+SUN_IDLES.forEach(function(c){ sunsunBtn.classList.remove(c);});
+var isRare = Math.random() < 0.10;
+var src, line;
+if (isRare){
+src = RARE_VOICE;
+line = SUN_RARE_LINE;
+} else {
+var i = Math.floor(Math.random() * VOICES.length);
+if (VOICES.length > 1 && i === lastVoice) i = (i + 1) % VOICES.length;
+lastVoice = i;
+src = VOICES[i];
+line = SUN_LINES[i];
+}
+if (sunAudio){ sunAudio.pause();}
+sunAudio = new Audio(src);
+sunSay(line);
+window.SUNSUN.src = src;
+window.SUNSUN.rare = isRare;
+sunsunBtn.classList.toggle('rare', isRare);
+window.SUNSUN.el = sunAudio;
+window.SUNSUN.playing = true;
+sunsunBtn.classList.add('talking');
+sunAudio.addEventListener('ended', stopSun);
+sunAudio.addEventListener('error', stopSun);
+var p = sunAudio.play();
+if (p && p.catch) p.catch(stopSun);
+});
+
+/* ---------- テレビ：たまにチャンネルが切り替わる（ザッピング） ---------- */
+var tvScreenEl = document.querySelector('#obj-tv .tv-screen');
+var tvScenes = document.querySelectorAll('#obj-tv .tv-scene');
+var tvCh = 0;
+function tvZap(){
+if (!reduceMotion && entered && !document.hidden && tvScenes.length > 1){
+var next = (tvCh + 1 + Math.floor(Math.random() * (tvScenes.length - 1))) % tvScenes.length;
+tvScreenEl.style.transition = 'filter .09s linear';
+tvScreenEl.style.filter = 'brightness(.45) saturate(.6)';
+setTimeout(function(){
+tvScenes[tvCh].classList.remove('on');
+tvCh = next;
+tvScenes[tvCh].classList.add('on');
+tvScreenEl.style.transition = 'filter .32s ease-out';
+tvScreenEl.style.filter = 'brightness(1.12)';
+setTimeout(function(){ tvScreenEl.style.filter = '';}, 340);
+}, 110);
+}
+setTimeout(tvZap, 15000 + Math.random() * 11000);
+}
+setTimeout(tvZap, 8000);
+
+/* ---------- 作品置き場 ---------- */
+var storageView = document.getElementById('storageView');
+var storageOpen = false, pushedStorage = false, storageTourTimer = 0;
+/* 作品リスト：ここに1件足すと、物の形・カテゴリ・最新欄まで自動で付く
+   cat: game=ゲームケース / music=CDケース / site=本・アルバム
+   featured: true で「おすすめ」欄入り / date: 'YYYY-MM-DD' があれば最新欄は日付順、無ければ並び順（後ろ＝新しい） */
+var WORKS = [
+{id:'yukagen', title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, date:'2026-11-18', href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'../assets/parts/work-yukagen.webp'},
+{id:'kani', title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'../assets/parts/work-kani.webp'},
+{id:'ebikani', title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', date:'2026-10-18', href:'https://sakiyayoi.github.io/ebi-kani/', img:'../assets/parts/work-ebi.webp'},
+{id:'sobaniite', title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'../assets/parts/hero-song-real.webp'},
+{id:'karappo', title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'../assets/parts/work-ai.webp'},
+{id:'anniv', title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'../assets/parts/work-anniv.webp'},
+{id:'usagori', title:'うさぎ、ゴリラを殴る。3D', kind:'ゲーム', cat:'game', tag:'', featured:true, isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/usagori3d/', img:'../assets/parts/work-usagori.webp'},
+{id:'fairytale', title:'童話キャラ16タイプ診断', kind:'診断', cat:'site', tag:'', isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/fairytale-type16/', img:'../assets/parts/work-fairytale.webp'}
+];
+var KANI_SVG = '<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>';
+var CAT_LABEL = {game:'ゲーム', music:'曲・MV', site:'サイト'};
+var CAT_ORDER = ['game', 'music', 'site'];
+var KIND_TO_CAT = {'ゲーム':'game', '曲・MV':'music', '曲':'music', 'サイト':'site'};
+function catOf(w){ return w.cat || KIND_TO_CAT[w.kind] || 'game'; }
+var CAT_FORM = {game:'game', music:'cd', site:'book'};
+function workHTML(w){
+var cat = catOf(w);
+var form = CAT_FORM[cat] || 'game';
+var face = w.img
+? '<img src="' + w.img + '" alt="" loading="lazy" decoding="async">'
+: '<span class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></span>';
+var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
+var cheer = w.id ? '<button type="button" class="cheer" data-cheer="' + w.id + '" aria-label="' + w.title + 'を応援する"><span class="c-heart" aria-hidden="true">♥</span>応援<span class="cheer-n">…</span></button>' : '';
+var badge = '';
+var wdate = w.date ? '<span class="wdate">' + w.date.replace(/-/g,'.') + ' 公開</span>' : '';
+return '<div class="work">'
++ '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
++ '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>' + badge
++ '<span class="wttl">' + w.title + '</span>'
++ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' + wdate + '</a>'
++ cheer + '</div>';
+}
+function shelvesHTML(list){
+var html = '';
+for (var i = 0; i < list.length; i += 3){
+html += '<div class="shelf"><div class="shelf-items">'
++ list.slice(i, i + 3).map(workHTML).join('')
++ '</div><div class="shelf-board"></div></div>';
+}
+return html;
+}
+function sectionHTML(label, list){
+return '<div class="storage-sec"><div class="sec-head">' + label + '</div>' + shelvesHTML(list) + '</div>';
+}
+function latestWorks(){
+var arr = WORKS.map(function(w, i){ return {w:w, i:i}; });
+arr.sort(function(a, b){
+var da = a.w.date || '', db = b.w.date || '';
+if (da && db) return da < db ? 1 : (da > db ? -1 : b.i - a.i);
+if (da) return -1;
+if (db) return 1;
+return b.i - a.i;
+});
+return arr.slice(0, 3).map(function(x){ return x.w; });
+}
+var hydrateCheersFn = null; /* 動的レイヤー（応援カウンター）が末尾で差し込む */
+var curCat = 'all';
+var shelvesEl = document.getElementById('shelves');
+var tabsEl = document.getElementById('storageTabs');
+function renderTabs(){
+var cats = CAT_ORDER.filter(function(c){
+return WORKS.some(function(w){ return catOf(w) === c; });
+});
+var html = '<button type="button" data-cat="all"' + (curCat === 'all' ? ' class="on"' : '') + '>全部</button>';
+cats.forEach(function(c){
+html += '<button type="button" data-cat="' + c + '"' + (curCat === c ? ' class="on"' : '') + '>' + CAT_LABEL[c] + '</button>';
+});
+tabsEl.innerHTML = html;
+}
+function renderStorage(){
+var html = '';
+if (curCat === 'all'){
+var feat = WORKS.filter(function(w){ return w.featured; });
+if (feat.length) html += sectionHTML('<b>おすすめ</b>', feat);
+html += sectionHTML('<b>最新</b>', latestWorks());
+html += sectionHTML('ぜんぶの作品', WORKS);
+html += '<p class="bonus-next">最終更新 2026.11.23｜新作2本追加</p>';
+} else {
+var list = WORKS.filter(function(w){ return catOf(w) === curCat; });
+html += sectionHTML(CAT_LABEL[curCat] || curCat, list);
+}
+shelvesEl.innerHTML = html;
+shelvesEl.scrollTop = 0;
+renderTabs();
+if (hydrateCheersFn) hydrateCheersFn();
+}
+tabsEl.addEventListener('click', function(e){
+var btn = e.target.closest ? e.target.closest('button[data-cat]') : null;
+if (!btn) return;
+curCat = btn.getAttribute('data-cat');
+renderStorage();
+});
+renderStorage();
+function showStorage(){
+if (storageOpen) return;
+storageOpen = true;
+storageView.classList.add('on');
+storageView.setAttribute('aria-hidden','false');
+room.setAttribute('aria-hidden','true');
+/* 置き場でも輪郭線は最初だけ：薄く見せてからフェードアウトさせる */
+storageView.classList.add('touring');
+clearTimeout(storageTourTimer);
+storageTourTimer = setTimeout(function(){ storageView.classList.remove('touring');}, 2600);
+}
+function hideStorage(){
+if (!storageOpen) return;
+storageOpen = false;
+storageView.classList.remove('on');
+storageView.setAttribute('aria-hidden','true');
+if (entered) room.setAttribute('aria-hidden','false');
+}
+function goStorage(){
+if (storageOpen) return;
+if (location.hash!== '#storage'){
+pushedStorage = true;
+location.hash = 'storage';
+} else {
+showStorage();
+}
+}
+/* プロフィールの「作品置き場へ」：パネルを閉じて置き場へ（遷移は hash 連動 syncFromHash に任せる） */
+document.getElementById('profWorks').addEventListener('click', function(){ goStorage(); });
+document.getElementById('storageDoor').addEventListener('click', function(){
+if (pushedStorage){
+pushedStorage = false;
+history.back();
+} else {
+history.replaceState(null, '', location.pathname + location.search);
+hideStorage();
+}
+});
+/* 置き場の背景タップ：作品の輪郭線が短くうっすら光るヒント（部屋と同じ扱い） */
+document.getElementById('storageStage').addEventListener('click', function(e){
+if (e.target.closest && e.target.closest('.work, button, a, #storageTabs')) return;
+if (reduceMotion) return;
+storageView.classList.remove('hint');
+void storageView.offsetWidth;
+storageView.classList.add('hint');
+setTimeout(function(){ storageView.classList.remove('hint');}, 950);
+});
+
+/* ---------- 右のドア：開いて置き場へ ---------- */
+var doorBtn = document.getElementById('obj-door');
+var doorBusy = false;
+doorBtn.addEventListener('click', function(){
+if (doorBusy || storageOpen) return;
+doorBusy = true;
+doorBtn.classList.add('opening');
+setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 820);
+setTimeout(function(){ doorBtn.classList.remove('opening'); doorBusy = false;}, 1500);
+});
+
+/* ---------- 隠し要素：植物を5回タップで花 ---------- */
+var plantEl = document.getElementById('plant');
+var plantTaps = 0, plantTimer = 0, plantBloomed = false;
+document.getElementById('plantHit').addEventListener('click', function(){
+if (plantBloomed) return;
+plantTaps++;
+plantEl.classList.remove('tapwiggle');
+void plantEl.offsetWidth;
+plantEl.classList.add('tapwiggle');
+clearTimeout(plantTimer);
+plantTimer = setTimeout(function(){ plantTaps = 0;}, 2600);
+if (plantTaps >= 5){
+plantBloomed = true;
+plantEl.classList.add('bloomed');
+}
+});
+
+/* ---------- 動的レイヤー v2 ----------
+   裏側は「部屋API」（ChatGPT Sites）https://sakiya-counter-lab.sakiyayoi.chatgpt.site に一本化。
+   応援メッセージ：表示は GET /api/messages（承認済みのみが返る）。
+   投稿は POST /api/messages で未承認として保存され、確認してから飾られる。
+   応援カウンター：GET /api/likes（作品別の件数マップ）／ POST /api/likes {"work":作品id} で+1。
+   外部が落ちても本体は壊れない：失敗したら、その機能だけ静かに消える／空表示のままにする */
+var ROOM_API = 'https://sakiya-counter-lab.sakiyayoi.chatgpt.site';
+function escHTML(s){
+return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+});
+}
+function apiFetch(path, opts){
+opts = opts || {};
+var ctl = ('AbortController' in window) ? new AbortController() : null;
+var timer = ctl ? setTimeout(function(){ ctl.abort(); }, 8000) : 0;
+var init = {method: opts.method || 'GET'};
+if (ctl) init.signal = ctl.signal;
+if (opts.body){ init.headers = {'Content-Type':'application/json'}; init.body = JSON.stringify(opts.body); }
+return fetch(ROOM_API + path, init).then(function(r){
+if (timer) clearTimeout(timer);
+if (!r.ok) throw new Error('ng');
+return r.json();
+}, function(err){
+if (timer) clearTimeout(timer);
+throw err;
+});
+}
+function loadMessages(){
+var list = document.getElementById('msgList');
+if (!list || !window.fetch) return;
+apiFetch('/api/messages').then(function(data){
+var msgs = (data && data.messages) || [];
+if (!msgs.length) return; /* 0件の間は静的フォールバック（空表示）のまま */
+var html = '';
+for (var i = msgs.length - 1; i >= 0; i--){
+var m = msgs[i];
+html += '<div class="msg-card"><div class="msg-head">'
++ '<span class="msg-name">' + escHTML(m.name || 'ななしさん') + '</span>'
++ (m.to ? '<span class="msg-to">' + escHTML(m.to) + '</span>' : '')
++ '</div><div class="msg-text">' + escHTML(m.text || '') + '</div>'
++ (m.date ? '<div class="msg-date">' + escHTML(m.date) + '</div>' : '')
++ '</div>';
+}
+list.innerHTML = html;
+}).catch(function(){ /* 読めなくても空表示のまま（本体は壊れない） */ });
+}
+var cheerState = {};
+var likesMap = null;      /* GET /api/likes の結果（作品id → 件数） */
+var likesLoading = false;
+function fetchLikes(isRetry){
+if (likesLoading) return;
+likesLoading = true;
+apiFetch('/api/likes').then(function(map){
+likesLoading = false;
+likesMap = map || {};
+Object.keys(cheerState).forEach(function(id){
+var v = likesMap[id];
+cheerState[id].n = (typeof v === 'number') ? v : 0; /* マップに無い作品はまだ0 */
+paintCheer(id);
+});
+}).catch(function(){
+likesLoading = false;
+if (!isRetry){
+/* 一過性の失敗かもしれないので1回だけ間を置いて再試行し、それでも駄目なら静かに消す */
+setTimeout(function(){ fetchLikes(true); }, 1500);
+} else {
+Object.keys(cheerState).forEach(function(id){
+cheerState[id].off = true; /* APIが落ちていたら、応援だけ静かに消す */
+paintCheer(id);
+});
+}
+});
+}
+function paintCheer(id){
+var st = cheerState[id];
+document.querySelectorAll('button.cheer[data-cheer="' + id + '"]').forEach(function(btn){
+if (!st || st.off){ btn.classList.add('off'); return; }
+btn.classList.toggle('done', !!st.done);
+btn.disabled = !!st.done;
+var n = btn.querySelector('.cheer-n');
+if (n) n.textContent = (st.n === null) ? '…' : String(st.n);
+});
+}
+function hydrateCheers(){
+if (!window.fetch) {
+document.querySelectorAll('button.cheer').forEach(function(b){ b.classList.add('off'); });
+return;
+}
+document.querySelectorAll('button.cheer[data-cheer]').forEach(function(btn){
+var id = btn.getAttribute('data-cheer');
+var st = cheerState[id];
+if (!st){
+st = cheerState[id] = {n:null, done:false, off:false, busy:false};
+try { st.done = sessionStorage.getItem('cheered:' + id) === '1'; } catch(e){}
+if (likesMap){
+var v = likesMap[id];
+st.n = (typeof v === 'number') ? v : 0;
+}
+}
+paintCheer(id);
+});
+if (!likesMap) fetchLikes(false); /* 件数は全作品まとめて1回だけ取りに行く */
+}
+function cheerUp(id){
+var st = cheerState[id];
+if (!st || st.done || st.busy || st.off) return;
+st.busy = true;
+apiFetch('/api/likes', {method:'POST', body:{work:id}}).then(function(res){
+st.busy = false;
+/* 返り値の形（作品別マップ／count／value 等）を吸収し、読めなければ手元で+1する */
+var v = null;
+if (res){
+if (typeof res[id] === 'number') v = res[id];
+else if (typeof res.count === 'number') v = res.count;
+else if (typeof res.value === 'number') v = res.value;
+else if (typeof res.likes === 'number') v = res.likes;
+}
+st.n = (v !== null) ? v : ((st.n || 0) + 1);
+if (likesMap) likesMap[id] = st.n;
+st.done = true;
+try { sessionStorage.setItem('cheered:' + id, '1'); } catch(e){}
+paintCheer(id);
+document.querySelectorAll('button.cheer[data-cheer="' + id + '"]').forEach(function(b){
+b.classList.remove('pop');
+void b.offsetWidth;
+b.classList.add('pop');
+});
+}).catch(function(){
+st.busy = false;
+st.off = true;
+paintCheer(id);
+});
+}
+shelvesEl.addEventListener('click', function(e){
+var btn = e.target.closest ? e.target.closest('button.cheer') : null;
+if (!btn) return;
+e.preventDefault();
+cheerUp(btn.getAttribute('data-cheer'));
+});
+hydrateCheersFn = hydrateCheers;
+hydrateCheers();
+loadMessages();
+
+/* 応援メッセージの投稿：部屋APIへ直接送る（未承認で保存され、確認してから飾られる） */
+var msgForm = document.getElementById('msgForm');
+if (msgForm){
+msgForm.addEventListener('submit', function(e){
+e.preventDefault();
+var nameEl = document.getElementById('msgName');
+var textEl = document.getElementById('msgText');
+var btn = document.getElementById('msgSubmit');
+var status = document.getElementById('msgStatus');
+var text = (textEl.value || '').trim();
+if (!text){
+status.textContent = 'メッセージを書いてから送ってね。';
+status.classList.remove('ok');
+return;
+}
+if (btn.disabled) return;
+btn.disabled = true;
+status.textContent = '送っています…';
+status.classList.remove('ok');
+apiFetch('/api/messages', {method:'POST', body:{name:(nameEl.value || '').trim(), text:text}}).then(function(){
+btn.disabled = false;
+textEl.value = '';
+status.textContent = 'ありがとう！内容を確認してから、ここに飾られます。';
+status.classList.add('ok');
+}).catch(function(){
+btn.disabled = false;
+status.textContent = '今は送れなかったみたい。時間をおいて、もう一度試してみてね。';
+status.classList.remove('ok');
+});
+});
+}
+
+
+/* ---------- ログインボーナス（端末ローカル記録） ---------- */
+var BONUS_KEY='sakiya_bonus_v1';
+var BONUS_LINES=['今日も来てくれてありがとう。今夜22時の配信で会おうね。','スンスンが喜んでる。ポイントゲット！','いい調子。そのまま作品も触ってみて。','レアな日かも。今日は運がいいよ。'];
+function bonusTodayStr(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function bonusLoad(){ try{ return JSON.parse(localStorage.getItem(BONUS_KEY))||{}; }catch(e){ return {}; } }
+function bonusSave(s){ try{ localStorage.setItem(BONUS_KEY, JSON.stringify(s)); }catch(e){} }
+function bonusState(){ var s=bonusLoad(); return {last:s.last||'', streak:s.streak||0, points:s.points||0, total:s.total||0, days:s.days||[]}; }
+function bonusRender(){
+  var st=bonusState(); var today=bonusTodayStr(); var claimed=st.last===today;
+  var t=document.getElementById('bonusToday'); if(t) t.textContent='今日は '+today.replace(/-/g,'.')+'。'+(claimed?'今日の分は受取済みだよ。':'まだ受け取れるよ！');
+  document.getElementById('bonusStreak').textContent=st.streak;
+  document.getElementById('bonusPoints').textContent=st.points;
+  document.getElementById('bonusTotal').textContent=st.total;
+  var wrap=document.getElementById('bonusStamps'); var html='';
+  for(var i=6;i>=0;i--){ var d=new Date(); d.setDate(d.getDate()-i); var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); var got=st.days.indexOf(ds)>=0; html+='<div class="bonus-stamp'+(got?' got':'')+(i===0?' today':'')+'"><span class="s-emoji">'+(got?'🎁':'・')+'</span>'+(d.getMonth()+1)+'/'+d.getDate()+(got?'<span class="getlbl">GET!</span>':'')+'</div>'; }
+  wrap.innerHTML=html;
+  var btn=document.getElementById('bonusClaim'); btn.disabled=claimed; btn.textContent=claimed?'受取済み｜明日また来てね':'🎁 ボーナスを受け取る！';
+  var bb=document.getElementById('bonusBtn'); if(bb) bb.classList.toggle('claimed', claimed);
+}
+document.getElementById('bonusClaim').addEventListener('click', function(){
+  var st=bonusState(); var today=bonusTodayStr(); if(st.last===today){ bonusRender(); return; }
+  var y=new Date(); y.setDate(y.getDate()-1); var ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');
+  st.streak = (st.last===ys) ? st.streak+1 : 1;
+  var pts = st.streak>=7 ? 100 : [10,20,30,50][Math.floor(Math.random()*4)];
+  st.points+=pts; st.total+=1; st.last=today; st.days=(st.days||[]).concat([today]).slice(-30);
+  bonusSave(st);
+  var line = st.streak>=7 ? '7日連続！特別報酬100ポイント！' : BONUS_LINES[Math.floor(Math.random()*BONUS_LINES.length)];
+  var r=document.getElementById('bonusReward'); r.innerHTML='<b>+'+pts+'ポイント</b>（'+st.streak+'日連続）<br>'+line+'<br><a href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" style="color:var(--pink);font-weight:800">今夜22時 Mirrativで会う →</a>';
+  r.classList.remove('show'); void r.offsetWidth; r.classList.add('show');
+  bonusRender();
+});
+bonusRender();
+
+
+/* ---------- オープニング ---------- */
+(function(){ var op=document.getElementById('opening'); if(!op) return; var hid=false;
+function hide(){ if(hid) return; hid=true; op.classList.add('hide'); setTimeout(function(){ op.remove(); },700); }
+op.addEventListener('click', hide); setTimeout(hide, 2100); })();
+
+/* ---------- 歌リクエスト文コピー ---------- */
+var reqBtn=document.getElementById('reqCopy');
+if(reqBtn) reqBtn.addEventListener('click', function(){
+  var txt='【歌リクエスト】曲名： ／ アーティスト： ';
+  function done(){ document.getElementById('reqDone').textContent='コピーしたよ'; }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, done); } else { done(); }
+});
+
+/* ---------- 今日の運勢（1日1回・大吉で+10pt） ---------- */
+var FORTUNES=[['大吉','今日は配信も創作も絶好調。まず1つ動かそう。'],['中吉','いい流れ。手をつけた分だけ進む日。'],['小吉','小さく勝てる日。1つ終わらせると気持ちいい。'],['吉','穏やかな日。無理せず、でも止まらずに。'],['末吉','後半に運が来る日。夜の配信が山場かも。']];
+function fortuneRender(){
+  var s=bonusLoad(); var f=s.fortune||{}; var today=bonusTodayStr();
+  var btn=document.getElementById('fortuneBtn'); if(!btn) return;
+  if(f.date===today){ btn.disabled=true; btn.textContent='今日はもう引いたよ';
+    document.getElementById('fortuneRes').textContent=f.result;
+    document.getElementById('fortuneLine').textContent=f.line||''; }
+}
+var fBtn=document.getElementById('fortuneBtn');
+if(fBtn) fBtn.addEventListener('click', function(){
+  var s=bonusLoad(); var today=bonusTodayStr(); if(s.fortune && s.fortune.date===today){ fortuneRender(); return; }
+  var pick=FORTUNES[Math.floor(Math.random()*FORTUNES.length)];
+  var line=pick[1]; if(pick[0]==='大吉'){ s.points=(s.points||0)+10; line+='（大吉ボーナス +10ポイント）'; }
+  s.fortune={date:today, result:pick[0], line:pick[1]}; bonusSave(s);
+  document.getElementById('fortuneRes').textContent=pick[0];
+  document.getElementById('fortuneLine').textContent=line;
+  bonusRender(); fortuneRender();
+});
+fortuneRender();
+
+document.getElementById('enterBtn').addEventListener('click', enter);
+document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
+el.addEventListener('click', function(){ openPanel(el.getAttribute('data-panel'));});
+});
+document.querySelectorAll('[data-close]').forEach(function(el){
+el.addEventListener('click', function(){ closePanels();});
+});
+scrim.addEventListener('click', function(){ closePanels();});
+PANELS.forEach(function(p){
+var el = panelEl(p);
+var startY = null;
+el.addEventListener('touchstart', function(e){ startY = e.touches[0].clientY;}, {passive:true});
+el.addEventListener('touchend', function(e){
+if (startY === null) return;
+var dy = e.changedTouches[0].clientY - startY;
+startY = null;
+if (dy > 60 && el.scrollTop <= 0) closePanels();
+}, {passive:true});
+});
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closePanels();});
+window.addEventListener('hashchange', syncFromHash);
+
+// 初期状態：#hash があれば玄関を飛ばして部屋＋パネル、?enter=1 でも入室
+var params = new URLSearchParams(location.search);
+if (location.hash || params.get('enter') === '1') enter();
+syncFromHash();
+})();
+</script>
+</body>
+</html>
