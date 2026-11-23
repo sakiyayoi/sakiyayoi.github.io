@@ -560,6 +560,43 @@ background:var(--purple);border-radius:99px;padding:3px 9px;white-space:nowrap;
 .face.f-ebi{background:linear-gradient(120deg,#8b3dff,#ff2e88)}
 .face.f-usagori{background:linear-gradient(120deg,#ff783c,#ff2e88)}
 .face.f-fairy{background:linear-gradient(120deg,#8b3dff,#39c2ff)}
+.new-badge{position:absolute;top:10px;left:10px;z-index:2;background:#ffcf4d;color:#2b2430;font-size:11px;font-weight:800;letter-spacing:.14em;border-radius:99px;padding:4px 10px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
+.card{position:relative}
+.work .new-badge{top:8px;left:8px}
+.wdate{display:block;text-align:center;font-size:11px;color:var(--sub);font-weight:700;margin-top:4px;letter-spacing:.04em}
+.storage-updated{position:absolute;top:5.6%;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.14em;color:var(--sub);font-weight:700}
+#liveBtn{position:absolute;left:4%;top:6.2%;z-index:5;display:flex;align-items:center;gap:7px;background:linear-gradient(120deg,var(--pink),var(--purple));color:#fff;font-size:13.5px;font-weight:800;letter-spacing:.04em;border-radius:99px;padding:11px 15px;box-shadow:0 5px 16px rgba(255,46,136,.4);text-decoration:none;transition:transform var(--t-press) var(--ease-out)}
+#liveBtn:active{transform:scale(.94)}
+#liveBtn .live-dot{width:9px;height:9px;border-radius:50%;background:#fff;flex:none;animation:lampBreathe 1.8s ease-in-out infinite}
+.sticker{position:absolute;right:10px;top:10px;z-index:2;width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 3px 10px rgba(43,36,48,.25);display:flex;align-items:center;justify-content:center;font-size:22px;transform:rotate(8deg)}
+.card{border:2px solid #ffe3f0;border-radius:20px;overflow:hidden;background:#fff;box-shadow:0 6px 16px rgba(43,36,48,.08);margin-bottom:12px;display:block;text-decoration:none}
+.card .face{border-radius:0}
+.work .obj3d{border-radius:12px}
+.hero-live-badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--pink);color:#fff;font-size:11px;font-weight:800;letter-spacing:.1em;border-radius:99px;padding:5px 11px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
+.mirrativ-updated{font-size:11px;color:var(--sub);font-weight:700}
+.hero-new{position:absolute;top:10px;left:10px;z-index:2;background:#ffcf4d;color:#2b2430;font-size:11px;font-weight:800;letter-spacing:.14em;border-radius:99px;padding:4px 10px;box-shadow:0 2px 8px rgba(43,36,48,.25)}
+.meta .date{font-size:11px;color:var(--sub);font-weight:700;white-space:nowrap}
+#bonusBtn{position:absolute;right:4%;top:6.2%;z-index:5;display:flex;align-items:center;gap:7px;background:#ffcf4d;color:#2b2430;font-size:13px;font-weight:800;letter-spacing:.04em;border-radius:99px;padding:10px 14px;box-shadow:0 4px 14px rgba(43,36,48,.22);transition:transform var(--t-press) var(--ease-out)}
+#bonusBtn:active{transform:scale(.94)}
+#bonusBtn .bonus-dot{width:9px;height:9px;border-radius:50%;background:var(--pink);flex:none}
+#bonusBtn.claimed{background:#fff;color:var(--sub);box-shadow:0 2px 8px rgba(43,36,48,.14)}
+#bonusBtn.claimed .bonus-dot{background:#d8ccd4}
+.bonus-stats{display:flex;gap:8px;margin:12px 0}
+.bonus-stat{flex:1;background:#fff0f7;border:1.5px solid #ffd0e4;border-radius:14px;padding:10px 8px;text-align:center}
+.bonus-stat .n{font-size:22px;font-weight:800;color:#d81b74;line-height:1.1}
+.bonus-stat .l{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--sub);margin-top:3px}
+.bonus-stamps{display:flex;gap:6px;margin:10px 0 14px}
+.bonus-stamp{flex:1;aspect-ratio:1;border-radius:12px;border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--sub);background:#fff}
+.bonus-stamp.got{border-style:solid;border-color:#ffd0e4;background:#fff0f7;color:#d81b74}
+.bonus-stamp.today{border-color:var(--pink)}
+.bonus-stamp .s-emoji{font-size:18px;line-height:1.2}
+.bonus-claim{display:block;width:100%;text-align:center;background:var(--pink);color:#fff;font-weight:800;font-size:16px;letter-spacing:.06em;border-radius:999px;padding:14px 16px;cursor:pointer;transition:transform var(--t-press) var(--ease-out)}
+.bonus-claim:active{transform:scale(.97)}
+.bonus-claim[disabled]{background:#e8e0ea;color:var(--sub);cursor:default;transform:none}
+.bonus-reward{margin-top:14px;border:1.5px solid #ffd0e4;background:#fff6fa;border-radius:14px;padding:12px 14px;font-size:14.5px;line-height:1.7;display:none}
+.bonus-reward.show{display:block;animation:bonusPop .45s var(--ease-out) 1}
+@keyframes bonusPop{0%{transform:scale(.92);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.bonus-next{font-size:12px;color:var(--sub);line-height:1.7;margin-top:8px;text-align:center}
 
 /* テレビパネル先頭の「まず見て」：実物サムネイルのカード */
 .pick-label{font-size:11px;letter-spacing:.2em;color:var(--pink);font-weight:800;margin:2px 0 10px}
@@ -698,7 +735,7 @@ transition:transform var(--t-press) var(--ease-out);
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
 <div class="g-role">ミラティブ配信者</div>
-<div class="g-chips"><span>歌</span><span>ゲーム</span><span>雑談</span><span>全部自作</span></div>
+<div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span><span>雑談</span><span>全部自作</span></div>
 <div class="g-live"><span class="dot"></span>毎晩22時 配信中</div>
 </div>
 <button id="enterBtn" type="button">入る</button>
@@ -713,17 +750,23 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="hero-frame" id="heroFrame">
 <div class="hero-view">
 <div class="hero-track" id="heroTrack">
-<a class="hero-slide" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
-<img src="assets/parts/hero-song-real.webp" alt="" draggable="false">
-<span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
+<a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
+<img src="assets/parts/hero-live.webp" alt="" draggable="false" loading="lazy" decoding="async">
+<span class="hero-live-badge">毎晩22時 配信</span>
+<span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
+</a>
+<a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener" aria-label="ゲーム：うさぎ、ゴリラを殴る。3D">
+<img src="assets/parts/hero-usagori-real.webp" alt="" draggable="false">
+<span class="hero-new">NEW</span>
+<span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">うさぎ、ゴリラを殴る。3D</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
 <img src="assets/parts/hero-yukagen-real.webp" alt="" draggable="false" loading="lazy" decoding="async">
 <span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">ちょうどいい湯かげん</span></span>
 </a>
-<a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
-<img src="assets/parts/hero-live.webp" alt="" draggable="false" loading="lazy" decoding="async">
-<span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
+<a class="hero-slide" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
+<img src="assets/parts/hero-song-real.webp" alt="" draggable="false">
+<span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
 </a>
 </div>
 </div>
@@ -731,9 +774,10 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="hero-arrow next" id="heroNext" type="button" aria-label="次のポスター"><span>›</span></button>
 </div>
 <div class="hero-dots" id="heroDots">
-<button type="button" aria-label="ポスター1：そばにいて"></button>
-<button type="button" aria-label="ポスター2：ちょうどいい湯かげん"></button>
-<button type="button" aria-label="ポスター3：Mirrativ 配信"></button>
+<button type="button" aria-label="ポスター1：Mirrativ 配信"></button>
+<button type="button" aria-label="ポスター2：うさぎ、ゴリラを殴る。3D"></button>
+<button type="button" aria-label="ポスター3：ちょうどいい湯かげん"></button>
+<button type="button" aria-label="ポスター4：そばにいて"></button>
 </div>
 </div>
 
@@ -796,6 +840,8 @@ transition:transform var(--t-press) var(--ease-out);
 <span class="ring"></span>
 <img src="assets/parts/post.webp" alt="" loading="lazy" decoding="async">
 </button>
+<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>Mirrativ 毎晩22時</a>
+<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のボーナス</button>
 <div id="tapmark" aria-hidden="true"></div>
 </div>
 </main>
@@ -804,6 +850,7 @@ transition:transform var(--t-press) var(--ease-out);
 <div id="storageView" aria-hidden="true">
 <div id="storageStage">
 <div class="storage-name">さきやの <b>作品置き場</b></div>
+<div class="storage-updated">最終更新 2026.11.23｜新作2本追加</div>
 <div id="storageTabs" aria-label="カテゴリ"></div>
 <div id="shelves"></div>
 <button id="storageDoor" type="button" aria-label="部屋にもどる">
@@ -820,6 +867,15 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>テレビ ｜ <b>配信と動画</b></h2>
+<div class="pick-label">まず配信で会おう</div>
+<a class="card card-first" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
+<div class="face f-live">
+<img src="assets/parts/hero-live.webp" alt="八乙女さきや Mirrativ配信カード（2026.11.23時点）" draggable="false">
+<span class="hero-live-badge">毎晩22時 配信</span>
+<span class="play" aria-hidden="true"></span>
+</div>
+<div class="meta"><span class="tag pink">配信</span><span>Mirrativ｜八乙女さきや</span><span class="mirrativ-updated">カード 2026.11.23時点</span><span class="go">会いにいく →</span></div>
+</a>
 <div class="pick-label">まず見て</div>
 <a class="card card-first" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
 <div class="face f-clip">
@@ -827,13 +883,6 @@ transition:transform var(--t-press) var(--ease-out);
 <span class="play" aria-hidden="true"></span>
 </div>
 <div class="meta"><span class="tag pink">切り抜き</span><span class="clip-ttl">雪山にスーツで出張!? ホラゲで働き方を心配し始めた</span><span class="go">見る →</span></div>
-</a>
-<a class="card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
-<div class="face f-live">
-<svg width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="6" fill="#fff"/><path d="M7 8 a11 11 0 0 0 0 14 M23 8 a11 11 0 0 1 0 14" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
-<span class="ttl">Mirrativ 配信</span>
-</div>
-<div class="meta"><span class="tag pink">配信</span><span>毎晩22時から配信｜八乙女さきや の配信ページ</span><span class="go">ひらく →</span></div>
 </a>
 <a class="card" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">
 <div class="face f-yt">
@@ -854,16 +903,19 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <h2>ゲーム機 ｜ <b>あそぶ</b></h2>
 <a class="card" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
+<span class="new-badge">NEW</span>
 <div class="face f-usagori">
 <svg width="34" height="34" viewBox="0 0 34 34"><circle cx="13" cy="20" r="6" fill="#fff"/><path d="M10 15 q-2-7 1-9 q3 1 2 7 M16 15 q1-7 4-7 q2 2-1 8" fill="#fff"/></svg>
 <span class="ttl">うさぎ、ゴリラを殴る。3D</span>
+<span class="sticker" aria-hidden="true">🐰</span>
 </div>
-<div class="meta"><span class="tag">ゲーム</span><span>巨大ゴリラと75秒ボス戦</span><span class="go">あそぶ →</span></div>
+<div class="meta"><span class="tag">ゲーム</span><span>巨大ゴリラと75秒ボス戦</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
 </a>
 <a class="card" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
 <div class="face f-yu">
 <svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 24 q5-4 10 0 t10 0 t6 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 16 q2-5 5-5 M19 13 q3-3 6-1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/></svg>
 <span class="ttl">ちょうどいい湯かげん</span>
+<span class="sticker" aria-hidden="true">🦆</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>お湯の温度を合わせる</span><span class="go">あそぶ →</span></div>
 </a>
@@ -871,6 +923,7 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="face f-kani">
 <svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
 <span class="ttl">カニ飛ばし</span>
+<span class="sticker" aria-hidden="true">🦀</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>カニをぶっ飛ばす</span><span class="go">あそぶ →</span></div>
 </a>
@@ -878,15 +931,18 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="face f-ebi">
 <svg width="34" height="34" viewBox="0 0 34 34"><text x="17" y="25" font-size="21" font-weight="800" fill="#fff" text-anchor="middle">?</text></svg>
 <span class="ttl">EBI KANI?</span>
+<span class="sticker" aria-hidden="true">🦐</span>
 </div>
 <div class="meta"><span class="tag">ゲーム</span><span>エビかカニか</span><span class="go">あそぶ →</span></div>
 </a>
 <a class="card" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
+<span class="new-badge">NEW</span>
 <div class="face f-fairy">
 <svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 4 l2.5 7.5 L27 14 l-7.5 2.5 L17 24 l-2.5-7.5 L7 14 l7.5-2.5 Z" fill="#fff"/></svg>
 <span class="ttl">童話キャラ16タイプ診断</span>
+<span class="sticker" aria-hidden="true">⭐</span>
 </div>
-<div class="meta"><span class="tag">診断</span><span>20問でわかる童話診断</span><span class="go">あそぶ →</span></div>
+<div class="meta"><span class="tag">診断</span><span>20問でわかる童話診断</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
 </a>
 </section>
 
@@ -1010,6 +1066,24 @@ transition:transform var(--t-press) var(--ease-out);
 </form>
 </section>
 
+<!-- ログインボーナス：毎日触れる日替わり報酬（端末に記録） -->
+<section class="panel" id="panel-bonus" aria-label="今日のボーナス">
+<div class="grab"></div>
+<button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
+<h2>今日のボーナス ｜ <b>まいにち特典</b></h2>
+<p class="note" id="bonusToday">今日の日付を確認中…</p>
+<div class="bonus-stats">
+<div class="bonus-stat"><div class="n" id="bonusStreak">0</div><div class="l">連続日数</div></div>
+<div class="bonus-stat"><div class="n" id="bonusPoints">0</div><div class="l">応援ポイント</div></div>
+<div class="bonus-stat"><div class="n" id="bonusTotal">0</div><div class="l">通算受取</div></div>
+</div>
+<div class="desk-sec">直近7日間のスタンプ</div>
+<div class="bonus-stamps" id="bonusStamps"></div>
+<button class="bonus-claim" id="bonusClaim" type="button">ボーナスを受け取る</button>
+<div class="bonus-reward" id="bonusReward" role="status"></div>
+<p class="bonus-next">毎日0時に切り替わります。7日連続で特別報酬、ポイントは100ごとに称号が上がります。この端末にだけ記録されます。</p>
+</section>
+
 <script>
 (function(){
 "use strict";
@@ -1017,7 +1091,7 @@ var gate = document.getElementById('gate');
 var room = document.getElementById('room');
 var scrim = document.getElementById('scrim');
 var entered = false;
-var PANELS = ['tv','game','speaker','desk','profile','post'];
+var PANELS = ['tv','game','speaker','desk','profile','post','bonus'];
 
 function panelEl(id){ return document.getElementById('panel-' + id);}
 
@@ -1150,7 +1224,7 @@ if (Date.now() < suppressUntil){ e.preventDefault(); e.stopPropagation(); suppre
 // 初期スライドは入口に合わせる（game→湯かげん、live→Mirrativ）
 (function(){
 var from = new URLSearchParams(location.search).get('from');
-heroGo(from === 'game' ? 1 : from === 'live' ? 2 : 0);
+heroGo(from === 'game' ? 1 : from === 'live' ? 0 : 0);
 })();
 
 /* ---------- ミニキャラ：独立オブジェクト（状態機械） ---------- */
@@ -1702,14 +1776,14 @@ var storageOpen = false, pushedStorage = false, storageTourTimer = 0;
    cat: game=ゲームケース / music=CDケース / site=本・アルバム
    featured: true で「おすすめ」欄入り / date: 'YYYY-MM-DD' があれば最新欄は日付順、無ければ並び順（後ろ＝新しい） */
 var WORKS = [
-{id:'yukagen', title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
+{id:'yukagen', title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, date:'2026-11-18', href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
 {id:'kani', title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'assets/parts/work-kani.webp'},
-{id:'ebikani', title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
+{id:'ebikani', title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', date:'2026-10-18', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
 {id:'sobaniite', title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
 {id:'karappo', title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
 {id:'anniv', title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'},
-{id:'usagori', title:'うさぎ、ゴリラを殴る。3D', kind:'ゲーム', cat:'game', tag:'', featured:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/usagori3d/', img:'assets/parts/work-usagori.webp'},
-{id:'fairytale', title:'童話キャラ16タイプ診断', kind:'診断', cat:'site', tag:'', date:'2026-11-23', href:'https://sakiyayoi.github.io/fairytale-type16/', img:'assets/parts/work-fairytale.webp'}
+{id:'usagori', title:'うさぎ、ゴリラを殴る。3D', kind:'ゲーム', cat:'game', tag:'', featured:true, isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/usagori3d/', img:'assets/parts/work-usagori.webp'},
+{id:'fairytale', title:'童話キャラ16タイプ診断', kind:'診断', cat:'site', tag:'', isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/fairytale-type16/', img:'assets/parts/work-fairytale.webp'}
 ];
 var KANI_SVG = '<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>';
 var CAT_LABEL = {game:'ゲーム', music:'曲・MV', site:'サイト'};
@@ -1725,11 +1799,13 @@ var face = w.img
 : '<span class="wface f-kani">' + KANI_SVG + '<span class="fttl">' + w.title + '</span></span>';
 var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
 var cheer = w.id ? '<button type="button" class="cheer" data-cheer="' + w.id + '" aria-label="' + w.title + 'を応援する"><span class="c-heart" aria-hidden="true">♥</span>応援<span class="cheer-n">…</span></button>' : '';
+var badge = w.isNew ? '<span class="new-badge">NEW</span>' : '';
+var wdate = w.date ? '<span class="wdate">' + w.date.replace(/-/g,'.') + ' 公開</span>' : '';
 return '<div class="work">'
 + '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
-+ '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>'
++ '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>' + badge
 + '<span class="wttl">' + w.title + '</span>'
-+ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span></a>'
++ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' + wdate + '</a>'
 + cheer + '</div>';
 }
 function shelvesHTML(list){
@@ -2043,6 +2119,40 @@ status.classList.remove('ok');
 });
 });
 }
+
+
+/* ---------- ログインボーナス（端末ローカル記録） ---------- */
+var BONUS_KEY='sakiya_bonus_v1';
+var BONUS_LINES=['今日も来てくれてありがとう。今夜22時の配信で会おうね。','スンスンが喜んでる。ポイントゲット！','いい調子。そのまま作品も触ってみて。','レアな日かも。今日は運がいいよ。'];
+function bonusTodayStr(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function bonusLoad(){ try{ return JSON.parse(localStorage.getItem(BONUS_KEY))||{}; }catch(e){ return {}; } }
+function bonusSave(s){ try{ localStorage.setItem(BONUS_KEY, JSON.stringify(s)); }catch(e){} }
+function bonusState(){ var s=bonusLoad(); return {last:s.last||'', streak:s.streak||0, points:s.points||0, total:s.total||0, days:s.days||[]}; }
+function bonusRender(){
+  var st=bonusState(); var today=bonusTodayStr(); var claimed=st.last===today;
+  var t=document.getElementById('bonusToday'); if(t) t.textContent='今日は '+today.replace(/-/g,'.')+'。'+(claimed?'今日の分は受取済みだよ。':'まだ受け取れるよ！');
+  document.getElementById('bonusStreak').textContent=st.streak;
+  document.getElementById('bonusPoints').textContent=st.points;
+  document.getElementById('bonusTotal').textContent=st.total;
+  var wrap=document.getElementById('bonusStamps'); var html='';
+  for(var i=6;i>=0;i--){ var d=new Date(); d.setDate(d.getDate()-i); var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); var got=st.days.indexOf(ds)>=0; html+='<div class="bonus-stamp'+(got?' got':'')+(i===0?' today':'')+'"><span class="s-emoji">'+(got?'★':'・')+'</span>'+(d.getMonth()+1)+'/'+d.getDate()+'</div>'; }
+  wrap.innerHTML=html;
+  var btn=document.getElementById('bonusClaim'); btn.disabled=claimed; btn.textContent=claimed?'受取済み｜明日また来てね':'ボーナスを受け取る';
+  var bb=document.getElementById('bonusBtn'); if(bb) bb.classList.toggle('claimed', claimed);
+}
+document.getElementById('bonusClaim').addEventListener('click', function(){
+  var st=bonusState(); var today=bonusTodayStr(); if(st.last===today){ bonusRender(); return; }
+  var y=new Date(); y.setDate(y.getDate()-1); var ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');
+  st.streak = (st.last===ys) ? st.streak+1 : 1;
+  var pts = st.streak>=7 ? 100 : [10,20,30,50][Math.floor(Math.random()*4)];
+  st.points+=pts; st.total+=1; st.last=today; st.days=(st.days||[]).concat([today]).slice(-30);
+  bonusSave(st);
+  var line = st.streak>=7 ? '7日連続！特別報酬100ポイント！' : BONUS_LINES[Math.floor(Math.random()*BONUS_LINES.length)];
+  var r=document.getElementById('bonusReward'); r.innerHTML='<b>+'+pts+'ポイント</b>（'+st.streak+'日連続）<br>'+line+'<br><a href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" style="color:var(--pink);font-weight:800">今夜22時 Mirrativで会う →</a>';
+  r.classList.remove('show'); void r.offsetWidth; r.classList.add('show');
+  bonusRender();
+});
+bonusRender();
 
 document.getElementById('enterBtn').addEventListener('click', enter);
 document.querySelectorAll('[data-panel]:not(#chara)').forEach(function(el){
