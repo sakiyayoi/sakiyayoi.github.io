@@ -902,6 +902,17 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 #storageView .work .wttl{height:35px; overflow:hidden}
 #storageView .work .wdate{min-height:17px}
 #storageView .work .cheer{margin-top:auto}
+
+/* ===== 引き算パス：飾りを引いて、店の色と素材だけでダイナーにする ===== */
+.obj::before, #chara::before{display:none !important}
+#obj-door::before{display:none !important}
+#opening::after{display:none !important}
+#opening::before{border-width:1.5px; box-shadow:0 0 10px rgba(255,46,136,.22), inset 0 0 10px rgba(255,46,136,.10)}
+#opening .op-en{animation:opIn .8s .1s ease both; text-shadow:0 0 6px rgba(255,46,136,.45)}
+.room-name b{text-shadow:none}
+.room-name b::after{background:#F6A8C9; height:2px; box-shadow:none}
+.hero-frame::before{display:none}
+.door-glint{display:none}
 </style>
 </head>
 <body>
