@@ -1225,6 +1225,39 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 #opening .lu-op-open{box-shadow:0 0 12px rgba(217,43,58,.35), 0 0 22px rgba(14,149,148,.18), inset 0 0 6px rgba(217,43,58,.22)}
 }
 
+/* ===== Lucian第4弾 (lu4-) : 監査A分類の修正（読みやすさ・操作性） =====
+   見た目は維持する。小さい文字の濃さ／当たり判定／カルーセルの停止手段／
+   見出し階層／フォーカス表示／光沢アニメーションの transform 化だけを直す。 */
+/* 1. 補助テキスト色 --dn-sub を紫グレーの系統のまま濃くする
+   採用値 #675E6E の実測コントラスト: クリーム#FFF6EC 5.77 / 紙#FFFAFC 5.97 / ピンクソフト#FFD9E8 4.80（全て 4.5:1 以上） */
+.dn-root{--dn-sub:#675E6E}
+/* 2. 英語小ラベル専用の深ピンク（主役ピンク #FF2E88 自体は不変。大きい文字・ボタンは対象外）
+   採用値 #C70056 の実測コントラスト: クリーム 5.51 / 紙 5.71 / ピンクソフト 4.59 / 白 5.89（全て 4.5:1 以上） */
+.dn-head .dn-en, .p-en, .sched .sched-en, .pick-label{color:#C70056}
+/* 4. カルーセルの当たり判定だけを拡張する（見た目の大きさは不変）
+   ドット: 8px + 透明 ::after で 24px四方 / 矢印: 38px + 透明 ::after で 44px四方
+   （::after の inset は padding box 基準のため、矢印は枠1.5px分を見込んで -5px にする） */
+.lu-car-dot{position:relative}
+.lu-car-dot::after{content:''; position:absolute; inset:-8px; border-radius:50%}
+.lu-car-btn{position:relative}
+.lu-car-btn::after{content:''; position:absolute; inset:-5px; border-radius:50%}
+/* 5. h2 化したパネル見出しの UA 既定を消し、従来の div と見た目を完全同一にする */
+h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
+/* 6. 応援カルーセルの停止/再生トグル（矢印ボタンと同系統の小さい丸ボタン） */
+.lu-car-toggle{flex:none; width:30px; height:30px; border-radius:50%; border:1.5px solid transparent; background:linear-gradient(#fff,#fff) padding-box, var(--lu-chrome-grad) border-box; font-size:9px; font-weight:900; color:var(--lu-ink); cursor:pointer; line-height:1; padding:0; margin-left:2px}
+.lu-car-toggle[aria-pressed="true"]{background:linear-gradient(var(--lu-pink-soft),var(--lu-pink-soft)) padding-box, var(--lu-chrome-grad) border-box}
+/* 7. 光沢アニメーションを left から transform へ置換（移動量は従来と等価換算）
+   heroShine: 要素幅34%基準で -32%→114% の移動 = translateX -94.1%→335.3%
+   luSheen: 要素幅38%基準で -70%→135% の移動 = translateX -184.2%→355.3% */
+.hero-frame::after{left:0; transform:skewX(-18deg) translateX(-94.1%); animation-name:lu4HeroShine}
+@keyframes lu4HeroShine{0%,74%{transform:skewX(-18deg) translateX(-94.1%)}94%,100%{transform:skewX(-18deg) translateX(335.3%)}}
+.dn-btn::after,.bonus-claim::after,#enterBtn::after,.lu-play::after,.lu-game-play::after,.lu-lb-go::after,#fortuneBtn::after{left:0; transform:skewX(-18deg) translateX(-184.2%)}
+.lu-sheen-on::after{animation-name:lu4Sheen}
+@keyframes lu4Sheen{0%{transform:skewX(-18deg) translateX(-184.2%); opacity:0}15%{opacity:1}100%{transform:skewX(-18deg) translateX(355.3%); opacity:0}}
+/* 8. キーボード操作時のフォーカス表示（マウス操作では出ない :focus-visible） */
+:focus-visible{outline:2.5px solid #C70056; outline-offset:2px}
+.dn-input:focus-visible{outline:2.5px solid #C70056; outline-offset:1px}
+
 </style>
 </head>
 <body>
@@ -1378,7 +1411,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">STREAM</div><div class="dn-jp">配信と動画</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">STREAM</div><div class="dn-jp">配信と動画</div><div class="dn-rule"></div></h2>
 <div class="dn-sched">
 <div class="dn-top"><div class="dn-en">EVERY NIGHT</div><div class="dn-neon">ON AIR</div></div>
 <div class="dn-big">毎晩</div>
@@ -1421,7 +1454,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">GAMES</div><div class="dn-jp">あそぶ</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">GAMES</div><div class="dn-jp">あそぶ</div><div class="dn-rule"></div></h2>
 <div class="dn-card lu-game">
 <button type="button" class="lu-game-head" aria-expanded="false">
 <img class="dn-thumb" src="../assets/parts/card-usagori.webp" alt="">
@@ -1474,7 +1507,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">MUSIC</div><div class="dn-jp">きく</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">MUSIC</div><div class="dn-jp">きく</div><div class="dn-rule"></div></h2>
 <div class="dn-card">
 <div class="lu-player" id="luPlayer">
 <div class="lu-sleeve"><img src="../assets/parts/hero-song-real.webp" alt=""></div>
@@ -1500,7 +1533,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">STUDIO</div><div class="dn-jp">制作机</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">STUDIO</div><div class="dn-jp">制作机</div><div class="dn-rule"></div></h2>
 <div class="dn-sec">仕込み中</div>
 <a class="dn-card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
 <img class="dn-thumb" src="../assets/parts/card-kani.webp" alt="">
@@ -1533,7 +1566,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">PROFILE</div><div class="dn-jp">プロフィール</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">PROFILE</div><div class="dn-jp">プロフィール</div><div class="dn-rule"></div></h2>
 <div class="prof-head">
 <div class="thumb"><img src="../assets/parts/chara.webp" alt="八乙女さきや ミニキャラ"></div>
 <div>
@@ -1570,11 +1603,11 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">GUEST BOOK</div><div class="dn-jp">お客さまノート</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">GUEST BOOK</div><div class="dn-jp">お客さまノート</div><div class="dn-rule"></div></h2>
 <p style="font-size:13px;color:var(--dn-sub);margin-bottom:var(--dn-s3)">送ってくれたメッセージは、内容を確認してから壁に貼られます。すぐには表示されません。</p>
 <form class="msg-form" id="msgForm">
-<input class="dn-input" type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off">
-<textarea class="dn-input" id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ"></textarea>
+<input class="dn-input" type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off" aria-label="お名前">
+<textarea class="dn-input" id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ" aria-label="応援メッセージ"></textarea>
 <button class="dn-btn lu-send" id="msgSubmit" type="submit" style="width:100%;border:none;cursor:pointer"><span class="lu-ico lu-ico-plane" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M21 3L10.2 13.8M21 3l-6.8 18-3.4-7.2L3.6 10.4L21 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="lu-ico lu-ico-spin" aria-hidden="true"><span class="lu-ring"></span></span><span class="lu-ico lu-ico-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lu-send-label">壁に貼る（送る）</span></button>
 <p class="msg-status" id="msgStatus" role="status"></p>
 </form>
@@ -1588,7 +1621,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
-<div class="dn-head"><div class="dn-en">DAILY</div><div class="dn-jp">今日のボーナス</div><div class="dn-rule"></div></div>
+<h2 class="dn-head"><div class="dn-en">DAILY</div><div class="dn-jp">今日のボーナス</div><div class="dn-rule"></div></h2>
 <p class="note" id="bonusToday">今日の日付を確認中…</p>
 <div class="bonus-stats">
 <div class="bonus-stat"><div class="n" id="bonusStreak">0</div><div class="l">連続日数</div></div>
@@ -2591,12 +2624,14 @@ clearInterval(luCarTimer);
 if (!luCarCount || luCarCount < 2) return;
 if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 luCarTimer = setInterval(function(){
+if (window.__lu4CarHold && window.__lu4CarHold()) return; /* lu4: 停止/ホバー/フォーカス中は送らない */
 if (document.hidden) return;
 var panel = document.getElementById('panel-post');
 if (panel && !panel.classList.contains('on')) return;
 luCarGo(luCarIdx + 1, false);
 }, 6000);
 }
+window.__lu4CarRestart = luCarAuto; /* lu4: 停止/再生トグルからの再開用 */
 function loadMessages(){
 var list = document.getElementById('msgList');
 if (!list || !window.fetch) return;
@@ -3293,6 +3328,48 @@ if (shelvesEl2 && window.MutationObserver){
   new MutationObserver(luAddZoom).observe(shelvesEl2, {childList:true, subtree:true});
 }
 })();
+</script>
+<script>
+/* ===== Lucian第4弾 (lu4) : 応援カルーセルの停止手段 =====
+   既存タイマーには触らず、既存JS側の1行フック（window.__lu4CarHold）経由で
+   「停止中は自動送りをスキップ」させる。トグル／ホバー／フォーカスで保持する。 */
+(function(){
+'use strict';
+var lu4Paused = false, lu4Hover = false, lu4Focus = false;
+window.__lu4CarHold = function(){ return lu4Paused || lu4Hover || lu4Focus; };
+function lu4Setup(car){
+if (!car || car.querySelector('.lu-car-toggle')) return;
+var nav = car.querySelector('.lu-car-nav');
+if (!nav) return;
+var btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'lu-car-toggle';
+btn.setAttribute('aria-label', '自動送りを止める');
+btn.setAttribute('aria-pressed', 'false');
+btn.textContent = '❚❚';
+var dots = nav.querySelector('.lu-car-dots');
+nav.insertBefore(btn, dots || null);
+btn.addEventListener('click', function(){
+lu4Paused = !lu4Paused;
+btn.setAttribute('aria-pressed', lu4Paused ? 'true' : 'false');
+btn.setAttribute('aria-label', lu4Paused ? '自動送りを再開する' : '自動送りを止める');
+btn.textContent = lu4Paused ? '▶' : '❚❚';
+if (!lu4Paused && window.__lu4CarRestart) window.__lu4CarRestart();
+});
+car.addEventListener('mouseenter', function(){ lu4Hover = true; });
+car.addEventListener('mouseleave', function(){ lu4Hover = false; });
+car.addEventListener('focusin', function(){ lu4Focus = true; });
+car.addEventListener('focusout', function(e){ if (!car.contains(e.relatedTarget)) lu4Focus = false; });
+}
+var lu4Tries = 0;
+var lu4Iv = setInterval(function(){
+lu4Tries++;
+var car = document.getElementById('luCarousel');
+if (car){ lu4Setup(car); clearInterval(lu4Iv); }
+else if (lu4Tries > 120) clearInterval(lu4Iv);
+}, 300);
+})();
+
 </script>
 </body>
 </html>
