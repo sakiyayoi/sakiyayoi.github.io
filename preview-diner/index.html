@@ -913,6 +913,23 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 .room-name b::after{background:#F6A8C9; height:2px; box-shadow:none}
 .hero-frame::before{display:none}
 .door-glint{display:none}
+
+/* ===== 会議レビュー統合：静かにする ===== */
+#hero .hero-arrow, #hero .hero-dots{display:none !important}
+#hero .hero-track{transform:none !important}
+#hero .hero-slide:not(:first-child){display:none}
+#opening::before{box-shadow:none; border-color:rgba(255,46,136,.35)}
+.dn-root .dn-neon{text-shadow:0 0 4px rgba(255,46,136,.4); box-shadow:0 0 5px rgba(255,46,136,.3)}
+.dn-root .dn-idx{font-size:11px; color:var(--dn-sub)}
+.dn-root .dn-num{font-size:11.5px; color:var(--dn-sub); font-weight:600}
+.dn-root .dn-tag{background:#F7EEF3; color:var(--dn-sub)}
+.dn-root .dn-tag.pink{background:#FBE3EE; color:var(--dn-pink-deep)}
+#panel-profile .chip{background:#FBF2F7; border:1px solid #F1DCE6; color:var(--dn-ink)}
+#panel-profile .chip.badge{background:#FFF8EC; border-color:#EDDCAE}
+#profWorks{display:none}
+#panel-bonus .bonus-stat{border:1px solid var(--dn-line); box-shadow:none}
+#panel-bonus .fortune{border-top:1px solid var(--dn-line)}
+#storageView .obj3d .cover img{border-width:1.5px; border-color:#D9DFE4; outline:none; box-shadow:0 2px 6px rgba(43,36,48,.10)}
 </style>
 </head>
 <body>
@@ -929,9 +946,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
 <div class="g-role">ミラティブ配信者</div>
-<div class="g-menu-label">定番メニュー</div>
-<div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span></div>
-<div class="g-live"><span class="dot"></span><span class="g-open">OPEN</span> 毎晩 <span class="g-time">22:00〜</span></div>
+<div class="g-live"><span class="dot"></span><span class="g-open">OPEN</span></div>
 </div>
 <button id="enterBtn" type="button">お店に入る</button>
 </div>
@@ -1027,7 +1042,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
 <span class="door-glow" aria-hidden="true"></span>
 <span class="door-floorlight" aria-hidden="true"></span>
-<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/door.webp" alt=""><span class="door-glint">✦</span><span class="door-sign" aria-hidden="true">OPEN</span></span>
+<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/door.webp" alt=""><span class="door-glint">✦</span></span>
 </button>
 
 <button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
@@ -1108,10 +1123,6 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <img class="dn-thumb" src="../assets/parts/card-yukagen.webp" alt="">
 <div class="dn-cbody"><div class="dn-menu-line"><div class="dn-cttl">ちょうどいい湯かげん</div><div class="dn-num">2026.11.18</div></div><div class="dn-csub">お湯の温度を合わせる</div></div>
 </a>
-<a class="dn-card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
-<img class="dn-thumb" src="../assets/parts/card-kani.webp" alt="">
-<div class="dn-cbody"><span class="dn-badge mint">仕込み中 / COMING SOON</span><div class="dn-menu-line"><div class="dn-cttl">カニ飛ばし</div></div><div class="dn-csub">カニをぶっ飛ばすゲーム（制作中）</div></div>
-</a>
 <a class="dn-card" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
 <img class="dn-thumb" src="../assets/parts/work-ebikani.webp" alt="">
 <div class="dn-cbody"><div class="dn-menu-line"><div class="dn-cttl">EBI KANI?</div></div><div class="dn-csub">エビかカニかのリズムゲーム</div></div>
@@ -1131,7 +1142,6 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="dn-cbody"><span class="dn-badge">NEW</span><div class="dn-cttl">そばにいて</div><div class="dn-csub">最新の歌ってみた／AIソング（MV）</div></div>
 </a>
 <div class="dn-sec">ジュークボックス</div>
-<a class="dn-row" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener"><span class="dn-idx">A1</span><span>そばにいて</span><span class="dn-num">MV</span></a>
 <a class="dn-row" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="dn-idx">A2</span><span>空っぽの愛</span><span class="dn-num">AI SONG</span></a>
 <div class="dn-sec">歌リクエスト</div>
 <div class="dn-card"><div class="dn-cbody">
@@ -1183,10 +1193,6 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <a class="dn-row" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener"><span class="dn-tag pink">活動</span><span>Mirrativ（毎晩22時）／ YouTube ／ X</span></a>
 <div class="dn-row"><span class="dn-tag">合言葉</span><span>やにかすおとめ</span></div>
 <div class="dn-row"><span class="dn-tag">FM</span><span>🩷🌈💜</span></div>
-<div class="dn-sec">配信でやってること</div>
-<div class="chips"><span class="chip">歌</span><span class="chip purple">ゲーム</span><span class="chip purple">雑談</span></div>
-<div class="dn-sec">これまでの記録</div>
-<div class="chips"><span class="chip badge">イケボ🌈 1位</span><span class="chip badge">スタークラスB 達成</span><span class="chip badge">週デビュー 1位</span><span class="chip badge">月デビュー 1位</span><span class="chip badge">ロイヤル候補生 申請中</span></div>
 <div class="dn-sec">とくいなこと</div>
 <div class="chips"><span class="chip">声と喋り</span><span class="chip purple">場をまとめる</span><span class="chip purple">目標を立てて分解する</span><span class="chip purple">相手の気持ちに立つ</span><span class="chip purple">組織を回す</span><span class="chip purple">療育の知識</span></div>
 <div class="dn-sec">すきなもの</div>
@@ -1207,13 +1213,14 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="dn-root">
 <div class="dn-head"><div class="dn-en">GUEST BOOK</div><div class="dn-jp">お客さまノート</div><div class="dn-rule"></div></div>
 <p style="font-size:13px;color:var(--dn-sub);margin-bottom:var(--dn-s3)">送ってくれたメッセージは、内容を確認してから壁に貼られます。すぐには表示されません。</p>
-<div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
 <form class="msg-form" id="msgForm">
 <input class="dn-input" type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off">
 <textarea class="dn-input" id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ"></textarea>
 <button class="dn-btn" id="msgSubmit" type="submit" style="width:100%;border:none;cursor:pointer">壁に貼る（送る）</button>
 <p class="msg-status" id="msgStatus" role="status"></p>
 </form>
+<div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
+
 </div>
 </section>
 
@@ -1234,7 +1241,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <button class="bonus-claim" id="bonusClaim" type="button">ボーナスを受け取る</button>
 <div class="bonus-reward" id="bonusReward" role="status"></div>
 <div class="fortune">
-<div class="desk-sec">本日のラッキーメニュー（今日の運勢・1日1回）</div>
+<div class="desk-sec">今日の運勢（1日1回）</div>
 <button type="button" id="fortuneBtn">運勢をひく</button>
 <div class="f-res" id="fortuneRes"></div>
 <div class="f-line" id="fortuneLine"></div>
@@ -1964,7 +1971,7 @@ return '<div class="work' + (big ? ' big' : '') + '">'
 + '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
 + '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>' + badge
 + '<span class="wttl">' + w.title + '</span>'
-+ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' + wdate + '</a>'
++ (curCat === 'all' ? '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' : '') + wdate + '</a>'
 + cheer + '</div>';
 }
 function shelvesHTML(list){
@@ -1985,7 +1992,7 @@ if (db) return 1;
 return 0;
 });
 var html = '<div class="storage-sec"><div class="sec-head"><b>おすすめ</b></div>';
-html += '<div class="shelf feat-shelf"><div class="shelf-items">' + workHTML(sorted[0], true) + '</div><img class="stand" src="diner-img/dome-stand.webp" alt="" aria-hidden="true"><div class="shelf-board"></div></div>';
+html += '<div class="shelf feat-shelf"><div class="shelf-items">' + workHTML(sorted[0], true) + '</div><div class="shelf-board"></div></div>';
 if (sorted.length > 1) html += shelvesHTML(sorted.slice(1));
 return html + '</div>';
 }
