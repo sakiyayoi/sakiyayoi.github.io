@@ -1169,6 +1169,62 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 .lu-flame{transition:none !important}
 }
 
+/* ===== Lucian第3弾 (lu-) : 色合いと演出のダイナー強化 =====
+   足す色と柄は「店の備品と札」だけ。本文まわりの地と文字は現行のまま。
+   ピンク主役は維持し、ティール＋レッドの面積は各画面のおおむね1割以下に抑える。 */
+:root{
+--lu-teal:#0E9594;
+--lu-cherry:#D92B3A;
+--lu-chrome-grad:linear-gradient(180deg,#F5F8FA 0%,#D8E0E7 30%,#93A3B1 50%,#E8EEF3 72%,#ACB9C5 100%);
+--lu-burst:polygon(50.0% 0.0%, 57.5% 12.2%, 69.1% 3.8%, 71.4% 18.0%, 85.4% 14.6%, 82.0% 28.6%, 96.2% 30.9%, 87.8% 42.5%, 100.0% 50.0%, 87.8% 57.5%, 96.2% 69.1%, 82.0% 71.4%, 85.4% 85.4%, 71.4% 82.0%, 69.1% 96.2%, 57.5% 87.8%, 50.0% 100.0%, 42.5% 87.8%, 30.9% 96.2%, 28.6% 82.0%, 14.6% 85.4%, 18.0% 71.4%, 3.8% 69.1%, 12.2% 57.5%, 0.0% 50.0%, 12.2% 42.5%, 3.8% 30.9%, 18.0% 28.6%, 14.6% 14.6%, 28.6% 18.0%, 30.9% 3.8%, 42.5% 12.2%);
+}
+/* --- ネオングロー：ピンク＋ティールの2色グロー（弱く品よく） --- */
+#gate .g-sign{text-shadow:0 0 6px rgba(255,46,136,.45), 0 0 18px rgba(14,149,148,.32)}
+.dn-root .dn-neon{text-shadow:0 0 6px var(--dn-pink), 0 0 14px rgba(255,46,136,.7), 0 0 22px rgba(14,149,148,.35); box-shadow:0 0 10px rgba(255,46,136,.45), 0 0 24px rgba(14,149,148,.25), inset 0 0 6px rgba(255,46,136,.35)}
+#opening .op-en{animation-name:luNeonOn3 !important}
+@keyframes luNeonOn3{0%{opacity:.1; text-shadow:none}14%{opacity:.95; text-shadow:0 0 8px rgba(255,46,136,.8),0 0 22px rgba(14,149,148,.45)}24%{opacity:.25; text-shadow:none}42%{opacity:1; text-shadow:0 0 8px rgba(255,46,136,.85),0 0 24px rgba(14,149,148,.5)}58%{opacity:.4; text-shadow:0 0 3px rgba(255,46,136,.4)}76%,100%{opacity:1; text-shadow:0 0 7px rgba(255,46,136,.6),0 0 20px rgba(14,149,148,.38)}}
+#opening .lu-op-open{color:var(--lu-cherry); border-color:var(--lu-cherry); animation-name:luNeonCherry !important}
+@keyframes luNeonCherry{0%{opacity:.12; box-shadow:none}14%{opacity:.95; box-shadow:0 0 14px rgba(217,43,58,.45), inset 0 0 8px rgba(217,43,58,.3)}24%{opacity:.3; box-shadow:none}42%{opacity:1; box-shadow:0 0 16px rgba(217,43,58,.5), 0 0 26px rgba(14,149,148,.22), inset 0 0 8px rgba(217,43,58,.35)}58%{opacity:.45; box-shadow:0 0 5px rgba(217,43,58,.25)}76%,100%{opacity:1; box-shadow:0 0 12px rgba(217,43,58,.35), 0 0 22px rgba(14,149,148,.18), inset 0 0 6px rgba(217,43,58,.22)}}
+/* --- チェリーレッド：OPEN札（玄関） --- */
+#gate .g-live{color:var(--lu-cherry)}
+#gate .g-live .dot{background:var(--lu-cherry)}
+/* --- ティール：店の備品 --- */
+.lu-orbit text{fill:var(--lu-teal)}
+#panel-speaker .dn-idx{color:var(--lu-teal)}
+#panel-speaker .dn-num{color:var(--lu-teal)}
+.lu-player{box-shadow:inset 0 0 0 2px var(--lu-teal)}
+.lu-player::after{content:''; position:absolute; left:0; right:0; bottom:0; height:6px; background:var(--lu-teal); z-index:4; pointer-events:none}
+.lu-sleeve{border-right:3px solid var(--lu-teal)}
+.lu-count{border:1.5px solid var(--lu-teal)}
+/* --- クロームの質感：縦グラデーションの金属反射に統一 --- */
+.dn-root .dn-sched{border:3px solid transparent; background:repeating-linear-gradient(rgba(0,0,0,.45) 0, rgba(0,0,0,.45) 2px, rgba(255,246,236,.08) 2px, rgba(255,246,236,.08) 3px, transparent 3px, transparent 28px) padding-box, linear-gradient(#241D22,#241D22) padding-box, var(--lu-chrome-grad) border-box}
+.lu-lb-card{border:2px solid transparent; background:linear-gradient(var(--lu-paper),var(--lu-paper)) padding-box, var(--lu-chrome-grad) border-box}
+.lu-car-btn{border:1.5px solid transparent; background:linear-gradient(#fff,#fff) padding-box, var(--lu-chrome-grad) border-box}
+.lu-zoom{border:1.5px solid transparent; background:linear-gradient(rgba(255,250,252,.94),rgba(255,250,252,.94)) padding-box, var(--lu-chrome-grad) border-box}
+.lu-lb-x{border:1.5px solid transparent; background:linear-gradient(rgba(255,250,252,.95),rgba(255,250,252,.95)) padding-box, var(--lu-chrome-grad) border-box}
+.lu-sound{border:1.5px solid transparent; background:linear-gradient(rgba(255,250,252,.94),rgba(255,250,252,.94)) padding-box, var(--lu-chrome-grad) border-box}
+#obj-door .lu-plate{border:1px solid transparent; border-top:2px solid var(--lu-cherry); background:linear-gradient(var(--lu-cream),var(--lu-cream)) padding-box, var(--lu-chrome-grad) border-box}
+#obj-door .lu-case{border-color:transparent}
+#obj-door .lu-case::before{content:''; position:absolute; inset:0; border-radius:10px; padding:2px; background:var(--lu-chrome-grad); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite:exclude}
+/* --- チェッカー柄の帯（帯だけ。全面使用はしない） --- */
+.dn-root .dn-checker{background:repeating-conic-gradient(var(--lu-pink) 0% 25%, var(--lu-cream) 0% 50%) 0 0/18px 18px}
+#obj-door .lu-case::after{content:''; position:absolute; left:0; right:0; bottom:0; height:8%; background:repeating-conic-gradient(var(--lu-pink) 0% 25%, var(--lu-cream) 0% 50%) 0 0/14px 14px; opacity:.85; border-radius:0 0 8px 8px}
+/* 置き場の名前帯チェッカーはタブ帯と干渉したため第3弾では見送り（チェッカー帯は見出し・蹴込み・パネル末尾に集約） */
+/* --- ジュークボックス型アーチ見出し（全パネル共通）＋下帯チェッカー --- */
+.panel .dn-head{position:relative; overflow:hidden; text-align:center; border:2px solid transparent; border-radius:64px 64px 16px 16px / 42px 42px 16px 16px; background:linear-gradient(var(--lu-paper),var(--lu-paper)) padding-box, var(--lu-chrome-grad) border-box; padding:13px 16px 17px}
+.panel .dn-head .dn-rule{margin-left:auto; margin-right:auto}
+.panel .dn-head::after{content:''; position:absolute; left:0; right:0; bottom:0; height:9px; background:repeating-conic-gradient(var(--lu-pink) 0% 25%, var(--lu-cream) 0% 50%) 0 0/18px 18px}
+/* --- スターバーストバッジ（既存の札がある場所だけ） --- */
+.hero-frame::before{background:var(--lu-cherry); color:var(--lu-cream); clip-path:var(--lu-burst); border-radius:0; width:56px; height:56px; padding:0; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.15; top:4px; left:4px; transform:rotate(-8deg)}
+#panel-speaker .dn-badge{background:var(--lu-cherry); color:var(--lu-cream); clip-path:var(--lu-burst); border-radius:0; padding:10px 14px; transform:rotate(-4deg)}
+.lu-car-head::before{content:'★'; display:inline-flex; align-items:center; justify-content:center; width:27px; height:27px; margin-right:7px; vertical-align:-8px; background:var(--lu-cherry); color:var(--lu-cream); font-size:12px; clip-path:var(--lu-burst)}
+/* --- ネオン反射：部屋の床面に薄く敷く（点滅なし） --- */
+#stage::before{content:''; position:absolute; left:0; right:0; bottom:0; height:24%; z-index:0; pointer-events:none; background:radial-gradient(58% 92% at 32% 110%, rgba(255,46,136,.20), rgba(255,46,136,0) 70%), radial-gradient(42% 82% at 78% 112%, rgba(14,149,148,.14), rgba(14,149,148,0) 70%)}
+@media (prefers-reduced-motion: reduce){
+#opening .op-en{text-shadow:0 0 7px rgba(255,46,136,.6),0 0 20px rgba(14,149,148,.38) !important}
+#opening .lu-op-open{box-shadow:0 0 12px rgba(217,43,58,.35), 0 0 22px rgba(14,149,148,.18), inset 0 0 6px rgba(217,43,58,.22)}
+}
+
 </style>
 </head>
 <body>
