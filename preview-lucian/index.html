@@ -1258,6 +1258,55 @@ h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
 :focus-visible{outline:2.5px solid #C70056; outline-offset:2px}
 .dn-input:focus-visible{outline:2.5px solid #C70056; outline-offset:1px}
 
+/* ===== Lucian第5弾 (lu5-) : 棚の再設計＋メニューの分かりやすさ =====
+   棚は「イチオシ→おすすめ→ほかの作品」の序列に再設計し、同じ作品を複数セクションへ重ねない。
+   旧形式（おすすめ/最新/ぜんぶの重複表示・2つ並べの行棚・物の形ケース）は lu5 では使わない。
+   カテゴリ表示はそのカテゴリの全作品を、先頭1作ワイド＋残り均等グリッドで見せる。 */
+/* --- A. 棚：セクション＝店のショーケース（見出し札＋ガラス面＋クローム棚板） --- */
+#storageView .storage-sec{background:linear-gradient(rgba(255,255,255,.66),rgba(255,255,255,.18)); border:1px solid rgba(169,183,193,.55); border-radius:18px; padding:10px 10px 12px; margin-bottom:20px; box-shadow:0 4px 12px rgba(43,36,48,.06)}
+#storageView .sec-head{display:flex; align-items:center; gap:8px; color:var(--lu-cream); font-size:13px; font-weight:900; letter-spacing:.12em; border:2px solid transparent; background:linear-gradient(var(--lu-ink),var(--lu-ink)) padding-box, var(--lu-chrome-grad) border-box; border-radius:10px; padding:8px 12px; margin:0 0 12px}
+#storageView .sec-head b{color:#FF7EB6}
+.lu5-count{margin-left:auto; font-family:"Barlow Condensed",sans-serif; font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--lu-cream); background:rgba(255,255,255,.16); border-radius:999px; padding:2px 9px; white-space:nowrap}
+.lu5-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; align-items:stretch}
+#storageView .lu5-grid .work{width:auto; height:100%}
+#storageView .work .obj3d .cover img{aspect-ratio:4/3}
+#storageView .work.lu5-hero, #storageView .work.lu5-lead{grid-column:1 / -1}
+#storageView .work.lu5-hero .obj3d .cover img, #storageView .work.lu5-lead .obj3d .cover img{aspect-ratio:16/9}
+#storageView .work .wttl{text-align:left; font-size:13.5px; line-height:1.4; min-height:38px; height:auto; margin-top:9px}
+#storageView .work.lu5-hero .wttl{font-size:17px; min-height:0}
+.lu5-tags{display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; min-height:19px}
+.lu5-kind{font-size:10px; font-weight:900; letter-spacing:.08em; color:var(--lu-cream); background:var(--lu-ink); border-radius:999px; padding:2.5px 8px}
+.lu5-flag{font-size:10px; font-weight:900; letter-spacing:.08em; border-radius:999px; padding:2.5px 8px}
+.lu5-flag.new{background:var(--lu-cherry); color:var(--lu-cream)}
+.lu5-flag.wip{background:var(--lu-mint); color:var(--lu-ink)}
+.lu5-flag.pick{background:var(--lu-pink); color:#fff}
+.lu5-desc{display:block; font-size:11.5px; line-height:1.55; color:#675E6E; margin-top:5px; text-align:left}
+#storageView .work .wtag{display:none}
+#storageView .work .wdate{text-align:left; margin-top:5px}
+#storageView .work .cheer{width:100%}
+.lu5-board{height:10px; border-radius:4px; margin-top:12px; background:var(--lu-chrome-grad); box-shadow:0 3px 6px rgba(43,36,48,.20)}
+#shelves .lu5-grid .work{animation:luWorkIn .5s var(--lu-ease) both}
+#shelves .lu5-grid .work:nth-child(2){animation-delay:.06s}
+#shelves .lu5-grid .work:nth-child(3){animation-delay:.12s}
+#shelves .lu5-grid .work:nth-child(4){animation-delay:.18s}
+@media (prefers-reduced-motion: reduce){ #shelves .lu5-grid .work{animation:none !important} }
+/* --- B1. 置き場タブ：選択中をドット＋ピル＋aria-pressed で明示 --- */
+#storageTabs button.on::before{content:''; display:inline-block; width:7px; height:7px; border-radius:50%; background:#fff; margin-right:6px; vertical-align:2px}
+/* --- B2. 部屋の導線ラベル：何が開くかを日本語で常時表示（旧の英語ラベル復活ではなく日本語の札） --- */
+#stage .obj::before, #stage #chara::before{display:block !important; font-family:"Zen Maru Gothic",sans-serif; font-size:9.5px; font-weight:900; letter-spacing:.05em; color:var(--lu-ink); background:var(--lu-cream); border:1px solid var(--lu-chrome); border-radius:999px; padding:2.5px 8px; box-shadow:0 2px 6px rgba(43,36,48,.22); text-shadow:none; white-space:nowrap}
+#obj-tv::before{content:'配信と動画'; top:-16px; bottom:auto}
+#obj-game::before{content:'あそぶ'; top:auto; bottom:-16px; left:110%}
+#obj-desk::before{content:'制作机'; top:-16px; bottom:auto; left:38%}
+#obj-speaker::before{content:'きく'; top:-17px; bottom:auto}
+#obj-post::before{content:'お客さまノート'; top:-16px; bottom:auto; left:150%}
+#obj-door::before{content:'作品置き場'; top:8px; bottom:auto}
+#stage #chara::before{content:'プロフィール'; top:auto; bottom:-16px}
+/* --- B3. ゲームのアコーディオン：開閉の状態を言葉でも示す --- */
+.lu5-acc-state{flex:none; align-self:center; font-size:10.5px; font-weight:900; letter-spacing:.06em; color:#C70056; background:var(--lu-pink-soft); border-radius:999px; padding:3px 9px; margin-left:10px}
+.lu-game-head[aria-expanded="false"] .lu5-acc-state::before{content:'ひらく'}
+.lu-game-head[aria-expanded="true"] .lu5-acc-state::before{content:'とじる'}
+.lu-game-head[aria-expanded="true"] .lu5-acc-state{background:var(--lu-mint); color:var(--lu-ink)}
+
 </style>
 </head>
 <body>
@@ -1456,44 +1505,44 @@ h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
 <div class="dn-root">
 <h2 class="dn-head"><div class="dn-en">GAMES</div><div class="dn-jp">あそぶ</div><div class="dn-rule"></div></h2>
 <div class="dn-card lu-game">
-<button type="button" class="lu-game-head" aria-expanded="false">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail1">
 <img class="dn-thumb" src="../assets/parts/card-usagori.webp" alt="">
-<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">うさぎ、ゴリラを殴る。3D</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">巨大ゴリラと75秒ボス戦</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">うさぎ、ゴリラを殴る。3D</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">巨大ゴリラと75秒ボス戦</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
 </button>
-<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-detail" id="luGameDetail1"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
 <div class="lu-game-desc">巨大ゴリラと75秒ボス戦</div>
 <div class="lu-game-date">公開日：2026.11.23</div>
 <a class="lu-game-play" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">あそぶ →</a>
 </div></div></div>
 </div>
 <div class="dn-card lu-game">
-<button type="button" class="lu-game-head" aria-expanded="false">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail2">
 <img class="dn-thumb" src="../assets/parts/card-fairytale.webp" alt="">
-<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">童話キャラ16タイプ診断</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">20問でわかる童話診断</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">童話キャラ16タイプ診断</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">20問でわかる童話診断</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
 </button>
-<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-detail" id="luGameDetail2"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
 <div class="lu-game-desc">20問でわかる童話診断</div>
 <div class="lu-game-date">公開日：2026.11.23</div>
 <a class="lu-game-play" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">あそぶ →</a>
 </div></div></div>
 </div>
 <div class="dn-card lu-game">
-<button type="button" class="lu-game-head" aria-expanded="false">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail3">
 <img class="dn-thumb" src="../assets/parts/card-yukagen.webp" alt="">
-<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">ちょうどいい湯かげん</span><span class="dn-num">2026.11.18</span></span><span class="dn-csub">お湯の温度を合わせる</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">ちょうどいい湯かげん</span><span class="dn-num">2026.11.18</span></span><span class="dn-csub">お湯の温度を合わせる</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
 </button>
-<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-detail" id="luGameDetail3"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
 <div class="lu-game-desc">お湯の温度を合わせる</div>
 <div class="lu-game-date">公開日：2026.11.18</div>
 <a class="lu-game-play" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">あそぶ →</a>
 </div></div></div>
 </div>
 <div class="dn-card lu-game">
-<button type="button" class="lu-game-head" aria-expanded="false">
-<img class="dn-thumb" src="../assets/parts/work-ebikani.webp" alt="">
-<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">EBI KANI?</span></span><span class="dn-csub">エビかカニかのリズムゲーム</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail4">
+<img class="dn-thumb" src="../assets/parts/work-ebi.webp" alt="">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">EBI KANI?</span></span><span class="dn-csub">エビかカニかのリズムゲーム</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
 </button>
-<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-detail" id="luGameDetail4"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
 <div class="lu-game-desc">エビかカニかのリズムゲーム</div>
 <a class="lu-game-play" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">あそぶ →</a>
 </div></div></div>
@@ -3370,6 +3419,168 @@ else if (lu4Tries > 120) clearInterval(lu4Iv);
 }, 300);
 })();
 
+</script>
+<script>
+/* ===== Lucian第5弾 (lu5) : 棚の再設計 =====
+   本体スクリプトは IIFE のため、lu5 は描画済み DOM を再構成する方式を取る。
+   並びは「イチオシ→おすすめ→ほかの作品」。同じ作品を複数セクションに重ねない。
+   カテゴリ表示はそのカテゴリの全作品（並び替え＋先頭1作をワイド表示）。
+   ひとこと・状態・日付・分類は既存データ（WORKS／既存パネル文）の写しだけを使う。 */
+(function(){
+'use strict';
+var LU5_META = {
+  yukagen:   {kind: 'ゲーム',   date: '2026-11-18', featured: true,  isNew: false, order: 0, desc: 'お湯の温度を合わせる'},
+  kani:      {kind: 'ゲーム',   date: '',           featured: false, isNew: false, order: 1, desc: 'カニをぶっ飛ばすゲーム', status: '仕込み中'},
+  ebikani:   {kind: 'ゲーム',   date: '2026-10-18', featured: false, isNew: false, order: 2, desc: 'エビかカニかのリズムゲーム', img: '../assets/parts/work-ebi.webp'},
+  sobaniite: {kind: '曲・MV',   date: '',           featured: true,  isNew: false, order: 3, desc: '最新の歌ってみた／AIソング（MV）'},
+  karappo:   {kind: '曲',       date: '',           featured: false, isNew: false, order: 4},
+  anniv:     {kind: 'サイト',   date: '',           featured: false, isNew: false, order: 5},
+  usagori:   {kind: 'ゲーム',   date: '2026-11-23', featured: true,  isNew: true,  order: 6, desc: '巨大ゴリラと75秒ボス戦'},
+  fairytale: {kind: '診断',     date: '2026-11-23', featured: false, isNew: true,  order: 7, desc: '20問でわかる童話診断'}
+};
+function lu5Sort(list){
+  return list.slice().sort(function(a, b){
+    var ma = LU5_META[a.id] || {}, mb = LU5_META[b.id] || {};
+    var fa = ma.featured ? 1 : 0, fb = mb.featured ? 1 : 0;
+    if (fb !== fa) return fb - fa;
+    var da = ma.date || '', db = mb.date || '';
+    if (da && db) return da < db ? 1 : (da > db ? -1 : 0);
+    if (da) return -1;
+    if (db) return 1;
+    return (ma.order || 0) - (mb.order || 0);
+  });
+}
+function lu5Decorate(rec, mode){
+  var node = rec.node, meta = LU5_META[rec.id] || {};
+  if (mode === 'hero') node.classList.add('lu5-hero');
+  if (mode === 'lead') node.classList.add('lu5-lead');
+  if (meta.img){
+    var img = node.querySelector('.cover img');
+    if (img) img.src = meta.img;
+  }
+  if (node.querySelector('.lu5-tags')) return;
+  var ttl = node.querySelector('.wttl');
+  if (!ttl) return;
+  var tags = document.createElement('span');
+  tags.className = 'lu5-tags';
+  var html = '<span class="lu5-kind">' + (meta.kind || '') + '</span>';
+  if (meta.isNew) html += '<span class="lu5-flag new">NEW</span>';
+  if (meta.status) html += '<span class="lu5-flag wip">' + meta.status + '</span>';
+  if (meta.featured && mode !== 'hero') html += '<span class="lu5-flag pick">おすすめ</span>';
+  tags.innerHTML = html;
+  ttl.after(tags);
+  if (meta.desc){
+    var d = document.createElement('span');
+    d.className = 'lu5-desc';
+    d.textContent = meta.desc;
+    tags.after(d);
+  }
+}
+function lu5Section(label, countLabel, recs, leadFirst){
+  var sec = document.createElement('div');
+  sec.className = 'storage-sec';
+  var head = document.createElement('div');
+  head.className = 'sec-head';
+  head.innerHTML = '<span></span><span class="lu5-count"></span>';
+  head.firstChild.textContent = label;
+  head.lastChild.textContent = countLabel;
+  sec.appendChild(head);
+  var grid = document.createElement('div');
+  grid.className = 'lu5-grid';
+  recs.forEach(function(rec, i){
+    lu5Decorate(rec, leadFirst && i === 0 && recs.length > 1 ? 'lead' : '');
+    grid.appendChild(rec.node);
+  });
+  sec.appendChild(grid);
+  var board = document.createElement('div');
+  board.className = 'lu5-board';
+  board.setAttribute('aria-hidden', 'true');
+  sec.appendChild(board);
+  return sec;
+}
+function lu5Collect(shelves){
+  var byId = {};
+  var allSec = null;
+  shelves.querySelectorAll('.storage-sec').forEach(function(sec){
+    var h = sec.querySelector('.sec-head');
+    if (h && h.textContent.indexOf('ぜんぶ') >= 0) allSec = sec;
+  });
+  var scope = allSec || shelves;
+  scope.querySelectorAll('.work').forEach(function(node){
+    var btn = node.querySelector('button.cheer[data-cheer]');
+    var ttl = node.querySelector('.wttl');
+    var id = btn ? btn.getAttribute('data-cheer') : (ttl ? ttl.textContent : '');
+    if (id && !byId[id]) byId[id] = {id: id, node: node};
+  });
+  return byId;
+}
+function lu5Transform(){
+  var shelves = document.getElementById('shelves');
+  if (!shelves || shelves.querySelector('.lu5-grid')) return;
+  var secs = shelves.querySelectorAll('.storage-sec');
+  if (!secs.length) return;
+  var onBtn = document.querySelector('#storageTabs button.on');
+  var cat = onBtn ? onBtn.getAttribute('data-cat') : 'all';
+  var byId = lu5Collect(shelves);
+  var recs = Object.keys(byId).map(function(k){ return byId[k]; });
+  if (!recs.length) return;
+  var footer = shelves.querySelector('.bonus-next');
+  var frag = document.createDocumentFragment();
+  if (cat === 'all'){
+    var feat = lu5Sort(recs.filter(function(r){ return (LU5_META[r.id] || {}).featured; }));
+    var rest = lu5Sort(recs.filter(function(r){ return !(LU5_META[r.id] || {}).featured; }));
+    if (feat.length){
+      var heroSec = document.createElement('div');
+      heroSec.className = 'storage-sec';
+      var hh = document.createElement('div');
+      hh.className = 'sec-head';
+      hh.innerHTML = '<span>イチオシ</span><span class="lu5-count">まずこれ</span>';
+      heroSec.appendChild(hh);
+      var hg = document.createElement('div');
+      hg.className = 'lu5-grid';
+      lu5Decorate(feat[0], 'hero');
+      hg.appendChild(feat[0].node);
+      heroSec.appendChild(hg);
+      var hb = document.createElement('div');
+      hb.className = 'lu5-board';
+      hb.setAttribute('aria-hidden', 'true');
+      heroSec.appendChild(hb);
+      frag.appendChild(heroSec);
+      if (feat.length > 1) frag.appendChild(lu5Section('おすすめ', (feat.length - 1) + '作品', feat.slice(1), false));
+    }
+    if (rest.length) frag.appendChild(lu5Section('ほかの作品', rest.length + '作品', rest, false));
+  } else {
+    var sorted = lu5Sort(recs);
+    var label = onBtn ? onBtn.textContent : cat;
+    frag.appendChild(lu5Section(label, sorted.length + '作品', sorted, true));
+  }
+  shelves.innerHTML = '';
+  shelves.appendChild(frag);
+  if (footer) shelves.appendChild(footer);
+}
+var lu5Busy = false;
+function lu5Run(){
+  if (lu5Busy) return;
+  lu5Busy = true;
+  try { lu5Transform(); } catch (e) { /* 変換に失敗しても旧表示のまま使う */ }
+  lu5Busy = false;
+}
+var shelvesEl5 = document.getElementById('shelves');
+if (shelvesEl5 && window.MutationObserver){
+  new MutationObserver(lu5Run).observe(shelvesEl5, {childList: true});
+}
+lu5Run();
+function lu5Press(){
+  document.querySelectorAll('#storageTabs button[data-cat]').forEach(function(b){
+    b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false');
+  });
+}
+var tabsEl5 = document.getElementById('storageTabs');
+if (tabsEl5 && window.MutationObserver){
+  new MutationObserver(lu5Press).observe(tabsEl5, {childList: true, attributes: true, attributeFilter: ['class']});
+}
+lu5Press();
+})();
 </script>
 </body>
 </html>
