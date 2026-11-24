@@ -1020,6 +1020,155 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 .lu-car-slide.on{animation:none!important}
 #luScratchCanvas{transition:none!important}
 }
+
+/* ===== Lucian第2弾 (lu-) : 全エリア足し算＋棚・オープニング改築＋動きと音のレイヤー ===== */
+/* 1. 玄関：回転する円形文字バッジ */
+.lu-sign-row{display:flex; align-items:center; justify-content:center; gap:12px}
+.lu-orbit{position:relative; width:64px; height:64px; flex:none; pointer-events:none}
+.lu-orbit svg{width:100%; height:100%; display:block; animation:luOrbit 18s linear infinite}
+.lu-orbit text{font-family:"Quicksand",sans-serif; font-size:9.5px; font-weight:700; letter-spacing:.1em; fill:var(--lu-pink)}
+.lu-orbit-star{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--lu-pink); font-size:15px}
+@keyframes luOrbit{to{transform:rotate(360deg)}}
+/* 2. ヒーロー：カルーセル復活（レビュー統合層の静止画化を lu 層で上書き。transformはCSS変数経由） */
+#hero .hero-arrow{display:flex !important}
+#hero .hero-dots{display:flex !important}
+#hero .hero-slide{display:block !important}
+#hero .hero-track{transform:translateX(var(--lu-hero-x,0%)) !important}
+#hero .hero-track.lu-drag{transition:none !important}
+/* 3. 配信：フリップ式カウントダウン */
+.lu-count{margin-top:12px; background:#fff; border:1px solid var(--dn-line); border-radius:14px; padding:10px 12px 12px; text-align:center}
+.lu-count-label{font-size:11px; font-weight:800; letter-spacing:.18em; color:var(--dn-sub); margin-bottom:8px}
+.lu-flips{display:flex; align-items:flex-start; justify-content:center; gap:6px}
+.lu-flip-col{display:flex; flex-direction:column; align-items:center}
+.lu-flip{width:64px; height:52px; border-radius:10px; background:var(--lu-ink); color:var(--lu-cream); display:flex; align-items:center; justify-content:center; box-shadow:var(--lu-shadow)}
+.lu-flip-num{font-family:"Barlow Condensed",sans-serif; font-size:34px; font-weight:700; letter-spacing:.06em; line-height:1; display:block}
+.lu-flip.lu-flip-go .lu-flip-num{animation:luFlipTick .3s var(--lu-ease)}
+@keyframes luFlipTick{0%{transform:rotateX(0)}45%{transform:rotateX(-72deg); opacity:.5}100%{transform:rotateX(0); opacity:1}}
+.lu-flip-sep{font-family:"Barlow Condensed",sans-serif; font-size:26px; font-weight:700; color:var(--lu-ink); line-height:52px}
+.lu-flip-unit{font-size:9.5px; font-weight:800; letter-spacing:.2em; color:var(--dn-sub); margin-top:4px}
+/* 4. ゲーム：その場で広がる詳細カード */
+.lu-game-head{display:block; width:100%; text-align:left; background:none; border:none; padding:0; cursor:pointer; font:inherit; color:inherit}
+.lu-game-row{display:flex; align-items:center}
+.lu-game-head .dn-cbody{display:block; flex:1}
+.lu-game-head .dn-cttl{display:block}
+.lu-game-head .dn-csub{display:block}
+.lu-game-arrow{flex:none; padding:0 14px 0 2px; font-size:15px; color:var(--lu-pink); transition:transform .3s var(--lu-ease)}
+.lu-game.open .lu-game-arrow{transform:rotate(180deg)}
+.lu-game-detail{display:grid; grid-template-rows:0fr; transition:grid-template-rows .38s var(--lu-ease)}
+.lu-game.open .lu-game-detail{grid-template-rows:1fr}
+.lu-game-detail-in{overflow:hidden; min-height:0}
+.lu-game-detail-body{padding:10px var(--dn-s4) var(--dn-s4); border-top:1px dashed var(--dn-line)}
+.lu-game-desc{font-size:13.5px; line-height:1.7}
+.lu-game-date{font-size:11.5px; color:var(--dn-sub); font-weight:700; margin-top:4px}
+.lu-game-play{display:inline-block; margin-top:10px; background:var(--lu-pink); color:#fff; font-weight:900; font-size:14px; letter-spacing:.06em; border-radius:999px; padding:10px 22px; text-decoration:none}
+/* 5. 机：制作工程フロー */
+.lu-flow{background:#fff; border:1px solid var(--dn-line); border-radius:14px; padding:12px 14px 11px; margin-bottom:var(--dn-s4)}
+.lu-flow-cap{font-size:11px; font-weight:800; letter-spacing:.18em; color:var(--dn-sub); margin-bottom:12px}
+.lu-flow-track{position:relative; display:flex; margin:0 2px}
+.lu-flow-line{position:absolute; left:12.5%; width:75%; top:9px; height:3px; background:var(--lu-pink-soft); border-radius:99px}
+.lu-flow-fill{height:100%; background:var(--lu-pink); border-radius:99px}
+.lu-step{position:relative; z-index:1; flex:1; display:flex; flex-direction:column; align-items:center; gap:6px}
+.lu-step-dot{width:19px; height:19px; border-radius:50%; background:#fff; border:2.5px solid var(--lu-pink-soft); box-sizing:border-box}
+.lu-step.lit .lu-step-dot{background:var(--lu-pink); border-color:var(--lu-pink)}
+.lu-step.now .lu-step-dot{animation:luStepPulse 1.8s ease-in-out infinite}
+@keyframes luStepPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,46,136,.35)}50%{box-shadow:0 0 0 6px rgba(255,46,136,0)}}
+.lu-step-name{font-size:11.5px; font-weight:800; color:var(--dn-sub)}
+.lu-step.lit .lu-step-name{color:var(--dn-ink)}
+.lu-step.now .lu-step-name{color:var(--lu-pink)}
+.lu-flow-note{margin-top:10px; font-size:12px; color:var(--dn-sub); line-height:1.6}
+/* 6. プロフィール：カウントアップ統計 */
+.lu-stats{display:flex; gap:8px; margin-bottom:6px}
+.lu-stat{flex:1; background:#fff; border:1px solid var(--dn-line); border-radius:12px; padding:9px 4px 8px; text-align:center}
+.lu-stat-n{font-family:"Barlow Condensed",sans-serif; font-size:26px; font-weight:700; color:var(--lu-pink); line-height:1.05}
+.lu-stat-l{font-size:10px; color:var(--dn-sub); font-weight:800; letter-spacing:.05em; margin-top:2px}
+.lu-stats-note{font-size:10.5px; color:var(--dn-sub); line-height:1.6; margin-bottom:var(--dn-s3)}
+/* 7. ボーナス：XPバー＋連続の炎 */
+.lu-bonus-prog{background:#fff; border:1px solid var(--dn-line); border-radius:14px; padding:11px 13px 12px; margin-bottom:12px}
+.lu-flame-row{display:flex; align-items:center; gap:8px; margin-bottom:9px}
+.lu-flame{font-size:20px; line-height:1; display:inline-block; transform-origin:50% 90%; transition:transform .5s var(--lu-ease), filter .3s ease, opacity .3s ease}
+.lu-flame-txt{font-size:12.5px; font-weight:800}
+.lu-xp-head{display:flex; justify-content:space-between; font-size:11px; font-weight:800; letter-spacing:.08em; color:var(--dn-sub); margin-bottom:6px}
+.lu-xp{height:10px; border-radius:99px; background:var(--lu-pink-soft); overflow:hidden}
+.lu-xp-fill{height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--lu-pink),#ff7eb6); transition:width .7s var(--lu-ease)}
+/* 8. 応援ハートバースト */
+.lu-heart-pop{position:absolute; left:50%; top:-2px; z-index:5; color:var(--lu-pink); font-size:13px; line-height:1; pointer-events:none; animation:luHeartPop .72s var(--lu-ease) forwards}
+@keyframes luHeartPop{0%{transform:translate(-50%,0) scale(.4) rotate(0deg); opacity:0}18%{opacity:1}100%{transform:translate(calc(-50% + var(--lu-tx,0px)),var(--lu-ty,-34px)) scale(1.15) rotate(var(--lu-rot,0deg)); opacity:0}}
+/* 9a. 部屋の棚：ショーケース化 */
+#obj-door .lu-case{position:absolute; inset:0; border-radius:10px; pointer-events:none; z-index:3; border:2px solid rgba(201,210,217,.85); box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), inset 0 14px 22px rgba(255,255,255,.28); background:linear-gradient(115deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.05) 34%, rgba(255,255,255,0) 55%, rgba(255,255,255,.14) 82%, rgba(255,255,255,0) 100%)}
+#obj-door .lu-case-spot{position:absolute; left:6%; right:6%; top:0; height:34%; pointer-events:none; z-index:3; background:linear-gradient(to bottom, rgba(255,246,220,.55), rgba(255,246,220,0)); clip-path:polygon(18% 0, 82% 0, 100% 100%, 0 100%)}
+#obj-door .lu-plate{position:absolute; left:50%; transform:translateX(-50%); z-index:4; pointer-events:none; background:var(--lu-cream); color:var(--lu-ink); border:1px solid var(--lu-chrome); border-radius:3px; font-size:6px; font-weight:800; letter-spacing:.02em; padding:1.5px 4px; white-space:nowrap; box-shadow:0 1px 2px rgba(43,36,48,.25)}
+/* 9b. 置き場：絞り込みで並び直る */
+#shelves .work{animation:luWorkIn .5s var(--lu-ease) both}
+#shelves .shelf-items .work:nth-child(2){animation-delay:.07s}
+#shelves .feat-shelf .work{animation-delay:.02s}
+@keyframes luWorkIn{from{opacity:0; transform:translateY(14px) scale(.97)}to{opacity:1; transform:translateY(0) scale(1)}}
+/* 9c. 置き場：ライトボックス */
+.lu-zoom{position:absolute; top:6px; right:6px; z-index:6; width:30px; height:30px; border-radius:50%; border:1.5px solid var(--lu-chrome); background:rgba(255,250,252,.94); color:var(--lu-ink); font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--lu-shadow); padding:0}
+.lu-zoom:active{transform:scale(.92)}
+.lu-lightbox{position:fixed; inset:0; z-index:70; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s var(--lu-ease), visibility 0s linear .3s}
+.lu-lightbox.on{opacity:1; visibility:visible; transition:opacity .3s var(--lu-ease)}
+.lu-lb-backdrop{position:absolute; inset:0; background:rgba(51,38,46,.62)}
+.lu-lb-card{position:relative; width:min(86vw,340px); background:var(--lu-paper); border-radius:18px; overflow:hidden; box-shadow:var(--lu-shadow); transform:scale(.94); transition:transform .3s var(--lu-ease)}
+.lu-lightbox.on .lu-lb-card{transform:scale(1)}
+.lu-lb-card img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:var(--lu-pink-soft)}
+.lu-lb-body{padding:13px 16px 16px}
+.lu-lb-ttl{font-size:16px; font-weight:900}
+.lu-lb-date{font-size:11.5px; color:var(--dn-sub); font-weight:700; margin-top:2px; min-height:14px}
+.lu-lb-go{display:inline-block; margin-top:11px; background:var(--lu-pink); color:#fff; font-weight:900; font-size:14px; border-radius:999px; padding:10px 20px; text-decoration:none}
+.lu-lb-x{position:absolute; top:8px; right:8px; width:38px; height:38px; border-radius:50%; background:rgba(255,250,252,.95); border:1.5px solid var(--lu-chrome); font-size:15px; color:var(--lu-ink); cursor:pointer; z-index:2; padding:0}
+/* 10. オープニング：ネオンが順に灯る（看板→OPEN札→名前→案内。点灯後は静止） */
+#opening .op-en{opacity:.1; text-shadow:none !important; animation:luNeonOn .5s linear .1s forwards !important}
+#opening .lu-op-open{opacity:.12; font-family:"Quicksand",sans-serif; font-weight:700; letter-spacing:.3em; text-indent:.3em; font-size:12px; color:var(--lu-pink); border:1.5px solid var(--lu-pink); border-radius:999px; padding:5px 14px 5px 17px; animation:luNeonBox .5s linear .62s forwards !important}
+#opening .op-name{opacity:.08; animation:luNameOn .45s linear 1.08s forwards !important}
+#opening .op-tap{opacity:0; animation:luFadeOn .4s ease 1.5s forwards !important}
+@keyframes luNeonOn{0%{opacity:.1; text-shadow:none}14%{opacity:.95; text-shadow:0 0 8px rgba(255,46,136,.8),0 0 22px rgba(255,46,136,.45)}24%{opacity:.25; text-shadow:none}42%{opacity:1; text-shadow:0 0 8px rgba(255,46,136,.85),0 0 24px rgba(255,46,136,.5)}58%{opacity:.4; text-shadow:0 0 3px rgba(255,46,136,.4)}76%,100%{opacity:1; text-shadow:0 0 7px rgba(255,46,136,.65),0 0 20px rgba(255,46,136,.4)}}
+@keyframes luNeonBox{0%{opacity:.12; box-shadow:none}14%{opacity:.95; box-shadow:0 0 14px rgba(255,46,136,.45), inset 0 0 8px rgba(255,46,136,.3)}24%{opacity:.3; box-shadow:none}42%{opacity:1; box-shadow:0 0 16px rgba(255,46,136,.5), inset 0 0 8px rgba(255,46,136,.35)}58%{opacity:.45; box-shadow:0 0 5px rgba(255,46,136,.25)}76%,100%{opacity:1; box-shadow:0 0 12px rgba(255,46,136,.35), inset 0 0 6px rgba(255,46,136,.22)}}
+@keyframes luNameOn{0%{opacity:.08}30%{opacity:.9}45%{opacity:.3}100%{opacity:1}}
+@keyframes luFadeOn{to{opacity:1}}
+/* 11. 動きレイヤー：パネル内の stagger フェードアップ */
+.panel .closeBtn{z-index:5}
+.panel.on .dn-root > *{animation:luStagger .55s var(--lu-ease) both}
+.panel.on .dn-root > *:nth-child(2){animation-delay:.04s}
+.panel.on .dn-root > *:nth-child(3){animation-delay:.08s}
+.panel.on .dn-root > *:nth-child(4){animation-delay:.12s}
+.panel.on .dn-root > *:nth-child(5){animation-delay:.16s}
+.panel.on .dn-root > *:nth-child(6){animation-delay:.2s}
+.panel.on .dn-root > *:nth-child(7){animation-delay:.24s}
+.panel.on .dn-root > *:nth-child(8){animation-delay:.28s}
+@keyframes luStagger{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:translateY(0)}}
+/* 11. 動きレイヤー：押下で沈む＋カードが浮く */
+.dn-btn,.lu-game-play,.lu-lb-go{transition:transform .14s var(--lu-ease)}
+.dn-btn:active,.lu-game-play:active,.lu-lb-go:active{transform:scale(.96)}
+.dn-card{transition:transform .24s var(--lu-ease)}
+.dn-card:active{transform:translateY(-2px)}
+/* 11. 動きレイヤー：ボタンの光沢（JSが .lu-sheen-on を付与した時だけ1回流れる） */
+.dn-btn,.bonus-claim,#enterBtn,.lu-play,.lu-game-play,.lu-lb-go,#fortuneBtn{position:relative; overflow:hidden}
+.dn-btn::after,.bonus-claim::after,#enterBtn::after,.lu-play::after,.lu-game-play::after,.lu-lb-go::after,#fortuneBtn::after{content:''; position:absolute; top:-10%; bottom:-10%; width:38%; left:-70%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent); transform:skewX(-18deg); pointer-events:none; opacity:0}
+.lu-sheen-on::after{animation:luSheen .55s ease}
+@keyframes luSheen{0%{left:-70%; opacity:0}15%{opacity:1}100%{left:135%; opacity:0}}
+/* 11. 音トグル（部屋の右上） */
+.lu-sound{position:fixed; top:10px; right:10px; z-index:65; width:42px; height:42px; border-radius:50%; background:rgba(255,250,252,.94); border:1.5px solid var(--lu-chrome); box-shadow:var(--lu-shadow); font-size:17px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--lu-ink); padding:0}
+.lu-sound.lu-off{color:var(--dn-sub)}
+.lu-sound.lu-off::after{content:''; position:absolute; left:6px; right:6px; top:50%; height:2px; border-radius:2px; background:var(--lu-pink); transform:rotate(-24deg)}
+@media (prefers-reduced-motion: reduce){
+.lu-orbit svg{animation:none !important}
+#hero .hero-track{transition:none !important}
+.lu-flip.lu-flip-go .lu-flip-num{animation:none !important}
+.lu-game-detail{transition:none !important}
+.lu-step.now .lu-step-dot{animation:none !important; box-shadow:0 0 0 3px rgba(255,46,136,.3)}
+.lu-heart-pop{display:none !important}
+#shelves .work{animation:none !important}
+.lu-lb-card{transition:none !important}
+#opening .op-en{animation:none !important; opacity:1 !important; text-shadow:0 0 7px rgba(255,46,136,.65),0 0 20px rgba(255,46,136,.4) !important}
+#opening .lu-op-open{animation:none !important; opacity:1 !important; box-shadow:0 0 12px rgba(255,46,136,.35), inset 0 0 6px rgba(255,46,136,.22)}
+#opening .op-name{animation:none !important; opacity:1 !important}
+#opening .op-tap{animation:none !important; opacity:1 !important}
+.panel.on .dn-root > *{animation:none !important}
+.lu-sheen-on::after{animation:none !important; opacity:0 !important}
+.lu-xp-fill{transition:none !important}
+.lu-flame{transition:none !important}
+}
+
 </style>
 </head>
 <body>
@@ -1028,11 +1177,12 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div id="opening" role="button" aria-label="タップではじめる">
 <img src="../assets/parts/mirrativ-emomo.webp" alt="">
 <div class="op-en">SAKIYA DINER</div>
+<div class="lu-op-open" aria-hidden="true">OPEN</div>
 <div class="op-name">八乙女さきや</div>
 <div class="op-tap">タップではじめる</div>
 </div>
 <div id="gate">
-<div class="g-sign">SAKIYA DINER</div>
+<div class="lu-sign-row"><div class="g-sign">SAKIYA DINER</div><div class="lu-orbit" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="luOrbitPath" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs><text><textPath href="#luOrbitPath">SAKIYA DINER ★ OPEN ★ SAKIYA DINER ★ OPEN ★</textPath></text></svg><span class="lu-orbit-star">★</span></div></div>
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
 <div class="g-role">ミラティブ配信者</div>
@@ -1133,6 +1283,11 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <span class="door-glow" aria-hidden="true"></span>
 <span class="door-floorlight" aria-hidden="true"></span>
 <span class="door-leafwrap" aria-hidden="true"><img src="diner-img/shelf.webp" alt=""><span class="door-glint">✦</span></span>
+<span class="lu-case" aria-hidden="true"></span><span class="lu-case-spot" aria-hidden="true"></span>
+<span class="lu-plate" style="top:15%" aria-hidden="true">湯かげん</span>
+<span class="lu-plate" style="top:40%" aria-hidden="true">カニ飛ばし</span>
+<span class="lu-plate" style="top:64%" aria-hidden="true">ウサゴリ3D</span>
+<span class="lu-plate" style="top:87%" aria-hidden="true">童話診断</span>
 </button>
 
 <button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
@@ -1172,6 +1327,16 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="dn-top"><div class="dn-en">EVERY NIGHT</div><div class="dn-neon">ON AIR</div></div>
 <div class="dn-big">毎晩</div>
 <div class="dn-time">22:00〜</div>
+<div class="lu-count" id="luCount">
+<div class="lu-count-label" id="luCountLabel">今夜22:00まで</div>
+<div class="lu-flips" role="timer" aria-label="配信までのカウントダウン">
+<div class="lu-flip-col"><div class="lu-flip" data-lu-flip="h"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">HOURS</div></div>
+<span class="lu-flip-sep">:</span>
+<div class="lu-flip-col"><div class="lu-flip" data-lu-flip="m"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">MIN</div></div>
+<span class="lu-flip-sep">:</span>
+<div class="lu-flip-col"><div class="lu-flip" data-lu-flip="s"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">SEC</div></div>
+</div>
+</div>
 <div class="dn-note">連続配信 445日（2026.11.23時点）｜雑談・ゲーム・歌</div>
 <ul class="dn-week" id="weekList">
 <li><b>月</b>22時</li><li><b>火</b>22時</li><li><b>水</b>22時</li><li><b>木</b>22時</li><li><b>金</b>22時</li><li><b>土</b>22時</li><li><b>日</b>22時</li>
@@ -1201,22 +1366,49 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
 <div class="dn-head"><div class="dn-en">GAMES</div><div class="dn-jp">あそぶ</div><div class="dn-rule"></div></div>
-<a class="dn-card" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false">
 <img class="dn-thumb" src="../assets/parts/card-usagori.webp" alt="">
-<div class="dn-cbody"><div class="dn-menu-line"><div class="dn-cttl">うさぎ、ゴリラを殴る。3D</div><div class="dn-num">2026.11.23</div></div><div class="dn-csub">巨大ゴリラと75秒ボス戦</div></div>
-</a>
-<a class="dn-card" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">うさぎ、ゴリラを殴る。3D</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">巨大ゴリラと75秒ボス戦</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">巨大ゴリラと75秒ボス戦</div>
+<div class="lu-game-date">公開日：2026.11.23</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
+</div>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false">
 <img class="dn-thumb" src="../assets/parts/card-fairytale.webp" alt="">
-<div class="dn-cbody"><div class="dn-menu-line"><div class="dn-cttl">童話キャラ16タイプ診断</div><div class="dn-num">2026.11.23</div></div><div class="dn-csub">20問でわかる童話診断</div></div>
-</a>
-<a class="dn-card" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">童話キャラ16タイプ診断</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">20問でわかる童話診断</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">20問でわかる童話診断</div>
+<div class="lu-game-date">公開日：2026.11.23</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
+</div>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false">
 <img class="dn-thumb" src="../assets/parts/card-yukagen.webp" alt="">
-<div class="dn-cbody"><div class="dn-menu-line"><div class="dn-cttl">ちょうどいい湯かげん</div><div class="dn-num">2026.11.18</div></div><div class="dn-csub">お湯の温度を合わせる</div></div>
-</a>
-<a class="dn-card" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">ちょうどいい湯かげん</span><span class="dn-num">2026.11.18</span></span><span class="dn-csub">お湯の温度を合わせる</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">お湯の温度を合わせる</div>
+<div class="lu-game-date">公開日：2026.11.18</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
+</div>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false">
 <img class="dn-thumb" src="../assets/parts/work-ebikani.webp" alt="">
-<div class="dn-cbody"><div class="dn-menu-line"><div class="dn-cttl">EBI KANI?</div></div><div class="dn-csub">エビかカニかのリズムゲーム</div></div>
-</a>
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">EBI KANI?</span></span><span class="dn-csub">エビかカニかのリズムゲーム</span></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">エビかカニかのリズムゲーム</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
+</div>
 <div class="dn-checker"></div>
 </div>
 </section>
@@ -1258,6 +1450,17 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <img class="dn-thumb" src="../assets/parts/card-kani.webp" alt="">
 <div class="dn-cbody"><span class="dn-badge mint">仕込み中</span><div class="dn-cttl">カニ飛ばし</div><div class="dn-csub">カニをぶっ飛ばすゲーム</div></div>
 </a>
+<div class="lu-flow" id="luFlow">
+<div class="lu-flow-cap">カニ飛ばし｜制作工程</div>
+<div class="lu-flow-track">
+<div class="lu-flow-line"><div class="lu-flow-fill" style="width:33.3%"></div></div>
+<div class="lu-step lit"><span class="lu-step-dot"></span><span class="lu-step-name">企画</span></div>
+<div class="lu-step lit now"><span class="lu-step-dot"></span><span class="lu-step-name">試作</span></div>
+<div class="lu-step"><span class="lu-step-dot"></span><span class="lu-step-name">調整</span></div>
+<div class="lu-step"><span class="lu-step-dot"></span><span class="lu-step-name">公開</span></div>
+</div>
+<div class="lu-flow-note">カニ飛ばしはいま「試作」の段階（仕込み中）。</div>
+</div>
 <div class="dn-sec">仕込みメモ（作ったもの）</div>
 <a class="dn-row" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><span class="dn-tag">ゲーム</span><span>うさぎ、ゴリラを殴る。3D</span><span class="dn-num">→</span></a>
 <a class="dn-row" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><span class="dn-tag">ゲーム</span><span>ちょうどいい湯かげん</span><span class="dn-num">→</span></a>
@@ -1283,6 +1486,12 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="live-badge"><span class="dot"></span>Mirrativ 毎晩22時 配信中</div>
 </div>
 </div>
+<div class="lu-stats">
+<div class="lu-stat"><div class="lu-stat-n" data-lu-count="445">0</div><div class="lu-stat-l">連続配信（日）</div></div>
+<div class="lu-stat"><div class="lu-stat-n" data-lu-count="596">0</div><div class="lu-stat-l">フォロワー</div></div>
+<div class="lu-stat"><div class="lu-stat-n" data-lu-count="6">0</div><div class="lu-stat-l">公開作品（ゲーム・曲）</div></div>
+</div>
+<p class="lu-stats-note">連続配信・フォロワーは2026.11.23時点の数字。公開作品はこのサイトに載っているゲーム4＋曲2を数えたもの。</p>
 <p style="font-size:14px;margin-bottom:var(--dn-s3)">騒がしいかと思えば、しっかりお話も聞いている変なお兄さん。<br>よく叫びよく笑う！みんなで一緒に何でも楽しみたい！</p>
 <a class="dn-row" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener"><span class="dn-tag pink">活動</span><span>Mirrativ（毎晩22時）／ YouTube ／ X</span></a>
 <div class="dn-row"><span class="dn-tag">合言葉</span><span>やにかすおとめ</span></div>
@@ -1329,6 +1538,11 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <div class="bonus-stat"><div class="n" id="bonusStreak">0</div><div class="l">連続日数</div></div>
 <div class="bonus-stat"><div class="n" id="bonusPoints">0</div><div class="l">応援ポイント</div></div>
 <div class="bonus-stat"><div class="n" id="bonusTotal">0</div><div class="l">通算受取</div></div>
+</div>
+<div class="lu-bonus-prog">
+<div class="lu-flame-row"><span class="lu-flame" id="luFlame" aria-hidden="true">🔥</span><span class="lu-flame-txt" id="luFlameTxt">連続 0 日</span></div>
+<div class="lu-xp-head"><span>次の称号まで</span><span id="luXpTxt">あと 100 pt</span></div>
+<div class="lu-xp"><div class="lu-xp-fill" id="luXpFill"></div></div>
 </div>
 <div class="desk-sec">直近7日間のスタンプ</div>
 <div class="bonus-stamps" id="bonusStamps"></div>
@@ -1454,11 +1668,12 @@ closePanels(false);
 var heroTrack = document.getElementById('heroTrack');
 var heroFrame = document.getElementById('heroFrame');
 var heroDots = document.querySelectorAll('#heroDots button');
-var HERO_N = 3;
+var HERO_N = heroTrack.children.length;
 var heroIdx = 0;
 function heroGo(i){
 heroIdx = ((i % HERO_N) + HERO_N) % HERO_N;
 heroTrack.style.transform = 'translateX(' + (-heroIdx * 100) + '%)';
+heroTrack.style.setProperty('--lu-hero-x', (-heroIdx * 100) + '%');
 heroDots.forEach(function(d, j){ d.classList.toggle('on', j === heroIdx);});
 }
 document.getElementById('heroPrev').addEventListener('click', function(){ heroGo(heroIdx - 1);});
@@ -1470,11 +1685,13 @@ heroFrame.addEventListener('dragstart', function(e){ e.preventDefault();});
 heroFrame.addEventListener('pointerdown', function(e){
 if (e.target.closest('.hero-arrow')) return; // 矢印は通常のクリックに任せる
 dragX = e.clientX; dragMoved = false;
+heroTrack.classList.add('lu-drag');
 // ※ setPointerCapture は使わない：捕捉すると click の宛先がフレームに変わり、スライドのリンクが開かなくなる
 });
 window.addEventListener('pointermove', function(e){
 if (dragX === null) return;
 if (Math.abs(e.clientX - dragX) > 10) dragMoved = true;
+if (dragMoved) heroTrack.style.setProperty('--lu-hero-x', 'calc(' + (-heroIdx * 100) + '% + ' + (e.clientX - dragX) + 'px)');
 });
 window.addEventListener('pointerup', function(e){
 if (dragX === null) return;
@@ -1482,9 +1699,11 @@ var dx = e.clientX - dragX;
 dragX = null;
 if (dx <= -42) heroGo(heroIdx + 1);
 else if (dx >= 42) heroGo(heroIdx - 1);
+else heroGo(heroIdx);
+heroTrack.classList.remove('lu-drag');
 if (dragMoved) suppressUntil = Date.now() + 400; // 直後のクリックだけ止める（フレーム外で起きたクリックに残留させない）
 });
-window.addEventListener('pointercancel', function(){ dragX = null; dragMoved = false;});
+window.addEventListener('pointercancel', function(){ dragX = null; dragMoved = false; heroTrack.classList.remove('lu-drag'); heroGo(heroIdx);});
 heroFrame.addEventListener('click', function(e){
 if (Date.now() < suppressUntil){ e.preventDefault(); e.stopPropagation(); suppressUntil = 0;}
 }, true);
@@ -2694,5 +2913,330 @@ var iv=setInterval(function(){ tries++;
 })();
 </script>
 
+<button type="button" class="lu-sound" id="luSoundBtn" aria-pressed="true" aria-label="音のオン・オフ">♪</button>
+<div class="lu-lightbox" id="luLightbox" aria-hidden="true" role="dialog" aria-label="作品の拡大表示">
+<div class="lu-lb-backdrop"></div>
+<figure class="lu-lb-card">
+<button type="button" class="lu-lb-x" id="luLbX" aria-label="閉じる">✕</button>
+<img id="luLbImg" alt="">
+<div class="lu-lb-body"><div class="lu-lb-ttl" id="luLbTtl"></div><div class="lu-lb-date" id="luLbDate"></div>
+<a class="lu-lb-go" id="luLbGo" href="#" target="_blank" rel="noopener">この作品をひらく →</a></div>
+</figure>
+</div>
+<script>
+/* ===== Lucian第2弾 (lu-) : カウントダウン／展開カード／統計／XP・炎／ハート／ライトボックス／音 ===== */
+(function(){
+"use strict";
+var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+function $(id){ return document.getElementById(id); }
+
+/* ---------- 音レイヤー（WebAudio合成のみ・外部ファイルなし） ---------- */
+var LU_SOUND_KEY = 'lu_sound_v1';
+var luSoundOn = true;
+try { luSoundOn = localStorage.getItem(LU_SOUND_KEY) !== '0'; } catch(e){}
+var luAC = null, luMaster = null, luNoiseBuf = null;
+var luStats = {ctxCreated:0, started:0, byKind:{}};
+window.__luSoundStats = luStats;
+window.__luAudioState = function(){ return luAC ? luAC.state : 'none'; };
+function luCtx(){
+  if (!luSoundOn) return null;
+  if (!luAC){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    luAC = new AC();
+    luMaster = luAC.createGain();
+    luMaster.gain.value = 0.16;
+    luMaster.connect(luAC.destination);
+    luStats.ctxCreated++;
+  }
+  if (luAC.state === 'suspended') luAC.resume();
+  return luAC;
+}
+function luEnv(g, t0, peak, dur){
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+}
+function luTone(o){
+  var ac = luCtx(); if (!ac) return;
+  var t0 = ac.currentTime + (o.delay || 0);
+  var osc = ac.createOscillator(), g = ac.createGain();
+  osc.type = o.type || 'sine';
+  osc.frequency.setValueAtTime(o.f, t0);
+  if (o.slide) osc.frequency.exponentialRampToValueAtTime(o.slide, t0 + o.dur);
+  luEnv(g, t0, o.vol || 0.5, o.dur);
+  osc.connect(g); g.connect(luMaster);
+  osc.start(t0); osc.stop(t0 + o.dur + 0.05);
+  luStats.started++; luStats.byKind[o.kind] = (luStats.byKind[o.kind] || 0) + 1;
+}
+function luNoiseHit(o){
+  var ac = luCtx(); if (!ac) return;
+  if (!luNoiseBuf){
+    var len = ac.sampleRate;
+    luNoiseBuf = ac.createBuffer(1, len, ac.sampleRate);
+    var d = luNoiseBuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  }
+  var t0 = ac.currentTime + (o.delay || 0);
+  var s = ac.createBufferSource(); s.buffer = luNoiseBuf; s.playbackRate.value = o.rate || 1;
+  var f = ac.createBiquadFilter(); f.type = o.ftype || 'bandpass'; f.frequency.value = o.ffreq || 1800; f.Q.value = o.q || 0.9;
+  var g = ac.createGain();
+  luEnv(g, t0, o.vol || 0.3, o.dur);
+  s.connect(f); f.connect(g); g.connect(luMaster);
+  s.start(t0, Math.random() * 0.4); s.stop(t0 + o.dur + 0.05);
+  luStats.started++; luStats.byKind[o.kind] = (luStats.byKind[o.kind] || 0) + 1;
+}
+function luBell(n, kind){
+  for (var i = 0; i < n; i++){
+    luTone({f:1567.98, dur:0.5, vol:0.45, delay:i * 0.17, kind:kind});
+    luTone({f:2093.0, dur:0.3, vol:0.16, delay:i * 0.17, kind:kind});
+  }
+}
+function luPop(){ luTone({f:520, slide:170, dur:0.1, vol:0.5, kind:'pop'}); }
+function luStampSnd(){
+  luTone({f:130, slide:48, dur:0.2, vol:0.9, kind:'stamp'});
+  luNoiseHit({dur:0.09, vol:0.22, ffreq:500, ftype:'lowpass', kind:'stamp'});
+}
+function luNeedle(){
+  luNoiseHit({dur:0.08, vol:0.32, ffreq:3200, ftype:'highpass', kind:'needle'});
+  luTone({f:2400, dur:0.03, vol:0.12, kind:'needle'});
+}
+document.addEventListener('pointerdown', function(){ luCtx(); }, {once:true, capture:true});
+var luSndBtn = $('luSoundBtn');
+function luPaintSnd(){
+  if (!luSndBtn) return;
+  luSndBtn.classList.toggle('lu-off', !luSoundOn);
+  luSndBtn.setAttribute('aria-pressed', luSoundOn ? 'true' : 'false');
+}
+luPaintSnd();
+if (luSndBtn) luSndBtn.addEventListener('click', function(){
+  luSoundOn = !luSoundOn;
+  try { localStorage.setItem(LU_SOUND_KEY, luSoundOn ? '1' : '0'); } catch(e){}
+  luPaintSnd();
+  if (luSoundOn){ luCtx(); luBell(1, 'confirm'); }
+  else if (luAC){ luAC.suspend(); }
+});
+var eb = $('enterBtn'); if (eb) eb.addEventListener('click', function(){ luBell(2, 'doorbell'); });
+document.querySelectorAll('[data-panel]').forEach(function(el){ el.addEventListener('click', luPop); });
+document.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', luPop); });
+var scr = $('scrim'); if (scr) scr.addEventListener('click', luPop);
+var doorB = $('obj-door'); if (doorB) doorB.addEventListener('click', luPop);
+var sdB = $('storageDoor'); if (sdB) sdB.addEventListener('click', luPop);
+var claimB = $('bonusClaim'); if (claimB) claimB.addEventListener('click', luStampSnd);
+var fB = $('fortuneBtn'); if (fB) fB.addEventListener('click', function(){ luBell(1, 'confirm'); });
+var rcB = $('reqCopy'); if (rcB) rcB.addEventListener('click', function(){ luBell(1, 'confirm'); });
+var pb = $('luPlayBtn');
+if (pb) pb.addEventListener('click', function(){
+  var pl = $('luPlayer');
+  if (pl && pl.classList.contains('lu-playing')) luNeedle();
+});
+var msBtn = $('msgSubmit');
+if (msBtn && window.MutationObserver){
+  var msObs = new MutationObserver(function(){
+    if (msBtn.classList.contains('lu-done')) luBell(1, 'confirm');
+  });
+  msObs.observe(msBtn, {attributes:true, attributeFilter:['class']});
+}
+var scv = $('luScratchCanvas'), luScrLast = 0;
+if (scv){
+  var scSnd = function(){
+    var box = $('luScratch');
+    if (!box || !box.classList.contains('lu-armed')) return;
+    var n = Date.now();
+    if (n - luScrLast < 85) return;
+    luScrLast = n;
+    luNoiseHit({dur:0.035, vol:0.1, ffreq:2600, kind:'scratch'});
+  };
+  scv.addEventListener('pointerdown', scSnd);
+  scv.addEventListener('pointermove', scSnd);
+}
+
+/* ---------- 光沢（押下で1回だけ流れる） ---------- */
+if (!RM){
+  document.addEventListener('pointerdown', function(e){
+    var t = e.target.closest ? e.target.closest('.dn-btn, .bonus-claim, #enterBtn, .lu-play, .lu-game-play, .lu-lb-go, #fortuneBtn') : null;
+    if (!t) return;
+    t.classList.remove('lu-sheen-on');
+    void t.offsetWidth;
+    t.classList.add('lu-sheen-on');
+    setTimeout(function(){ t.classList.remove('lu-sheen-on'); }, 650);
+  }, true);
+}
+
+/* ---------- 3. フリップ式カウントダウン（次の22:00・実時刻ベース） ---------- */
+var luCountEl = $('luCount');
+var luFlipState = {};
+function luNext22(now){
+  var t = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
+  if (now.getTime() >= t.getTime()) t.setDate(t.getDate() + 1);
+  return t;
+}
+function luSetFlip(unit, val){
+  var box = document.querySelector('[data-lu-flip="' + unit + '"]');
+  if (!box) return;
+  if (luFlipState[unit] === val) return;
+  luFlipState[unit] = val;
+  var num = box.querySelector('.lu-flip-num');
+  if (RM){ num.textContent = val; return; }
+  box.classList.remove('lu-flip-go');
+  void box.offsetWidth;
+  setTimeout(function(){ num.textContent = val; }, 130);
+  box.classList.add('lu-flip-go');
+}
+function luTickCount(){
+  if (!luCountEl) return;
+  var now = new Date();
+  var target = luNext22(now);
+  var diff = Math.max(0, Math.floor((target - now) / 1000));
+  var pad = function(n){ return String(n).padStart(2, '0'); };
+  luSetFlip('h', pad(Math.floor(diff / 3600)));
+  luSetFlip('m', pad(Math.floor(diff % 3600 / 60)));
+  luSetFlip('s', pad(diff % 60));
+  $('luCountLabel').textContent = (target.getDate() === now.getDate()) ? '今夜22:00まで' : '明日22:00まで';
+  luCountEl.dataset.target = String(target.getTime());
+}
+if (luCountEl){ luTickCount(); setInterval(luTickCount, 250); }
+
+/* ---------- 4. ゲーム：広がる詳細カード ---------- */
+document.querySelectorAll('.lu-game-head').forEach(function(head){
+  head.addEventListener('click', function(){
+    var card = head.closest('.lu-game');
+    var wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.lu-game.open').forEach(function(c){
+      c.classList.remove('open');
+      var h = c.querySelector('.lu-game-head');
+      if (h) h.setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen){
+      card.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+/* ---------- 6. プロフィール：カウントアップ統計 ---------- */
+var luStatsRan = false, luTickPlayed = false;
+function luRunStats(){
+  if (luStatsRan) return;
+  luStatsRan = true;
+  document.querySelectorAll('[data-lu-count]').forEach(function(el){
+    var to = parseInt(el.getAttribute('data-lu-count'), 10) || 0;
+    if (RM){ el.textContent = to; return; }
+    var start = null;
+    function step(ts){
+      if (!start) start = ts;
+      var p = Math.min(1, (ts - start) / 900);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+      else {
+        el.textContent = to;
+        if (!luTickPlayed){ luTickPlayed = true; luTone({f:1900, dur:0.05, vol:0.2, kind:'tick'}); }
+      }
+    }
+    requestAnimationFrame(step);
+  });
+}
+var profPanel = $('panel-profile');
+if (profPanel && window.MutationObserver){
+  new MutationObserver(function(){
+    if (profPanel.classList.contains('on')) luRunStats();
+  }).observe(profPanel, {attributes:true, attributeFilter:['class']});
+  if (profPanel.classList.contains('on')) luRunStats();
+}
+
+/* ---------- 7. ボーナス：XPバー＋炎（sakiya_bonus_v1 を読むだけ） ---------- */
+function luBonusSync(){
+  var fill = $('luXpFill'); if (!fill) return;
+  var s = {};
+  try { s = JSON.parse(localStorage.getItem('sakiya_bonus_v1')) || {}; } catch(e){}
+  var pts = s.points || 0, streak = s.streak || 0;
+  var prog = pts % 100;
+  fill.style.width = prog + '%';
+  $('luXpTxt').textContent = 'あと ' + (100 - prog) + ' pt';
+  var flame = $('luFlame');
+  flame.style.transform = 'scale(' + (0.65 + Math.min(streak, 15) * 0.05) + ')';
+  flame.style.filter = streak > 0 ? 'none' : 'grayscale(1)';
+  flame.style.opacity = streak > 0 ? '1' : '.45';
+  $('luFlameTxt').textContent = '連続 ' + streak + ' 日';
+}
+luBonusSync();
+var bonusPanel = $('panel-bonus');
+if (bonusPanel && window.MutationObserver){
+  new MutationObserver(function(){
+    if (bonusPanel.classList.contains('on')) luBonusSync();
+  }).observe(bonusPanel, {attributes:true, attributeFilter:['class']});
+}
+if (claimB) claimB.addEventListener('click', function(){ setTimeout(luBonusSync, 80); });
+if (fB) fB.addEventListener('click', function(){ setTimeout(luBonusSync, 80); });
+
+/* ---------- 8. 応援ハートバースト＋ポップ音 ---------- */
+var shelvesEl2 = $('shelves');
+if (shelvesEl2) shelvesEl2.addEventListener('click', function(e){
+  var btn = e.target.closest ? e.target.closest('button.cheer') : null;
+  if (!btn || btn.classList.contains('done') || btn.classList.contains('off')) return;
+  luPop();
+  if (RM) return;
+  for (var i = 0; i < 6; i++){
+    var s = document.createElement('span');
+    s.className = 'lu-heart-pop';
+    s.textContent = '♥';
+    s.style.setProperty('--lu-tx', (Math.random() * 56 - 28) + 'px');
+    s.style.setProperty('--lu-ty', (-(26 + Math.random() * 30)) + 'px');
+    s.style.setProperty('--lu-rot', (Math.random() * 50 - 25) + 'deg');
+    s.style.animationDelay = (i * 0.03) + 's';
+    btn.appendChild(s);
+    (function(el){ setTimeout(function(){ el.remove(); }, 950); })(s);
+  }
+});
+
+/* ---------- 9c. ライトボックス＋拡大ボタン ---------- */
+var lb = $('luLightbox');
+function luLbOpen(work){
+  if (!lb) return;
+  var link = work.querySelector('.wlink');
+  var img = work.querySelector('.cover img');
+  var ttl = work.querySelector('.wttl');
+  var date = work.querySelector('.wdate');
+  var lbImg = $('luLbImg');
+  if (img && img.getAttribute('src')){ lbImg.src = img.getAttribute('src'); lbImg.style.display = ''; }
+  else { lbImg.removeAttribute('src'); lbImg.style.display = 'none'; }
+  $('luLbTtl').textContent = ttl ? ttl.textContent : '';
+  $('luLbDate').textContent = date ? date.textContent : '';
+  $('luLbGo').href = link ? link.href : '#';
+  lb.classList.add('on');
+  lb.setAttribute('aria-hidden', 'false');
+}
+function luLbClose(){
+  if (!lb) return;
+  lb.classList.remove('on');
+  lb.setAttribute('aria-hidden', 'true');
+}
+if (lb){
+  $('luLbX').addEventListener('click', luLbClose);
+  lb.querySelector('.lu-lb-backdrop').addEventListener('click', luLbClose);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') luLbClose(); });
+}
+function luAddZoom(){
+  if (!shelvesEl2) return;
+  shelvesEl2.querySelectorAll('.work').forEach(function(w){
+    if (w.querySelector('.lu-zoom')) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lu-zoom';
+    b.setAttribute('aria-label', '作品を拡大して見る');
+    b.textContent = '＋';
+    b.addEventListener('click', function(ev){
+      ev.preventDefault(); ev.stopPropagation();
+      luLbOpen(w);
+    });
+    w.appendChild(b);
+  });
+}
+luAddZoom();
+if (shelvesEl2 && window.MutationObserver){
+  new MutationObserver(luAddZoom).observe(shelvesEl2, {childList:true, subtree:true});
+}
+})();
+</script>
 </body>
 </html>
