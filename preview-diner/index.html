@@ -832,7 +832,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 @media (prefers-reduced-motion: reduce){ .dn-root *{animation:none!important; transition:none!important} }
 
 /* storage: chrome shelf (dn pass) */
-#storage .shelf-board{background:linear-gradient(#eef1f4,#c9d2d9); height:8px; box-shadow:0 2px 5px rgba(43,36,48,.18)}
+#storageView .shelf-board{background:linear-gradient(#eef1f4,#c9d2d9); height:8px; box-shadow:0 2px 5px rgba(43,36,48,.18)}
 
 /* gate/opening dn sign (preview) */
 #gate .g-sign{font-family:"Dela Gothic One",sans-serif; letter-spacing:.16em; color:#E0218A; font-size:16px; text-align:center; margin-bottom:2px}
@@ -840,6 +840,28 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 #gate .g-time{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:19px}
 #gate .g-menu-label{font-size:11px; font-weight:900; color:#A78B9C; letter-spacing:.24em; text-align:center; margin-bottom:6px}
 #opening .op-en{color:#FF7EB6; text-shadow:0 0 8px rgba(255,46,136,.85), 0 0 24px rgba(255,46,136,.5); letter-spacing:.34em}
+
+/* ===== dn pass 2: opening / hero / room / objects / storage ===== */
+#opening::before{content:''; position:absolute; inset:14px; border:2px solid rgba(255,46,136,.55); border-radius:26px; box-shadow:0 0 18px rgba(255,46,136,.35), inset 0 0 18px rgba(255,46,136,.18); pointer-events:none}
+#opening::after{content:''; position:absolute; left:0; right:0; bottom:0; height:14px; background:repeating-conic-gradient(#33262E 0% 25%, #FFF6EC 0% 50%) 0 0/28px 28px; opacity:.85; pointer-events:none}
+#opening .op-en{animation:dnFlicker 1.6s ease-in-out 1}
+@keyframes dnFlicker{0%,100%{opacity:1} 8%{opacity:.35} 14%{opacity:1} 22%{opacity:.5} 30%{opacity:1} 55%{opacity:.65} 62%{opacity:1}}
+.hero-frame{border:3px solid #C9D2D9; outline:1px solid #9aa7b1}
+.hero-frame::before{content:'PICK UP'; position:absolute; top:10px; left:10px; z-index:3; font-family:"Quicksand",sans-serif; font-size:9.5px; font-weight:700; letter-spacing:.18em; color:#FFF6EC; background:#33262E; padding:3px 9px; border-radius:999px}
+.room-name b{color:#E0218A; text-shadow:0 0 10px rgba(255,46,136,.35)}
+.room-name::after{content:''; display:block; width:110px; height:3px; margin:5px auto 0; background:linear-gradient(90deg,#C9D2D9,#FF2E88,#C9D2D9); border-radius:2px}
+.obj::before,#chara::before{position:absolute; left:50%; transform:translateX(-50%); top:-15px; z-index:6; font-family:"Quicksand",sans-serif; font-size:8.5px; font-weight:700; letter-spacing:.14em; color:#FFF6EC; background:#33262E; padding:2.5px 8px; border-radius:999px; white-space:nowrap; pointer-events:none; box-shadow:0 2px 6px rgba(43,36,48,.25)}
+#obj-tv::before{content:'STREAM'}
+#obj-game::before{content:'GAMES'}
+#obj-desk::before{content:'STUDIO'}
+#obj-speaker::before{content:'MUSIC'}
+#obj-post::before{content:'GUEST BOOK'}
+#obj-door::before{content:'WORKS'}
+#chara::before{content:'PROFILE'}
+#storageView .storage-name{font-family:"Zen Maru Gothic",sans-serif; font-weight:900; color:#33262E}
+#storageView .storage-name::before{content:'SHOWCASE'; display:block; font-family:"Quicksand",sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.34em; color:#FF2E88; margin-bottom:3px}
+#storageView .sec-head{color:#33262E; font-size:12.5px; letter-spacing:.1em; border-bottom:2px solid #FFD9E8; padding-bottom:5px}
+#storageView .work img{border-radius:10px; border:1px solid #F1DCE6; box-shadow:0 3px 8px rgba(43,36,48,.12)}
 </style>
 </head>
 <body>
