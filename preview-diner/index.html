@@ -930,6 +930,11 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 #panel-bonus .bonus-stat{border:1px solid var(--dn-line); box-shadow:none}
 #panel-bonus .fortune{border-top:1px solid var(--dn-line)}
 #storageView .obj3d .cover img{border-width:1.5px; border-color:#D9DFE4; outline:none; box-shadow:0 2px 6px rgba(43,36,48,.10)}
+
+/* ===== 棚＋視点移動（試作） ===== */
+#obj-door .door-leafwrap{transform:none !important}
+#obj-door .door-glow, #obj-door .door-floorlight{display:none}
+#stage.to-shelf{transform:scale(1.8); opacity:.12; transform-origin:88% 55%}
 </style>
 </head>
 <body>
@@ -1039,10 +1044,10 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <span class="bubble" id="sunBubble" aria-hidden="true"></span>
 </button>
 
-<button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
+<button class="obj" id="obj-door" type="button" aria-label="棚：作品置き場へ">
 <span class="door-glow" aria-hidden="true"></span>
 <span class="door-floorlight" aria-hidden="true"></span>
-<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/door3.webp" alt=""><span class="door-glint">✦</span></span>
+<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/shelf.webp" alt=""><span class="door-glint">✦</span></span>
 </button>
 
 <button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
@@ -2106,11 +2111,10 @@ var doorBusy = false;
 doorBtn.addEventListener('click', function(){
 if (doorBusy || storageOpen) return;
 doorBusy = true;
-doorBtn.classList.add('opening');
 var stageEl = document.getElementById('stage');
-if (!reduceMotion) setTimeout(function(){ stageEl.classList.add('through'); }, 560);
-setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 900);
-setTimeout(function(){ doorBtn.classList.remove('opening'); stageEl.classList.remove('through'); doorBusy = false;}, 1700);
+if (!reduceMotion) stageEl.classList.add('to-shelf');
+setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 950);
+setTimeout(function(){ stageEl.classList.remove('to-shelf'); doorBusy = false;}, 1800);
 });
 
 /* ---------- 隠し要素：植物を5回タップで花 ---------- */
