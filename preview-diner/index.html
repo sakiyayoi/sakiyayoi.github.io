@@ -877,7 +877,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 #storageView .work .cheer{margin-top:9px}
 #storageView .work.big{width:94%; position:relative}
 #storageView .work.big .cover img{aspect-ratio:16/10}
-#storageView .work.big .dome{position:absolute; left:50%; top:-4px; transform:translateX(-50%); width:78%; z-index:4; pointer-events:none; filter:drop-shadow(0 6px 8px rgba(43,36,48,.18))}
+#storageView .feat-shelf .stand{display:block; width:62%; margin:-2px auto 0}
 #storageView .feat-shelf .shelf-items{justify-content:center}
 #storageDoor{left:50%; bottom:12px; transform:translateX(-50%); width:auto; display:flex; align-items:center; gap:9px; background:#33262E; border:2px solid #C9D2D9; border-radius:999px; padding:7px 18px 7px 12px; box-shadow:0 6px 16px rgba(43,36,48,.3); z-index:5}
 #storageDoor:active{transform:translateX(-50%) scale(.95)}
@@ -1934,7 +1934,6 @@ var wdate = w.date ? '<span class="wdate">' + w.date.replace(/-/g,'.') + ' 公�
 return '<div class="work' + (big ? ' big' : '') + '">'
 + '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
 + '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>' + badge
-+ (big ? '<img class="dome" src="diner-img/dome.webp" alt="" aria-hidden="true">' : '')
 + '<span class="wttl">' + w.title + '</span>'
 + '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' + wdate + '</a>'
 + cheer + '</div>';
@@ -1957,7 +1956,7 @@ if (db) return 1;
 return 0;
 });
 var html = '<div class="storage-sec"><div class="sec-head"><b>おすすめ</b></div>';
-html += '<div class="shelf feat-shelf"><div class="shelf-items">' + workHTML(sorted[0], true) + '</div><div class="shelf-board"></div></div>';
+html += '<div class="shelf feat-shelf"><div class="shelf-items">' + workHTML(sorted[0], true) + '</div><img class="stand" src="diner-img/dome-stand.webp" alt="" aria-hidden="true"><div class="shelf-board"></div></div>';
 if (sorted.length > 1) html += shelvesHTML(sorted.slice(1));
 return html + '</div>';
 }
