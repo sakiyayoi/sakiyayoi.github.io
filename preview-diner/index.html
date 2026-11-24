@@ -833,6 +833,13 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 
 /* storage: chrome shelf (dn pass) */
 #storage .shelf-board{background:linear-gradient(#eef1f4,#c9d2d9); height:8px; box-shadow:0 2px 5px rgba(43,36,48,.18)}
+
+/* gate/opening dn sign (preview) */
+#gate .g-sign{font-family:"Dela Gothic One",sans-serif; letter-spacing:.16em; color:#E0218A; font-size:16px; text-align:center; margin-bottom:2px}
+#gate .g-open{font-family:"Quicksand",sans-serif; font-weight:700; letter-spacing:.14em; color:#E0218A}
+#gate .g-time{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:19px}
+#gate .g-menu-label{font-size:11px; font-weight:900; color:#A78B9C; letter-spacing:.24em; text-align:center; margin-bottom:6px}
+#opening .op-en{color:#FF7EB6; text-shadow:0 0 8px rgba(255,46,136,.85), 0 0 24px rgba(255,46,136,.5); letter-spacing:.34em}
 </style>
 </head>
 <body>
@@ -840,18 +847,20 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 <!-- 玄関 -->
 <div id="opening" role="button" aria-label="タップではじめる">
 <img src="../assets/parts/mirrativ-emomo.webp" alt="">
-<div class="op-en">SAKIYA OFFICIAL ROOM</div>
+<div class="op-en">SAKIYA DINER</div>
 <div class="op-name">八乙女さきや</div>
 <div class="op-tap">タップではじめる</div>
 </div>
 <div id="gate">
+<div class="g-sign">SAKIYA DINER</div>
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
 <div class="g-role">ミラティブ配信者</div>
+<div class="g-menu-label">定番メニュー</div>
 <div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span></div>
-<div class="g-live"><span class="dot"></span>毎晩22時 配信中</div>
+<div class="g-live"><span class="dot"></span><span class="g-open">OPEN</span> 毎晩 <span class="g-time">22:00〜</span></div>
 </div>
-<button id="enterBtn" type="button">入る</button>
+<button id="enterBtn" type="button">お店に入る</button>
 </div>
 
 <!-- 部屋 -->
@@ -955,8 +964,8 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 </div>
 </main>
 <div id="dock">
-<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>Mirrativ 毎晩22時</a>
-<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のボーナス</button>
+<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>今夜の営業 22:00〜</a>
+<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のスタンプ</button>
 </div>
 
 <!-- 作品置き場 -->
