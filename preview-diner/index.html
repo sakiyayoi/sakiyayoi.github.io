@@ -934,7 +934,7 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 /* ===== 棚＋視点移動（試作） ===== */
 #obj-door .door-leafwrap{transform:none !important}
 #obj-door .door-glow, #obj-door .door-floorlight{display:none}
-#stage.to-shelf{transform:scale(1.8); opacity:.12; transform-origin:88% 55%}
+#stage.to-shelf{transform:scale(1.8); opacity:.12}
 </style>
 </head>
 <body>
@@ -2112,7 +2112,11 @@ doorBtn.addEventListener('click', function(){
 if (doorBusy || storageOpen) return;
 doorBusy = true;
 var stageEl = document.getElementById('stage');
-if (!reduceMotion) stageEl.classList.add('to-shelf');
+if (!reduceMotion) {
+var sr = stageEl.getBoundingClientRect(); var dr = doorBtn.getBoundingClientRect();
+stageEl.style.transformOrigin = (((dr.left + dr.width / 2 - sr.left) / sr.width) * 100) + '% ' + (((dr.top + dr.height / 2 - sr.top) / sr.height) * 100) + '%';
+stageEl.classList.add('to-shelf');
+}
 setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 950);
 setTimeout(function(){ stageEl.classList.remove('to-shelf'); doorBusy = false;}, 1800);
 });
