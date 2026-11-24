@@ -885,6 +885,23 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 #storageDoor .cap{position:static; transform:none; color:#FFF6EC; font-size:12px}
 #storageDoor.leaving img{animation:doorSwing .32s ease-in-out 2; transform-origin:left center}
 @keyframes doorSwing{0%,100%{transform:rotateY(0)}50%{transform:rotateY(-58deg)}}
+
+/* ===== door richness + motion, shelf equal heights ===== */
+#obj-door .door-leafwrap{transition:transform .8s cubic-bezier(.22,.9,.28,1.08)}
+#obj-door .door-glow{background:linear-gradient(160deg,#fffbe9,#ffe3f0 55%,#ffd0e4); filter:brightness(1.06)}
+.door-floorlight{position:absolute; left:-38%; bottom:-4.5%; width:175%; height:11%; background:linear-gradient(100deg,rgba(255,240,200,0),rgba(255,240,200,.85) 30%,rgba(255,214,232,.55) 75%,rgba(255,214,232,0)); clip-path:polygon(6% 18%,100% 0,94% 100%,0 82%); opacity:0; transition:opacity .5s ease .12s; pointer-events:none}
+#obj-door.opening .door-floorlight{opacity:.9}
+.door-sign{position:absolute; left:50%; top:21%; transform:translateX(-50%) rotate(-4deg); background:#33262E; color:#FFF6EC; font-family:Quicksand,sans-serif; font-weight:700; font-size:clamp(7px,2vw,10px); letter-spacing:.22em; padding:.28em .7em .28em .95em; border:1.5px solid #C9D2D9; border-radius:999px; box-shadow:0 2px 5px rgba(43,36,48,.35); pointer-events:none}
+#obj-door.opening .door-sign{animation:signSway .8s ease-in-out}
+@keyframes signSway{0%,100%{transform:translateX(-50%) rotate(-4deg)}30%{transform:translateX(-50%) rotate(7deg)}65%{transform:translateX(-50%) rotate(-10deg)}}
+#stage{transition:transform .32s ease-in, opacity .32s ease-in; transform-origin:84% 62%}
+#stage.through{transform:scale(1.05); opacity:.2}
+#storageView .shelf-items{align-items:stretch; justify-content:center; gap:14px}
+#storageView .work{display:flex; flex-direction:column}
+#storageView .work .wlink{flex:1; display:flex; flex-direction:column}
+#storageView .work .wttl{height:35px; overflow:hidden}
+#storageView .work .wdate{min-height:17px}
+#storageView .work .cheer{margin-top:auto}
 </style>
 </head>
 <body>
@@ -998,7 +1015,8 @@ background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0
 
 <button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
 <span class="door-glow" aria-hidden="true"></span>
-<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/door.webp" alt=""><span class="door-glint">✦</span></span>
+<span class="door-floorlight" aria-hidden="true"></span>
+<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/door.webp" alt=""><span class="door-glint">✦</span><span class="door-sign" aria-hidden="true">OPEN</span></span>
 </button>
 
 <button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
@@ -1930,7 +1948,7 @@ var face = w.img
 var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
 var cheer = w.id ? '<button type="button" class="cheer" data-cheer="' + w.id + '" aria-label="' + w.title + 'を応援する"><span class="c-heart" aria-hidden="true">♥</span>応援<span class="cheer-n">…</span></button>' : '';
 var badge = '';
-var wdate = w.date ? '<span class="wdate">' + w.date.replace(/-/g,'.') + ' 公開</span>' : '';
+var wdate = '<span class="wdate">' + (w.date ? w.date.replace(/-/g,'.') + ' 公開' : '') + '</span>';
 return '<div class="work' + (big ? ' big' : '') + '">'
 + '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
 + '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>' + badge
@@ -2071,8 +2089,10 @@ doorBtn.addEventListener('click', function(){
 if (doorBusy || storageOpen) return;
 doorBusy = true;
 doorBtn.classList.add('opening');
-setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 820);
-setTimeout(function(){ doorBtn.classList.remove('opening'); doorBusy = false;}, 1500);
+var stageEl = document.getElementById('stage');
+if (!reduceMotion) setTimeout(function(){ stageEl.classList.add('through'); }, 560);
+setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 900);
+setTimeout(function(){ doorBtn.classList.remove('opening'); stageEl.classList.remove('through'); doorBusy = false;}, 1700);
 });
 
 /* ---------- 隠し要素：植物を5回タップで花 ---------- */
