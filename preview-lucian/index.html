@@ -1307,6 +1307,79 @@ h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
 .lu-game-head[aria-expanded="true"] .lu5-acc-state::before{content:'とじる'}
 .lu-game-head[aria-expanded="true"] .lu5-acc-state{background:var(--lu-mint); color:var(--lu-ink)}
 
+/* ===== Lucian第6弾 (lu6-) : 棚の再々設計「店の什器で並べる」 =====
+   第5弾（Featured＋均等グリッド＋札）への「AIスロップ」却下を受け、UIの型ではなく
+   実在のダイナー什器の形の規則から起こす：
+   ・ゲーム＝アーケード筐体の列（上部マーキーに名前／画面はベゼルに沈む／筐体ごとに色と形が違う）
+   ・曲＝ジュークボックス選曲面（紙のタイトルストリップ＋コード）とレコードビン（ジャケット正面・盤が覗く）
+   ・サイト＝壁の掲示（額装フレーム／レターボードの差し込み文字の行）
+   ・回転パイケースの規則（実物を大きくそのまま見せ、名前は小さく添えるだけ）を全体の原則にする。
+   作品は同一カード形式にしない。色・書体は確定トークンのまま。 */
+/* --- 共通：什器の看板プレート（什器そのものの一部として1什器に1つだけ） --- */
+.lu6-plate{display:block; width:fit-content; margin:0 auto 11px; font-size:11px; font-weight:900; letter-spacing:.22em; text-indent:.22em; color:var(--lu-ink); background:var(--lu-chrome-grad); border-radius:999px; padding:4px 14px; box-shadow:0 2px 5px rgba(43,36,48,.25)}
+#storageView .lu6-fx .work{background:transparent; border:none; box-shadow:none; border-radius:0; padding:0; width:auto}
+#storageView .lu6-fx .work .wtag{display:none}
+/* --- 什器1：アーケード筐体の列 --- */
+.lu6-arcade{margin-bottom:30px}
+.lu6-cabs{display:grid; grid-template-columns:1fr 1fr; gap:14px 10px; align-items:end; position:relative; padding:2px 2px 12px}
+.lu6-cabs::after{content:''; position:absolute; left:-4px; right:-4px; bottom:0; height:10px; border-radius:3px; background:linear-gradient(180deg,#57485A,#33262E); box-shadow:inset 0 1.5px 0 rgba(201,210,217,.75), 0 3px 6px rgba(43,36,48,.25)}
+#storageView .lu6-fx .lu6-cab{position:relative; border-radius:12px 12px 5px 5px; padding:9px 9px 10px; display:flex; flex-direction:column; box-shadow:0 10px 14px -8px rgba(43,36,48,.5)}
+#storageView .lu6-fx .lu6-cab-usagori{grid-column:1 / -1; background:linear-gradient(165deg,#FF5CA2,#FF2E88 55%,#DE1270)}
+#storageView .lu6-fx .lu6-cab-yukagen{background:linear-gradient(165deg,#13A7A6,#0E9594 55%,#0A7372)}
+#storageView .lu6-fx .lu6-cab-ebikani{background:linear-gradient(165deg,#E84857,#D92B3A 55%,#B01E2D)}
+#storageView .lu6-fx .lu6-cab-kani{background:linear-gradient(165deg,#FFF1DC,#FFE3C2 60%,#F6D3A7)}
+#storageView .lu6-cab .wlink{display:flex; flex-direction:column}
+#storageView .lu6-cab .wttl{order:1; height:auto; min-height:0; overflow:visible; margin:0 0 8px; text-align:center; font-family:"Dela Gothic One",sans-serif; font-weight:400; font-size:12.5px; letter-spacing:.03em; line-height:1.3; color:var(--lu-ink); background:linear-gradient(180deg,#FFFBF2,#FFF1DC); border-radius:6px; padding:7px 22px 7px 6px; box-shadow:0 0 10px rgba(255,246,220,.5), inset 0 0 0 1.5px rgba(201,210,217,.85), inset 0 -2px 0 rgba(201,210,217,.5)}
+#storageView .lu6-cab-usagori .wttl{font-size:16px; padding:9px 24px 9px 8px}
+#storageView .lu6-cab .obj3d{order:2; background:#26232E; border-radius:6px; padding:7px; box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.09), inset 0 2px 9px rgba(0,0,0,.65)}
+#storageView .lu6-cab .obj3d .cover{border-radius:3px; background:none}
+#storageView .lu6-cab .obj3d .cover::after{content:''; position:absolute; inset:0; background:linear-gradient(112deg,transparent 52%,rgba(255,255,255,.15) 70%,transparent 86%); pointer-events:none}
+#storageView .lu6-cab .obj3d .cover img{border:none; outline:none; box-shadow:none; border-radius:3px; aspect-ratio:4/3}
+#storageView .lu6-cab-usagori .obj3d .cover img{aspect-ratio:16/9}
+#storageView .lu6-cab-kani .obj3d .cover img{filter:saturate(.82) brightness(.97)}
+#storageView .lu6-cab .wdate{order:3; min-height:0; margin-top:7px; text-align:center; color:rgba(255,246,236,.95); font-size:11.5px}
+#storageView .lu6-cab-kani .wdate{color:#8A6D4F}
+#storageView .lu6-cab .cheer{width:auto; align-self:center; margin-top:8px; background:rgba(255,250,252,.96)}
+.lu6-note{position:absolute; top:46px; right:-3px; z-index:7; transform:rotate(5deg); background:#FFF6EC; color:#33262E; font-size:10.5px; font-weight:900; letter-spacing:.08em; padding:5px 9px 6px; border-radius:1px; box-shadow:0 3px 7px rgba(43,36,48,.32)}
+.lu6-note::before{content:''; position:absolute; top:-7px; left:50%; transform:translateX(-50%) rotate(-2deg); width:34px; height:12px; background:rgba(255,217,232,.8); border-left:1px dashed rgba(43,36,48,.14); border-right:1px dashed rgba(43,36,48,.14)}
+/* --- 什器2：ジュークボックス選曲面＋レコードビン --- */
+.lu6-juke{margin-bottom:30px; border:2px solid transparent; border-radius:18px; background:linear-gradient(var(--lu-paper),var(--lu-paper)) padding-box, var(--lu-chrome-grad) border-box; padding:12px 12px 15px; box-shadow:0 6px 14px rgba(43,36,48,.10)}
+#storageView .lu6-strip{margin-bottom:16px}
+#storageView .lu6-strip:last-child{margin-bottom:2px}
+#storageView .lu6-strip .wlink{display:flex; flex-direction:column}
+#storageView .lu6-strip .wttl{order:1; height:auto; min-height:0; overflow:visible; margin:0; text-align:left; display:flex; align-items:center; gap:8px; font-size:13px; line-height:1.35; color:var(--lu-ink); background:linear-gradient(180deg,#FFFCF6,#FFF3E2); border-top:1.5px solid rgba(43,36,48,.55); border-bottom:1.5px solid rgba(43,36,48,.55); padding:6px 9px; box-shadow:0 1px 3px rgba(43,36,48,.12)}
+#storageView .lu6-strip .wttl::before{content:attr(data-code); flex:none; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:12px; letter-spacing:.06em; color:var(--lu-cream); background:var(--lu-ink); border-radius:3px; padding:1.5px 6px}
+#storageView .lu6-strip .wttl::after{content:attr(data-kind); margin-left:8px; flex:none; font-size:10px; font-weight:900; letter-spacing:.1em; color:#675E6E}
+#storageView .lu6-strip-on .wttl{background:linear-gradient(180deg,#FFE9F3,#FFD9E8); border-top-color:rgba(199,0,86,.55); border-bottom-color:rgba(199,0,86,.55)}
+#storageView .lu6-strip-on .wttl::before{background:var(--lu-pink)}
+#storageView .lu6-strip .obj3d{order:2; width:66%; margin:14px auto 0; transform:rotate(-1.3deg); background:none; box-shadow:none}
+#storageView .lu6-strip-on .obj3d{width:82%; transform:rotate(.6deg)}
+#storageView .lu6-strip .o-cd .cover{background:rgba(255,255,255,.92); border:1.5px solid rgba(43,36,48,.2); padding:4px; border-radius:7px; box-shadow:0 10px 13px -8px rgba(43,36,48,.5)}
+#storageView .lu6-strip .o-cd .cover img{border:none; outline:none; box-shadow:none; border-radius:4px; aspect-ratio:4/3}
+#storageView .lu6-strip .disc{display:block}
+#storageView .lu6-strip-on .disc{top:-17%}
+#storageView .lu6-strip .wdate{display:none}
+#storageView .lu6-strip .cheer{margin-top:11px}
+/* --- 什器3：壁の掲示（額装＋レターボード） --- */
+.lu6-wall{margin-bottom:26px; position:relative; padding:16px 2px 2px}
+.lu6-wall::before{content:''; position:absolute; top:0; left:-4px; right:-4px; height:6px; border-radius:3px; background:var(--lu-chrome-grad); box-shadow:0 2px 4px rgba(43,36,48,.2)}
+#storageView .lu6-fx .lu6-frame{width:64%; margin-bottom:18px}
+#storageView .lu6-frame .wlink{display:flex; flex-direction:column; align-items:center}
+#storageView .lu6-frame .obj3d{order:1; width:100%; background:linear-gradient(150deg,#9C663D,#7C4F30 60%,#684325); padding:9px; border-radius:4px; box-shadow:0 10px 16px -8px rgba(43,36,48,.55)}
+#storageView .lu6-frame .obj3d .cover{background:var(--lu-cream); padding:7px; border-radius:1px}
+#storageView .lu6-frame .obj3d .cover img{border:none; outline:none; box-shadow:none; border-radius:1px; aspect-ratio:4/3}
+#storageView .lu6-frame .wttl{order:2; height:auto; min-height:0; overflow:visible; margin-top:9px; text-align:center; font-size:12px; line-height:1.35; color:var(--lu-ink); background:linear-gradient(180deg,#F3E3C2,#E8D3A8); border:1px solid rgba(124,79,48,.45); border-radius:3px; padding:4px 10px}
+#storageView .lu6-frame .wdate{order:3; min-height:0; margin-top:5px; text-align:center}
+#storageView .lu6-frame .cheer{margin-top:9px}
+#storageView .lu6-fx .lu6-board{width:100%}
+#storageView .lu6-board .wlink{display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:10px; background-color:#33262E; background-image:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 2px, transparent 2px 15px); border-radius:9px; padding:11px 12px; box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 8px 14px -8px rgba(43,36,48,.5)}
+#storageView .lu6-board .obj3d{flex:none; width:74px; background:none; box-shadow:none}
+#storageView .lu6-board .obj3d .cover{background:none; border-radius:3px}
+#storageView .lu6-board .obj3d .cover img{border:none; outline:none; box-shadow:none; border-radius:3px; aspect-ratio:4/3}
+#storageView .lu6-board .wttl{flex:1; min-width:110px; height:auto; min-height:0; overflow:visible; margin:0; text-align:left; color:var(--lu-cream); font-size:13.5px; letter-spacing:.13em; line-height:1.45}
+#storageView .lu6-board .wdate{min-height:0; margin:0 0 0 auto; padding-right:38px; color:var(--lu-pink-soft); font-size:12.5px}
+#storageView .lu6-board .cheer{margin-top:9px}
+
 </style>
 </head>
 <body>
@@ -3565,11 +3638,9 @@ function lu5Run(){
   try { lu5Transform(); } catch (e) { /* 変換に失敗しても旧表示のまま使う */ }
   lu5Busy = false;
 }
-var shelvesEl5 = document.getElementById('shelves');
-if (shelvesEl5 && window.MutationObserver){
-  new MutationObserver(lu5Run).observe(shelvesEl5, {childList: true});
-}
-lu5Run();
+/* 第6弾（lu6）が棚の再構成を引き継いだため、lu5 の棚変換は発動させない。
+   lu5Transform / lu5Run は互換のために残置するが、監視も初回実行も行わない。
+   （タブの aria-pressed 付与＝B機能はこの後ろで引き続き動作する） */
 function lu5Press(){
   document.querySelectorAll('#storageTabs button[data-cat]').forEach(function(b){
     b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false');
@@ -3580,6 +3651,142 @@ if (tabsEl5 && window.MutationObserver){
   new MutationObserver(lu5Press).observe(tabsEl5, {childList: true, attributes: true, attributeFilter: ['class']});
 }
 lu5Press();
+})();
+</script>
+<script>
+/* ===== Lucian第6弾 (lu6) : 棚の再々設計「店の什器で並べる」 =====
+   第5弾の棚（Featured＋均等グリッド＋札）は本人の「AIスロップ」却下を受けて置き換える。
+   形式は実在のダイナー什器から起こす（実物リサーチは第6弾報告に記載）：
+   ゲーム＝アーケード筐体の列／曲＝ジュークボックス選曲ストリップ＋レコードビン／
+   サイト＝壁の額装とレターボード。作品ごとに形を変え、同一カード形式にしない。
+   本体・lu〜lu5 の描画済み .work ノードをそのまま移動して使うため、
+   絞り込み・ライトボックス・応援ボタン・作品リンクの動作は従来どおり。 */
+(function(){
+'use strict';
+var LU6_META = {
+  yukagen:   {cat:'game'},
+  kani:      {cat:'game', note:'仕込み中'},
+  ebikani:   {cat:'game'},
+  usagori:   {cat:'game'},
+  sobaniite: {cat:'music', code:'A1', kind:'曲・MV'},
+  karappo:   {cat:'music', code:'A2', kind:'曲'},
+  anniv:     {cat:'site'},
+  fairytale: {cat:'site'}
+};
+var LU6_GAME_ORDER = ['usagori', 'yukagen', 'ebikani', 'kani'];
+var LU6_SUB_ORDER = {music:['sobaniite', 'karappo'], site:['anniv', 'fairytale']};
+var LU6_PLATE = {game:'ゲーム', music:'曲・MV', site:'サイト'};
+function lu6Collect(shelves){
+  var byId = {};
+  var allSec = null;
+  shelves.querySelectorAll('.storage-sec').forEach(function(sec){
+    var h = sec.querySelector('.sec-head');
+    if (h && h.textContent.indexOf('ぜんぶ') >= 0) allSec = sec;
+  });
+  var scope = allSec || shelves;
+  scope.querySelectorAll('.work').forEach(function(node){
+    var btn = node.querySelector('button.cheer[data-cheer]');
+    var ttl = node.querySelector('.wttl');
+    var id = btn ? btn.getAttribute('data-cheer') : (ttl ? ttl.textContent : '');
+    if (id && !byId[id]) byId[id] = {id: id, node: node};
+  });
+  return byId;
+}
+function lu6Order(ids, cat){
+  var rank = {};
+  var list = cat === 'game' ? LU6_GAME_ORDER : (LU6_SUB_ORDER[cat] || []);
+  list.forEach(function(id, i){ rank[id] = i; });
+  return ids.slice().sort(function(a, b){
+    var ra = (a in rank) ? rank[a] : 99, rb = (b in rank) ? rank[b] : 99;
+    return ra - rb;
+  });
+}
+function lu6Plate(cat){
+  var p = document.createElement('div');
+  p.className = 'lu6-plate';
+  p.textContent = LU6_PLATE[cat] || cat;
+  return p;
+}
+function lu6Fixture(cat, recs){
+  var wrap = document.createElement('div');
+  if (cat === 'game'){
+    wrap.className = 'lu6-fx lu6-arcade';
+    wrap.appendChild(lu6Plate('game'));
+    var cabs = document.createElement('div');
+    cabs.className = 'lu6-cabs';
+    recs.forEach(function(rec){
+      rec.node.classList.add('lu6-cab', 'lu6-cab-' + rec.id);
+      var meta = LU6_META[rec.id] || {};
+      if (meta.note && !rec.node.querySelector('.lu6-note')){
+        var note = document.createElement('span');
+        note.className = 'lu6-note';
+        note.textContent = meta.note;
+        rec.node.appendChild(note);
+      }
+      cabs.appendChild(rec.node);
+    });
+    wrap.appendChild(cabs);
+  } else if (cat === 'music'){
+    wrap.className = 'lu6-fx lu6-juke';
+    wrap.appendChild(lu6Plate('music'));
+    recs.forEach(function(rec){
+      rec.node.classList.add('lu6-strip');
+      if (rec.id === 'sobaniite') rec.node.classList.add('lu6-strip-on');
+      var meta = LU6_META[rec.id] || {};
+      var ttl = rec.node.querySelector('.wttl');
+      if (ttl){
+        if (meta.code) ttl.setAttribute('data-code', meta.code);
+        if (meta.kind) ttl.setAttribute('data-kind', meta.kind);
+      }
+      wrap.appendChild(rec.node);
+    });
+  } else {
+    wrap.className = 'lu6-fx lu6-wall';
+    wrap.appendChild(lu6Plate('site'));
+    recs.forEach(function(rec){
+      rec.node.classList.add(rec.id === 'anniv' ? 'lu6-frame' : 'lu6-board');
+      wrap.appendChild(rec.node);
+    });
+  }
+  return wrap;
+}
+function lu6Transform(){
+  var shelves = document.getElementById('shelves');
+  if (!shelves || shelves.querySelector('.lu6-fx')) return;
+  var secs = shelves.querySelectorAll('.storage-sec');
+  if (!secs.length) return;
+  var onBtn = document.querySelector('#storageTabs button.on');
+  var cat = onBtn ? onBtn.getAttribute('data-cat') : 'all';
+  var byId = lu6Collect(shelves);
+  var ids = Object.keys(byId);
+  if (!ids.length) return;
+  var cats = cat === 'all' ? ['game', 'music', 'site'] : [cat];
+  var footer = shelves.querySelector('.bonus-next');
+  var frag = document.createDocumentFragment();
+  var built = false;
+  cats.forEach(function(c){
+    var cids = lu6Order(ids.filter(function(id){ return (LU6_META[id] || {}).cat === c; }), c);
+    if (!cids.length) return;
+    frag.appendChild(lu6Fixture(c, cids.map(function(id){ return byId[id]; })));
+    built = true;
+  });
+  if (!built) return;
+  shelves.innerHTML = '';
+  shelves.appendChild(frag);
+  if (footer) shelves.appendChild(footer);
+}
+var lu6Busy = false;
+function lu6Run(){
+  if (lu6Busy) return;
+  lu6Busy = true;
+  try { lu6Transform(); } catch (e) { /* 変換に失敗しても旧表示のまま使う */ }
+  lu6Busy = false;
+}
+var shelvesEl6 = document.getElementById('shelves');
+if (shelvesEl6 && window.MutationObserver){
+  new MutationObserver(lu6Run).observe(shelvesEl6, {childList: true});
+}
+lu6Run();
 })();
 </script>
 </body>
