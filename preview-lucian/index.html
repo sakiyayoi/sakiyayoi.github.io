@@ -1380,6 +1380,58 @@ h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
 #storageView .lu6-board .wdate{min-height:0; margin:0 0 0 auto; padding-right:38px; color:var(--lu-pink-soft); font-size:12.5px}
 #storageView .lu6-board .cheer{margin-top:9px}
 
+/* ===== Lucian第7弾 (lu7-) : 操作の骨格をドック中心に =====
+   主経路は下部ドック：下段＝主要5行き先（配信/ゲーム/音楽/作品/応援）、
+   上段＝既存ドック（今夜の営業／今日のスタンプ）をそのまま真上に積む。
+   部屋・家具タップは副経路として維持。ドックは入店後のみ表示し、
+   パネル(z50)・スクリム(z40)・置き場(z26)より上、ライトボックス(z70)より下に置く */
+:root{ --lu7-main-h:64px; --lu7-gap:8px; --lu7-base:max(10px, env(safe-area-inset-bottom)); }
+/* --- 下段：メインドック --- */
+#lu7Dock{
+position:fixed; left:50%; bottom:var(--lu7-base); z-index:60;
+transform:translate(-50%,12px);
+display:flex; gap:2px; width:min(94vw,430px);
+background:linear-gradient(180deg,#FDFBFC,#F1E9ED);
+border:1.5px solid var(--lu-chrome); border-radius:20px;
+padding:6px; box-shadow:0 10px 28px rgba(43,36,48,.28), inset 0 1px 0 #fff;
+opacity:0; visibility:hidden; pointer-events:none;
+transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s linear .35s;
+}
+body.lu7-entered #lu7Dock{opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s}
+.lu7-item{
+flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+min-height:52px; padding:5px 0 4px; border:none; background:transparent; border-radius:14px;
+color:var(--lu-ink); cursor:pointer; position:relative;
+font-family:"Zen Maru Gothic",sans-serif;
+transition:transform var(--t-press) var(--ease-out), background .2s var(--lu-ease), color .2s var(--lu-ease);
+}
+.lu7-item:active{transform:scale(.94)}
+.lu7-item svg{width:23px; height:23px; flex:none}
+.lu7-lb{font-size:11px; font-weight:900; letter-spacing:.06em; line-height:1.1}
+.lu7-item.on{background:var(--lu-pink-soft); color:#C70056}
+.lu7-item.on::before{content:''; position:absolute; top:4px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:50%; background:var(--lu-pink)}
+.lu7-item:focus-visible{outline:2.5px solid #C70056; outline-offset:-2px}
+/* --- 上段：既存ドックを主ドックの真上へ移し、同じ出し入れに揃える --- */
+#dock{
+z-index:60;
+bottom:calc(var(--lu7-base) + var(--lu7-main-h) + var(--lu7-gap));
+opacity:0; visibility:hidden; pointer-events:none;
+transform:translate(-50%,12px);
+transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s linear .35s;
+}
+body.lu7-entered #dock{opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s}
+#bonusBtn.lu7-on{background:var(--lu-pink); color:#fff; border-color:var(--lu-pink)}
+#bonusBtn.lu7-on .bonus-dot{background:#fff}
+/* --- パネル下端：ドック（上下段＋余白 ≒132px）に隠れない余白を確保 --- */
+.panel{padding-bottom:calc(22px + env(safe-area-inset-bottom) + 132px)}
+/* --- 背の低い画面では置き場ステージを少し上げ、ドックと下端の重なりを避ける --- */
+@media (max-height:740px){
+#storageStage{transform:translate(-50%,calc(-50% - 30px))}
+}
+@media (prefers-reduced-motion: reduce){
+#lu7Dock, #dock{transition:opacity .01s, visibility 0s}
+}
+
 </style>
 </head>
 <body>
@@ -1512,6 +1564,15 @@ h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
 <a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>今夜の営業 22:00〜</a>
 <button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のスタンプ</button>
 </div>
+
+<!-- Lucian第7弾：メインドック（主要行き先へどこからでも1タップ） -->
+<nav id="lu7Dock" aria-label="メインメニュー">
+<button type="button" class="lu7-item" data-lu7-to="tv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M10.2 9.8l4.8 2.2-4.8 2.2z" fill="currentColor" stroke="none"/></svg><span class="lu7-lb">配信</span></button>
+<button type="button" class="lu7-item" data-lu7-to="game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="8" width="19" height="9.5" rx="4.75"/><path d="M8.2 10.8v4M6.2 12.8h4"/><circle cx="15.8" cy="11.6" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="14" r="1" fill="currentColor" stroke="none"/></svg><span class="lu7-lb">ゲーム</span></button>
+<button type="button" class="lu7-item" data-lu7-to="speaker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 18.2V6.8L19 5v10.8"/><circle cx="6.8" cy="18.2" r="2.7"/><circle cx="16.3" cy="15.8" r="2.7"/></svg><span class="lu7-lb">音楽</span></button>
+<button type="button" class="lu7-item" data-lu7-to="storage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9h17M3.5 17.5h17"/><path d="M6.5 9V5.8h3.4V9M14 17.5v-3.2h3.4v3.2"/></svg><span class="lu7-lb">作品</span></button>
+<button type="button" class="lu7-item" data-lu7-to="post"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.2S3.8 15.3 2.9 10.9C2.3 8 4.3 5.4 7.2 5.4c2 0 3.7 1.1 4.8 2.9 1.1-1.8 2.8-2.9 4.8-2.9 2.9 0 4.9 2.6 4.3 5.5-.9 4.4-9.1 9.3-9.1 9.3z"/></svg><span class="lu7-lb">応援</span></button>
+</nav>
 
 <!-- 作品置き場 -->
 <div id="storageView" aria-hidden="true">
@@ -3787,6 +3848,81 @@ if (shelvesEl6 && window.MutationObserver){
   new MutationObserver(lu6Run).observe(shelvesEl6, {childList: true});
 }
 lu6Run();
+})();
+</script>
+<script>
+/* ===== Lucian第7弾 (lu7) : ドック中心の操作骨格 =====
+   下段メインドックから主要行き先へ1タップ。パネル表示中は閉じずに切替、
+   開いている行き先の再タップで閉じる。現在地はドック側に .on で示す。
+   入店（gate.gone）までは上下段とも出さない */
+(function(){
+var dock7 = document.getElementById('lu7Dock');
+if (!dock7) return;
+var gate = document.getElementById('gate');
+var storageView = document.getElementById('storageView');
+var bonusBtn = document.getElementById('bonusBtn');
+var items = {};
+dock7.querySelectorAll('[data-lu7-to]').forEach(function(b){ items[b.getAttribute('data-lu7-to')] = b; });
+
+function panelOn(id){
+  var p = document.getElementById('panel-' + id);
+  return !!(p && p.classList.contains('on'));
+}
+function storageOn(){
+  return !!(storageView && storageView.classList.contains('on'));
+}
+/* 本体スクリプトはクロージャ内のため、遷移はサイト自身の公開経路を使う：
+   hash 変更（syncFromHash が置き場を閉じ／パネルを開く）と既存ボタンの click */
+function go(id){
+  try { if (typeof luPop === 'function') luPop(); } catch(e){}
+  if (id === 'storage'){
+    if (storageOn()) return;
+    if (location.hash === '#storage'){
+      var door = document.getElementById('obj-door');
+      if (door) door.click();
+    } else location.hash = 'storage';
+    return;
+  }
+  if (panelOn(id)){
+    var p = document.getElementById('panel-' + id);
+    var cb = p ? p.querySelector('.closeBtn') : null;
+    if (cb) cb.click();
+    return;
+  }
+  if (location.hash === '#' + id){
+    var obj = document.querySelector('[data-panel="' + id + '"]');
+    if (obj) obj.click();
+  } else location.hash = id;
+}
+Object.keys(items).forEach(function(id){
+  items[id].addEventListener('click', function(){ go(id); });
+});
+
+function sync(){
+  var cur = null;
+  var on = document.querySelector('.panel.on');
+  if (on) cur = on.id.replace('panel-', '');
+  else if (storageOn()) cur = 'storage';
+  Object.keys(items).forEach(function(id){
+    var b = items[id], sel = (id === cur);
+    b.classList.toggle('on', sel);
+    if (sel) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
+  });
+  if (bonusBtn){
+    var bOn = (cur === 'bonus');
+    bonusBtn.classList.toggle('lu7-on', bOn);
+    if (bOn) bonusBtn.setAttribute('aria-current', 'true'); else bonusBtn.removeAttribute('aria-current');
+  }
+}
+function syncEntered(){
+  if (gate && gate.classList.contains('gone')) document.body.classList.add('lu7-entered');
+}
+var mo = new MutationObserver(function(){ syncEntered(); sync(); });
+document.querySelectorAll('.panel').forEach(function(p){ mo.observe(p, {attributes: true, attributeFilter: ['class']}); });
+if (storageView) mo.observe(storageView, {attributes: true, attributeFilter: ['class']});
+if (gate) mo.observe(gate, {attributes: true, attributeFilter: ['class']});
+syncEntered();
+sync();
 })();
 </script>
 </body>
