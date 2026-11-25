@@ -4373,5 +4373,223 @@ window.__LU9 = {
 };
 })();
 </script>
+<style>
+/* ===== Lucian第10弾 (lu10-) : モーダル（下部シート）をやめ「物の中で開く」
+   閲覧系パネルは、部屋の物の場所から広がる「物の表面」になる。
+   位置・大きさの連続は lu10 JS が FLIP で作る（transform の付け替えのみ、
+   開閉の本体ロジック＝.on の付け外し・hash・ドック連動には触らない）。
+   用事系（ボーナス／応援フォーム）は従来どおりシートのまま。 ===== */
+.panel.lu10-view{
+left:10px; right:10px; top:max(10px, env(safe-area-inset-top));
+bottom:calc(84px + env(safe-area-inset-bottom));
+max-height:none;
+border-radius:28px;
+padding:12px;
+overflow:hidden;
+display:flex; flex-direction:column;
+box-shadow:0 18px 50px rgba(43,36,48,.35);
+}
+.panel.lu10-view .grab{display:none}
+.panel.lu10-view .dn-root{
+flex:1 1 auto; min-height:0;
+overflow-y:auto; overscroll-behavior:contain;
+background:var(--lu-paper);
+border-radius:18px;
+padding:16px 14px calc(18px + env(safe-area-inset-bottom));
+}
+.panel.lu10-view .closeBtn{
+z-index:6;
+background:rgba(255,250,252,.94);
+box-shadow:0 2px 9px rgba(43,36,48,.28);
+}
+/* テレビ：ブラウン管のベゼル。画面（.dn-root）の中をスクロールする */
+#panel-tv.lu10-view{
+background:linear-gradient(165deg,#41304a,#241d22 58%,#16121a);
+border:3px solid #0f0c11;
+}
+#panel-tv.lu10-view .dn-root{box-shadow:inset 0 0 0 2px rgba(15,12,17,.4), inset 0 0 38px rgba(15,12,17,.16)}
+/* ゲーム機：筐体のフレーム＋上部のネオンライン（マーキー灯） */
+#panel-game.lu10-view{
+background:linear-gradient(165deg,#4b2a6e,#2b2430 55%,#3a1e50);
+border:3px solid #1d1526;
+}
+#panel-game.lu10-view::before{
+content:''; display:block; flex:none; height:10px; border-radius:99px; margin-bottom:10px;
+background:linear-gradient(90deg,var(--lu-pink),var(--lu-mint),var(--lu-cherry),var(--lu-pink));
+box-shadow:0 0 12px rgba(255,46,136,.55);
+}
+/* スピーカー／ジュークボックス：クリームの筐体にクロームとティールの縁 */
+#panel-speaker.lu10-view{
+background:linear-gradient(170deg,var(--lu-cream),#FFE0EE);
+border:3px solid var(--lu-chrome);
+box-shadow:0 18px 50px rgba(43,36,48,.35), inset 0 0 0 2px rgba(14,149,148,.55);
+}
+/* 机：木の天板の上に紙（コンテンツ）が載る */
+#panel-desk.lu10-view{
+background:linear-gradient(170deg,#eccfa3,#cfa06e 70%,#bd8f57);
+border:3px solid #a1763f;
+}
+/* プロフィール：キャラが出す自己紹介カード（ピンクの厚紙＋白縁） */
+#panel-profile.lu10-view{
+background:linear-gradient(165deg,var(--lu-pink-soft),var(--lu-cream));
+border:3px solid #fff;
+box-shadow:0 18px 50px rgba(43,36,48,.35), inset 0 0 0 2px rgba(255,46,136,.35);
+}
+/* 応援（閲覧）：お客さまノート。左にピンクの背表紙 */
+#panel-post.lu10-view{
+background:linear-gradient(90deg,#D81B74 0 16px,#F3A8C6 16px 19px,var(--lu-paper) 19px);
+border:3px solid #F3C6DA;
+}
+#panel-post.lu10-view .dn-root{background:transparent; padding-left:22px}
+/* 応援フォーム（用事系）：従来のシートのまま。lu10 が #msgForm をここへ移す */
+#lu10FormScrim{
+position:fixed; inset:0; z-index:55;
+background:rgba(43,36,48,.16);
+opacity:0; pointer-events:none; transition:opacity var(--t-ui) var(--ease-out);
+}
+#lu10FormScrim.on{opacity:1; pointer-events:auto}
+#lu10FormSheet{
+position:fixed; left:0; right:0; bottom:0; z-index:56;
+max-height:82dvh; overflow-y:auto; overscroll-behavior:contain;
+background:#fff; border-radius:26px 26px 0 0;
+box-shadow:0 -12px 44px rgba(139,61,255,.13);
+/* 既存パネルと同じく、末尾がドック（z:60）に隠れないよう下余白を確保する */
+padding:14px 20px calc(22px + env(safe-area-inset-bottom) + 78px);
+transform:translateY(105%); visibility:hidden;
+transition:transform var(--t-panel) var(--ease-inout), visibility 0s linear var(--t-panel);
+}
+#lu10FormSheet.on{transform:translateY(0); visibility:visible; transition:transform var(--t-panel) var(--ease-inout), visibility 0s}
+#lu10FormSheet .grab{width:42px; height:5px; border-radius:99px; background:var(--line); margin:0 auto 12px}
+#lu10FormSheet .lu10-form-cap{font-size:16px; font-weight:900; letter-spacing:.08em; color:var(--ink); margin-bottom:12px}
+#lu10FormSheet .closeBtn{z-index:5}
+/* 作品置き場：棚（右のドア）の位置から前面へ広がる */
+#storageView{
+transform:scale(.93);
+transform-origin:var(--lu10-sox,88%) var(--lu10-soy,55%);
+transition:opacity var(--t-enter) var(--ease-expo), transform .55s var(--lu-ease), visibility 0s linear var(--t-enter);
+}
+#storageView.on{
+transform:scale(1);
+transition:opacity var(--t-enter) var(--ease-expo), transform .55s var(--lu-ease), visibility 0s;
+}
+@media (prefers-reduced-motion: reduce){
+#storageView{transform:none}
+}
+</style>
+<script>
+/* ===== Lucian第10弾 (lu10) : 「物の中で開く」配線
+   ① 閲覧系パネル（tv/game/speaker/desk/profile/post）に .lu10-view を付け、
+      開く瞬間にアンカー（部屋の物）の矩形から FLIP で広げ、閉じる時に戻す。
+      アンカー対応：tv→テレビ／game→ゲーム機／speaker→スピーカー／desk→机／
+      profile→キャラ本人／post→ポスト。
+   ② 作品置き場は右の棚ドアを起点に広がるよう transform-origin を合わせる。
+   ③ 応援は閲覧（ノート＝物の中で開く）と用事（送信フォーム＝従来シート）に分離：
+      #msgForm を lu10 のシートへ DOM 移動し、ノート内のボタンから開く。
+      フォームの送信ハンドラは要素に付いているため移動してもそのまま動く。
+   ボーナス（スタンプ／スクラッチ等の手続き）はシートのまま触らない。 */
+(function(){
+"use strict";
+var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var VIEW = { tv:'obj-tv', game:'obj-game', speaker:'obj-speaker', desk:'obj-desk', profile:'chara', post:'obj-post' };
+
+function anchorOf(id){ return document.getElementById(VIEW[id]); }
+function fromTransform(p, anchor){
+  var r = anchor.getBoundingClientRect();
+  var dx = r.left - p.offsetLeft;
+  var dy = r.top - p.offsetTop;
+  var sx = Math.max(.02, r.width / Math.max(1, p.offsetWidth));
+  var sy = Math.max(.02, r.height / Math.max(1, p.offsetHeight));
+  return 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
+}
+function grow(p, anchor){
+  if (RM || !anchor) return;
+  p.style.transition = 'none';
+  p.style.transformOrigin = '0 0';
+  p.style.transform = fromTransform(p, anchor);
+  void p.offsetWidth;
+  p.style.transition = '';
+  p.style.transform = '';
+}
+function shrink(p, anchor){
+  if (RM || !anchor) return;
+  p.style.transformOrigin = '0 0';
+  p.style.transform = fromTransform(p, anchor);
+  setTimeout(function(){
+    if (!p.classList.contains('on')){ p.style.transform = ''; p.style.transition = ''; }
+  }, 560);
+}
+Object.keys(VIEW).forEach(function(id){
+  var p = document.getElementById('panel-' + id);
+  if (!p) return;
+  p.classList.add('lu10-view');
+  var wasOn = p.classList.contains('on');
+  new MutationObserver(function(){
+    var on = p.classList.contains('on');
+    if (on === wasOn) return;
+    wasOn = on;
+    if (on) grow(p, anchorOf(id)); else shrink(p, anchorOf(id));
+  }).observe(p, { attributes:true, attributeFilter:['class'] });
+});
+
+/* ② 作品置き場：棚ドア起点 */
+var storageView = document.getElementById('storageView');
+function setStorageOrigin(){
+  var d = document.getElementById('obj-door');
+  if (!d || !storageView) return;
+  var r = d.getBoundingClientRect();
+  if (!r.width) return;
+  storageView.style.setProperty('--lu10-sox', (r.left + r.width / 2).toFixed(1) + 'px');
+  storageView.style.setProperty('--lu10-soy', (r.top + r.height / 2).toFixed(1) + 'px');
+}
+if (storageView){
+  setStorageOrigin();
+  new MutationObserver(function(){ if (storageView.classList.contains('on')) setStorageOrigin(); })
+    .observe(storageView, { attributes:true, attributeFilter:['class'] });
+  window.addEventListener('resize', setStorageOrigin);
+}
+
+/* ③ 応援：閲覧（ノート）と送信フォーム（シート）の分離 */
+var postPanel = document.getElementById('panel-post');
+var form = document.getElementById('msgForm');
+var list = document.getElementById('msgList');
+if (postPanel && form && list){
+  var writeBtn = document.createElement('button');
+  writeBtn.type = 'button';
+  writeBtn.id = 'lu10WriteBtn';
+  writeBtn.className = 'dn-btn';
+  writeBtn.style.width = '100%';
+  writeBtn.style.border = 'none';
+  writeBtn.style.cursor = 'pointer';
+  writeBtn.textContent = '応援メッセージを書く';
+  list.parentNode.insertBefore(writeBtn, list);
+
+  var fScrim = document.createElement('div');
+  fScrim.id = 'lu10FormScrim';
+  var sheet = document.createElement('div');
+  sheet.id = 'lu10FormSheet';
+  sheet.setAttribute('role', 'dialog');
+  sheet.setAttribute('aria-label', '応援メッセージを書く');
+  var grab = document.createElement('div'); grab.className = 'grab';
+  var cap = document.createElement('div'); cap.className = 'lu10-form-cap'; cap.textContent = '応援メッセージ';
+  var fClose = document.createElement('button');
+  fClose.type = 'button'; fClose.className = 'closeBtn'; fClose.setAttribute('aria-label', '閉じる'); fClose.textContent = '✕';
+  sheet.appendChild(grab); sheet.appendChild(cap); sheet.appendChild(fClose);
+  sheet.appendChild(form);
+  document.body.appendChild(fScrim);
+  document.body.appendChild(sheet);
+
+  function openForm(){ sheet.classList.add('on'); fScrim.classList.add('on'); }
+  function closeForm(){ sheet.classList.remove('on'); fScrim.classList.remove('on'); }
+  writeBtn.addEventListener('click', openForm);
+  fClose.addEventListener('click', closeForm);
+  fScrim.addEventListener('click', closeForm);
+  /* ノート（パネル）が閉じたらフォームシートも一緒に閉じる */
+  new MutationObserver(function(){ if (!postPanel.classList.contains('on')) closeForm(); })
+    .observe(postPanel, { attributes:true, attributeFilter:['class'] });
+}
+
+window.__LU10 = { version:10, views:Object.keys(VIEW) };
+})();
+</script>
 </body>
 </html>
