@@ -3993,5 +3993,385 @@ if (bp) new MutationObserver(sync).observe(bp, {attributes: true, attributeFilte
 sync();
 })();
 </script>
+<style>
+/* ===== Lucian第9弾 (lu9-) : 「生きてる部屋」の可愛さを伸ばす =====
+   キャラの反応レイヤー。本体キャラ（IIFE内の状態機械）には触らず、
+   charaEl の transform（本体は未使用）と追加クラス／吹き出し文字だけを使う。
+   パネル連動の人形劇は本体が凍結している間（パネル表示中）にだけDOMを動かし、
+   閉じる時は本体自身の床タップ歩行（walkToTap）を座標クリックで呼び戻して
+   状態の整合を保つ（詳細はスクリプト側コメント） */
+#chara{transform-origin:50% 100%}
+@keyframes lu9Wiggle{0%{transform:rotate(0deg)}25%{transform:rotate(-2.6deg) scale(1.02,.98)}55%{transform:rotate(2.4deg)}80%{transform:rotate(-1.2deg)}100%{transform:rotate(0deg)}}
+#chara.lu9-wiggle{animation:lu9Wiggle .55s ease-in-out}
+@keyframes lu9Yawn{0%{transform:scale(1,1)}35%{transform:scale(1.03,.93) rotate(-1.2deg)}70%{transform:scale(.99,1.02)}100%{transform:scale(1,1)}}
+#chara.lu9-yawn{animation:lu9Yawn 1.8s ease-in-out}
+@keyframes lu9Lean{0%{transform:translateX(0) rotate(0deg)}30%,70%{transform:translateX(5px) rotate(2.2deg)}100%{transform:translateX(0) rotate(0deg)}}
+#chara.lu9-lean{animation:lu9Lean 1.6s ease-in-out}
+@keyframes lu9LeanL{0%{transform:translateX(0) rotate(0deg)}30%,70%{transform:translateX(-5px) rotate(-2.2deg)}100%{transform:translateX(0) rotate(0deg)}}
+#chara.lu9-lean-l{animation:lu9LeanL 1.6s ease-in-out}
+@keyframes lu9Sway{0%,100%{transform:rotate(-1.8deg)}50%{transform:rotate(1.8deg)}}
+#chara.lu9-sway{animation:lu9Sway 1.3s ease-in-out 2}
+@keyframes lu9GlanceL{0%{transform:rotate(0deg)}30%,70%{transform:rotate(-3.2deg) translateX(-2px)}100%{transform:rotate(0deg)}}
+#chara.lu9-glance-l{animation:lu9GlanceL .48s ease-in-out}
+@keyframes lu9GlanceR{0%{transform:rotate(0deg)}30%,70%{transform:rotate(3.2deg) translateX(2px)}100%{transform:rotate(0deg)}}
+#chara.lu9-glance-r{animation:lu9GlanceR .48s ease-in-out}
+.lu9-mark{position:absolute; left:50%; top:-15%; transform:translateX(-50%); font-weight:900; font-size:19px; line-height:1; color:var(--pink); text-shadow:0 1px 0 #FFF6EC, 0 0 7px rgba(255,246,236,.95); opacity:0; pointer-events:none; z-index:6}
+.lu9-mark.pop{animation:lu9Mark .9s ease-out}
+@keyframes lu9Mark{0%{opacity:0; transform:translate(-50%,4px) scale(.6)}25%{opacity:1; transform:translate(-50%,-2px) scale(1.15)}60%{opacity:1}100%{opacity:0; transform:translate(-50%,-9px) scale(1)}}
+@media (prefers-reduced-motion: reduce){
+#chara.lu9-wiggle, #chara.lu9-yawn, #chara.lu9-lean, #chara.lu9-lean-l, #chara.lu9-sway, #chara.lu9-glance-l, #chara.lu9-glance-r, .lu9-mark.pop{animation:none !important}
+}
+</style>
+<script>
+/* ===== Lucian第9弾 (lu9) : キャラの反応を足す（タップ反応／パネル連動／小さな仕草／ドックへの目線） =====
+   本体の状態機械（歩行・活動・吹き出し）はクロージャ内で触れないため、連携は3経路だけ：
+   ① charaEl の transform と追加クラス（本体は charaEl の transform を使わない）
+   ② #charaBubble の文字差し替え（本体 charaSay と同じ見せ方）
+   ③ パネルを閉じた直後、本体自身の「床タップで歩く」入口へ座標つき合成クリックを渡し、
+      本体の歩行で帰宅させる（C の座標と DOM がずれない＝スナップしない） */
+(function(){
+"use strict";
+var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var charaEl = document.getElementById('chara');
+var bobEl = charaEl.querySelector('.bob');
+var bubbleEl = document.getElementById('charaBubble');
+var stageEl = document.getElementById('stage');
+var gateEl = document.getElementById('gate');
+var storageView = document.getElementById('storageView');
+var dockEl = document.getElementById('lu7Dock');
+if (!charaEl || !bobEl || !stageEl) return;
+
+var markEl = document.createElement('span');
+markEl.className = 'lu9-mark';
+markEl.setAttribute('aria-hidden', 'true');
+markEl.textContent = '！';
+charaEl.appendChild(markEl);
+
+function entered(){ return !!(gateEl && gateEl.classList.contains('gone')); }
+function panelOpenId(){
+  var p = document.querySelector('.panel.on');
+  return p ? p.id.replace('panel-', '') : null;
+}
+function storageOpen(){ return !!(storageView && storageView.classList.contains('on')); }
+function stageRect(){ return stageEl.getBoundingClientRect(); }
+function charaPos(){
+  var sr = stageRect(), r = charaEl.getBoundingClientRect();
+  return { x: (r.left - sr.left) / sr.width * 100, y: (sr.bottom - r.bottom) / sr.height * 100 };
+}
+
+/* ---------- 吹き出し（本体 bubbleShow と同じ見せ方） ---------- */
+var bubTimer = 0;
+function say(text, ms){
+  if (!text) return;
+  bubbleEl.textContent = text;
+  bubbleEl.classList.remove('show');
+  void bubbleEl.offsetWidth;
+  bubbleEl.classList.add('show');
+  clearTimeout(bubTimer);
+  bubTimer = setTimeout(function(){ bubbleEl.classList.remove('show'); }, ms || 2200);
+}
+
+/* ---------- ① タップ反応：本体の hop＋あいさつに、ランダムな小反応とセリフのバリエーションを足す ---------- */
+var GREETINGS = ['おはよう', 'こんにちは', 'こんばんは'];
+var TAP_LINES = ['呼んだ？', 'なあに？', 'えへへ', 'びっくりした', 'どうしたの', 'こっちだよ'];
+var tapLockUntil = 0, tapTimer = 0, heartsByLu9 = false;
+function clearTapFx(){
+  charaEl.classList.remove('lu9-wiggle');
+  markEl.classList.remove('pop');
+  if (heartsByLu9){ charaEl.classList.remove('ikebo'); heartsByLu9 = false; }
+}
+function tapReact(force){
+  var now = performance.now();
+  if (!force && now < tapLockUntil) return;
+  tapLockUntil = now + 900;
+  clearTimeout(tapTimer);
+  clearTapFx();
+  var r = Math.random();
+  if (r < 0.34){
+    heartsByLu9 = true;
+    charaEl.classList.add('ikebo');
+    tapTimer = setTimeout(clearTapFx, 1150);
+  } else if (r < 0.67){
+    charaEl.classList.add('lu9-wiggle');
+    tapTimer = setTimeout(clearTapFx, 600);
+  } else {
+    markEl.classList.remove('pop');
+    void markEl.offsetWidth;
+    markEl.classList.add('pop');
+    tapTimer = setTimeout(clearTapFx, 950);
+  }
+  /* 本体が出したあいさつを、7割でタップ専用セリフに差し替える（表示中の時だけ） */
+  setTimeout(function(){
+    if (!bubbleEl.classList.contains('show')) return;
+    if (GREETINGS.indexOf(bubbleEl.textContent) < 0) return;
+    if (Math.random() < 0.7) bubbleEl.textContent = TAP_LINES[Math.floor(Math.random() * TAP_LINES.length)];
+  }, 320);
+}
+document.addEventListener('click', function(e){
+  if (RM || !e.clientX) return;
+  if (!entered() || panelOpenId() || storageOpen()) return;
+  var r = charaEl.getBoundingClientRect();
+  if (e.clientX > r.left + r.width * 0.08 && e.clientX < r.right - r.width * 0.08 &&
+      e.clientY > r.top + r.height * 0.03 && e.clientY < r.bottom + 6) tapReact(false);
+}, true);
+
+/* ---------- ④ ドックへの目線：押した側へ一瞬だけ傾く ---------- */
+var glanceTimer = 0;
+function glance(left){
+  if (gestureTimer){ clearTimeout(gestureTimer); gestureTimer = 0; }
+  clearGestureFx();
+  charaEl.classList.remove('lu9-glance-l', 'lu9-glance-r');
+  void charaEl.offsetWidth;
+  charaEl.classList.add(left ? 'lu9-glance-l' : 'lu9-glance-r');
+  clearTimeout(glanceTimer);
+  glanceTimer = setTimeout(function(){ charaEl.classList.remove('lu9-glance-l', 'lu9-glance-r'); }, 520);
+}
+if (dockEl){
+  dockEl.addEventListener('click', function(e){
+    if (RM || !entered()) return;
+    var btn = e.target && e.target.closest ? e.target.closest('[data-lu7-to],[data-lu8-bonus]') : null;
+    if (!btn) return;
+    var items = Array.prototype.slice.call(dockEl.querySelectorAll('[data-lu7-to],[data-lu8-bonus]'));
+    var idx = items.indexOf(btn);
+    if (idx < 0) return;
+    glance(idx < items.length / 2);
+  }, true);
+}
+
+/* ---------- ③ 日常の小さな仕草：静止が続いた時だけ、間隔を空けてそっと出す ---------- */
+var lastGestureAt = 0, gestureTimer = 0, gestureMusic = false;
+function clearGestureFx(){
+  charaEl.classList.remove('lu9-yawn', 'lu9-lean', 'lu9-lean-l', 'lu9-sway');
+  if (gestureMusic){ charaEl.classList.remove('music'); gestureMusic = false; }
+}
+function doGesture(now, force){
+  lastGestureAt = now || performance.now();
+  if (gestureTimer){ clearTimeout(gestureTimer); gestureTimer = 0; }
+  clearGestureFx();
+  var r = Math.random();
+  if (r < 0.4){
+    charaEl.classList.add('lu9-yawn');
+    if (Math.random() < 0.4) say('ねむい', 1800);
+    gestureTimer = setTimeout(clearGestureFx, 1900);
+  } else if (r < 0.7){
+    var p = charaPos();
+    charaEl.classList.add(p.x > 52 ? 'lu9-lean-l' : 'lu9-lean');
+    gestureTimer = setTimeout(clearGestureFx, 1700);
+  } else {
+    gestureMusic = true;
+    charaEl.classList.add('music');
+    charaEl.classList.add('lu9-sway');
+    if (Math.random() < 0.3) say('ふんふん', 1800);
+    gestureTimer = setTimeout(clearGestureFx, 2700);
+  }
+}
+var lastPos = null, stillSince = 0;
+setInterval(function(){
+  if (RM || !entered() || panelOpenId() || storageOpen() || document.hidden || P.active){ lastPos = null; stillSince = 0; return; }
+  var p = charaPos(), now = performance.now();
+  if (lastPos && Math.abs(p.x - lastPos.x) < 0.15 && Math.abs(p.y - lastPos.y) < 0.15){
+    if (!stillSince) stillSince = now;
+  } else stillSince = 0;
+  lastPos = p;
+  if (!stillSince || now - stillSince < 5000) return;
+  if (now - lastGestureAt < 28000) return;
+  if (Math.random() > 0.45) return;
+  doGesture(now, false);
+}, 6000);
+
+/* ---------- ② パネル連動：開いている間は物の前へ歩いて見上げ、閉じたら反応して本体の歩行で帰る ---------- */
+var SH = {
+  walk:  {src:'../assets/parts/chara-walk.webp', n:4, ar:'356/560', w:14.5},
+  back:  {src:'../assets/parts/chara-back.webp', n:4, ar:'356/560', w:14.5},
+  front: {src:'../assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
+  idle:  {src:'../assets/parts/chara-idle.webp', n:2, ar:'356/560', w:14.5},
+  wave:  {src:'../assets/parts/chara-wave.webp', n:2, ar:'356/560', w:14.5}
+};
+Object.keys(SH).forEach(function(k){ var im = new Image(); im.src = SH[k].src; });
+var PANEL_OBJ = { tv:'obj-tv', game:'obj-game', speaker:'obj-speaker', desk:'obj-desk', post:'obj-post' };
+var LINES = { tv:'テレビ見てる', game:'ゲームしてる', speaker:'曲きいてる', desk:'つくってる', post:'おてがみ読んでる', bonus:'スタンプの日', profile:null };
+var P = { active:false, mode:'', panel:null, home:null, x:0, y:0, tx:0, ty:0, dist:0, flip:1,
+          sheet:'', attNext:0, attFrame:0, reactUntil:0, walkStart:0, musicByLu9:false, raf:0 };
+function setSh(name){
+  var s = SH[name]; if (!s) return;
+  P.sheet = name;
+  bobEl.style.backgroundImage = "url('" + s.src + "')";
+  bobEl.style.backgroundSize = (s.n * 100) + '% 100%';
+  bobEl.style.aspectRatio = s.ar;
+  charaEl.style.width = s.w + '%';
+}
+function setFr(i){
+  var s = SH[P.sheet]; if (!s) return;
+  bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0';
+}
+function depthAt(y){ return 1.07 - (y - 6) * (0.19 / 10.5); }
+function faceFor(dx, dy){
+  var dyPx = dy * 1.326;
+  if (dyPx > 0 && dyPx > Math.abs(dx) * 1.15) return { sh:'back', flip:1 };
+  if (dyPx < 0 && -dyPx > Math.abs(dx) * 1.15) return { sh:'front', flip:1 };
+  return { sh:'walk', flip: dx >= 0 ? -1 : 1 };
+}
+function objTarget(panel){
+  if (panel === 'bonus') return { x:40, y:8 };
+  var id = PANEL_OBJ[panel]; if (!id) return null;
+  var o = document.getElementById(id); if (!o) return null;
+  var sr = stageRect(), r = o.getBoundingClientRect();
+  var cx = (r.left + r.width / 2 - sr.left) / sr.width * 100;
+  return { x: Math.max(2, Math.min(58, cx - 7.25)), y: 10 };
+}
+function restoreSprite(){
+  setSh('idle'); setFr(0);
+  bobEl.style.transform = '';
+  if (P.musicByLu9){ charaEl.classList.remove('music'); P.musicByLu9 = false; }
+}
+function puppetLoop(ts){
+  if (!P.active) return;
+  P.raf = requestAnimationFrame(puppetLoop);
+  var dt = Math.min(0.05, P.lastTs ? (ts - P.lastTs) / 1000 : 0.016);
+  P.lastTs = ts;
+  /* 本体の凍結処理が割り込んでも、想定スプライトを取り戻す */
+  var want = SH[P.sheet];
+  if (want && bobEl.style.backgroundImage.indexOf(want.src) < 0) setSh(P.sheet);
+  var d = depthAt(P.y);
+  if (P.mode === 'walk' || P.mode === 'return'){
+    var dx = P.tx - P.x, dy = P.ty - P.y;
+    var distPx = Math.sqrt(dx * dx + Math.pow(dy * 1.326, 2));
+    if (distPx < 0.4){
+      P.x = P.tx; P.y = P.ty;
+      charaEl.style.left = P.x + '%'; charaEl.style.bottom = P.y + '%';
+      if (P.mode === 'return'){ finishReturn(); return; }
+      beginAttend(ts);
+    } else {
+      var sp = (P.mode === 'return' && ts - P.walkStart > 900) ? 30 : (P.mode === 'return' ? 16 : 13);
+      var step = Math.min(distPx, sp * dt), f = step / distPx;
+      P.x += dx * f; P.y += dy * f; P.dist += step;
+      var fc = faceFor(dx, dy);
+      if (fc.sh !== P.sheet) setSh(fc.sh);
+      P.flip = fc.flip;
+      setFr(Math.floor(P.dist / 2.25) % SH[P.sheet].n);
+      charaEl.style.left = P.x + '%'; charaEl.style.bottom = P.y + '%';
+      var bob = -Math.abs(Math.sin(P.dist * 1.396)) * 1.7;
+      bobEl.style.transform = 'translateY(' + bob + '%) scale(' + (P.flip * d) + ',' + d + ')';
+    }
+    return;
+  }
+  if (P.mode === 'attend'){
+    if (P.panel === 'speaker'){
+      bobEl.style.transform = 'translateY(' + (-Math.abs(Math.sin(ts / 205)) * 5.5) + '%) rotate(' + (Math.sin(ts / 210) * 2.6) + 'deg) scale(' + d + ',' + d + ')';
+    } else if (P.panel === 'bonus'){
+      var ph = (ts % 950) / 950;
+      var hy = ph < 0.45 ? -Math.sin(ph / 0.45 * Math.PI) * 9 : 0;
+      bobEl.style.transform = 'translateY(' + hy + '%) scale(' + d + ',' + d + ')';
+    } else if (P.panel === 'profile'){
+      if (ts >= P.attNext){ P.attFrame = (P.attFrame + 1) % 2; setFr(P.attFrame); P.attNext = ts + 210; }
+      bobEl.style.transform = 'scale(' + d + ',' + d + ')';
+    } else {
+      var ph2 = (ts % 2300) / 2300;
+      var ly = ph2 < 0.18 ? -Math.sin(ph2 / 0.18 * Math.PI) * 5 : 0;
+      bobEl.style.transform = 'translateY(' + ly + '%) scale(' + d + ',' + d + ')';
+    }
+    return;
+  }
+  if (P.mode === 'react'){
+    var rp = Math.min(1, (P.reactUntil - ts > 0 ? (520 - (P.reactUntil - ts)) : 520) / 520);
+    var ry = -Math.sin(Math.PI * rp) * 7;
+    bobEl.style.transform = 'translateY(' + ry + '%) scale(' + d + ',' + d + ')';
+    if (ts >= P.reactUntil){
+      dispatchHome();
+      P.mode = 'return';
+      P.walkStart = ts;
+      P.tx = P.home.x; P.ty = P.home.y; P.dist = 0;
+    }
+    return;
+  }
+}
+function beginAttend(ts){
+  var panel = P.panel;
+  P.mode = 'attend';
+  P.attFrame = 0; P.attNext = ts + 210;
+  if (panel === 'speaker'){
+    setSh('wave'); setFr(0);
+    if (!charaEl.classList.contains('music')){ charaEl.classList.add('music'); P.musicByLu9 = true; }
+  } else if (panel === 'bonus'){
+    setSh('front'); setFr(0);
+  } else if (panel === 'profile'){
+    setSh('wave'); setFr(0);
+  } else {
+    setSh('back'); setFr(0);
+  }
+  P.flip = 1;
+  if (Math.random() < 0.5) say(LINES[panel], 2000);
+}
+function startPuppet(panel){
+  if (RM || !entered() || storageOpen()) return;
+  if (!P.active){
+    var p = charaPos();
+    P.home = p; P.x = p.x; P.y = p.y;
+    P.active = true; P.lastTs = 0;
+    P.raf = requestAnimationFrame(puppetLoop);
+  }
+  P.panel = panel;
+  clearTapFx();
+  if (panel === 'profile'){ beginAttend(performance.now()); return; }
+  var t = objTarget(panel); if (!t){ P.active = false; P.home = null; return; }
+  P.tx = t.x; P.ty = t.y; P.dist = 0;
+  P.mode = 'walk'; P.walkStart = performance.now();
+}
+function dispatchHome(){
+  if (!P.home) return false;
+  var sr = stageRect();
+  var cx = P.home.x + 7.25, cy = P.home.y;
+  var px = sr.left + cx / 100 * sr.width, py = sr.bottom - cy / 100 * sr.height;
+  var r = charaEl.getBoundingClientRect();
+  if (px > r.left + r.width * 0.08 && px < r.right - r.width * 0.08 &&
+      py > r.top + r.height * 0.03 && py < r.bottom + 6) return false;
+  var ev = new MouseEvent('click', { bubbles:true, cancelable:true, clientX:px, clientY:py, view:window });
+  stageEl.dispatchEvent(ev);
+  return true;
+}
+function endPuppet(){
+  if (!P.active) return;
+  /* 閉じた瞬間：物の前で小さく跳ねて反応し、セリフを出す（本体の再開＝idle最小600msより短く収める） */
+  if (Math.random() < 0.85) say(LINES[P.panel], 2000);
+  P.mode = 'react';
+  P.reactUntil = performance.now() + 520;
+}
+function finishReturn(){
+  charaEl.style.left = P.home.x + '%'; charaEl.style.bottom = P.home.y + '%';
+  restoreSprite();
+  P.active = false; P.mode = ''; P.panel = null; P.home = null;
+  cancelAnimationFrame(P.raf);
+}
+function cancelPuppetInstant(){
+  if (!P.active) return;
+  cancelAnimationFrame(P.raf);
+  if (P.home){ charaEl.style.left = P.home.x + '%'; charaEl.style.bottom = P.home.y + '%'; }
+  restoreSprite();
+  P.active = false; P.mode = ''; P.panel = null; P.home = null;
+}
+var lastPanel = null;
+function onPanelChange(){
+  if (storageOpen()){ cancelPuppetInstant(); lastPanel = null; return; }
+  var id = panelOpenId();
+  if (id === lastPanel) return;
+  if (id) startPuppet(id);
+  else if (lastPanel) endPuppet();
+  lastPanel = id;
+}
+var pmo = new MutationObserver(onPanelChange);
+document.querySelectorAll('.panel').forEach(function(p){ pmo.observe(p, { attributes:true, attributeFilter:['class'] }); });
+if (storageView) pmo.observe(storageView, { attributes:true, attributeFilter:['class'] });
+if (gateEl) pmo.observe(gateEl, { attributes:true, attributeFilter:['class'] });
+
+/* 検証用ハンドル（既存の window.IKEBO / window.SUNSUN と同格） */
+window.__LU9 = {
+  version: 9,
+  pos: charaPos,
+  puppet: function(){ return { active:P.active, mode:P.mode, panel:P.panel, home:P.home }; },
+  gesture: function(){ doGesture(performance.now(), true); },
+  react: function(){ tapReact(true); }
+};
+})();
+</script>
 </body>
 </html>
