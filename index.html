@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Quicksand:wght@500;700&family=Barlow+Condensed:wght@500;600;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>八乙女さきや</title>
 <meta name="description" content="八乙女さきやの公式サイト。ミラティブ配信者。YouTube動画・ゲーム・曲を全部自分で作る。">
@@ -89,14 +91,8 @@ position:absolute;left:50%;top:50%;
 transform:translate(-50%,-50%);
 width:min(100vw, calc(100dvh * 0.7544));
 aspect-ratio:1376 / 1824;
-background:url('assets/parts/room-bg.webp') center / 100% 100% no-repeat;
+background:url('diner-img/room-bg3.webp') center / 100% 100% no-repeat;
 }
-.room-name{
-position:absolute;top:3.2%;left:0;right:0;
-text-align:center;font-size:13px;letter-spacing:.4em;text-indent:.4em;color:var(--sub);
-}
-.room-name b{color:var(--ink)}
-
 /* ---------- ヒーロースライダー（壁のポスター） ---------- */
 #hero{position:absolute;left:12%;top:11%;width:67%;z-index:2}
 .hero-frame{
@@ -160,7 +156,10 @@ opacity:0;pointer-events:none;
 #obj-game{left:19.4%;bottom:14.9%;width:19.5%}
 #obj-desk{left:38.8%;bottom:19.1%;width:31%}
 #obj-speaker{left:59.7%;bottom:31.5%;width:7.9%;z-index:3}
-#obj-post{left:2.6%;bottom:2.4%;width:8.6%;z-index:2}
+/* ポスト（第11弾で移動）：左下の隅から、棚ドア（部屋の入口）の脇へ。
+   キャラの歩行域（左58%まで＋幅14.5%）の外側で、ドアとは左端で接するだけにし、
+   「扉の横の郵便受け」として形で読める位置にした */
+#obj-post{left:73.5%;bottom:2.4%;width:8.6%;z-index:3}
 
 #plant{
 position:absolute;left:34.2%;bottom:22.3%;width:5.3%;
@@ -173,7 +172,7 @@ position:absolute;left:48%;bottom:9%;
 width:14.5%;padding:0;border-radius:22px;z-index:4;
 pointer-events:none;
 }
-#chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('assets/parts/chara-idle.webp');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;transform-origin:50% 100%}
+#chara .bob{display:block;width:100%;aspect-ratio:356/560;background-image:url('../assets/parts/chara-idle.webp');background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;transform-origin:50% 100%}
 #chara .notes{position:absolute;left:0;right:0;top:-13%;height:0;opacity:0;transition:opacity .45s var(--ease-out);pointer-events:none}
 #chara.music .notes{opacity:1}
 #chara .notes span{position:absolute;bottom:0;font-weight:800;line-height:1;animation:noteFloat 2.6s linear infinite}
@@ -191,26 +190,8 @@ pointer-events:none;
 #chara.highlight .ring{animation:softPulse 1.2s var(--ease-out) 3}
 #chara.tour .ring{animation:softPulse 1.1s var(--ease-out) 1}
 
-#sunsun{
-position:absolute;left:75.5%;bottom:2.5%;
-width:11%;padding:0;border-radius:20px;z-index:3;
-transform-origin:50% 100%;
-transition:transform var(--t-ui) var(--ease-out);
-}
-#sunsun:active{transform:scale(.94)}
-#sunsun img{width:100%;display:block;pointer-events:none}
-#sunsun::after{content:'';position:absolute;inset:-6px}
 /* ゾーン解決で転送されたタップの押し感（当たり判定の再設計） */
-.obj.zbp,#sunsun.zbp{transform:scale(.94)}
-/* スンスンのたまの動き：普段は静か。たまに傾く・揺れる・小さく跳ねる（鈍く、控えめに） */
-#sunsun.idle-tilt{animation:sunTilt 2.6s var(--ease-inout) 1}
-@keyframes sunTilt{0%,100%{transform:rotate(0deg)}30%,58%{transform:rotate(-2.4deg)}}
-#sunsun.idle-sway{animation:sunSway 3.4s ease-in-out 1}
-@keyframes sunSway{0%,100%{transform:rotate(0deg)}28%{transform:rotate(1.5deg)}64%{transform:rotate(-1.1deg)}}
-#sunsun.idle-hop{animation:sunHop .95s var(--ease-out) 1}
-@keyframes sunHop{0%,100%{transform:translateY(0) scale(1,1)}14%{transform:translateY(0) scale(1.04,.94)}42%{transform:translateY(-7%) scale(.99,1.02)}72%{transform:translateY(0) scale(1.03,.96)}88%{transform:translateY(0) scale(.995,1.01)}}
-#sunsun.talking.rare{animation:squishBig .5s ease-in-out infinite}
-@keyframes squishBig{0%,100%{transform:scale(1,1)}32%{transform:scale(1.11,.86)}64%{transform:scale(.95,1.06)}}
+.obj.zbp{transform:scale(.94)}
 
 /* ---------- 吹き出し：たまに短く出て、余韻を持って消える ---------- */
 .bubble{
@@ -231,8 +212,6 @@ content:'';position:absolute;left:50%;bottom:-5px;width:9px;height:9px;
 transform:translateX(-50%) rotate(45deg);
 background:#fff;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);
 }
-/* スンスンは右端寄り＆セリフが長いので、折り返し可にして幅を抑える */
-#sunsun .bubble{font-size:12px;white-space:normal;width:max-content;max-width:150px;text-align:center;line-height:1.5}
 /* テレビは左端寄りなので、ツアー案内の吹き出しも折り返し可にして幅を抑える */
 #obj-tv .bubble{font-size:12px;white-space:normal;width:max-content;max-width:132px;text-align:center;line-height:1.5}
 
@@ -498,12 +477,6 @@ padding:0;border-radius:14px;transition:transform var(--t-press) var(--ease-out)
 position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%);
 font-size:11px;letter-spacing:.16em;color:var(--sub);font-weight:800;white-space:nowrap;
 }
-#sunsun .ring{position:absolute;inset:0;border-radius:20px;border:1.5px solid rgba(255,46,136,.55);opacity:0;pointer-events:none}
-#sunsun.highlight .ring{animation:softPulse 1.2s var(--ease-out) 3}
-#sunsun.tour .ring{animation:softPulse 1.1s var(--ease-out) 1}
-#sunsun.talking{animation:squish .44s ease-in-out infinite}
-@keyframes squish{0%,100%{transform:scale(1,1)}32%{transform:scale(1.05,.93)}64%{transform:scale(.975,1.03)}}
-
 /* ---------- パネル ---------- */
 #scrim{
 position:fixed;inset:0;z-index:40;background:rgba(43,36,48,.16);
@@ -755,50 +728,748 @@ transition:transform var(--t-press) var(--ease-out);
 .reqcard .r-note{font-size:12px;color:var(--sub);margin-top:2px}
 .reqcard button{margin-top:9px;background:var(--pink);color:#fff;border:none;font-weight:800;font-size:13.5px;border-radius:999px;padding:9px 16px;cursor:pointer}
 .reqcard .r-done{font-size:12px;color:#d81b74;font-weight:700;margin-left:8px}
+
+/* ===== DINER SAKIYA design system (dn-) : panel-first build ===== */
+.dn-root{
+--dn-pink:#FF2E88; --dn-pink-deep:#D81B74; --dn-pink-soft:#FFD9E8; --dn-cream:#FFF6EC;
+--dn-mint:#9FE3CF; --dn-chrome:#C9D2D9; --dn-ink:#33262E; --dn-sub:#8A7F92; --dn-paper:#FFFAFC;
+--dn-line:#F3C6DA; --dn-ok:#1F9D66; --dn-err:#D64545;
+--dn-s1:4px; --dn-s2:8px; --dn-s3:12px; --dn-s4:16px; --dn-s5:24px; --dn-s6:32px; --dn-s7:56px;
+--dn-r:18px; --dn-shadow:0 8px 22px rgba(51,38,46,.10); --dn-t:.18s ease;
+font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif; color:var(--dn-ink);
+isolation:isolate; line-height:1.7; max-width:100%; overflow-x:clip;
+}
+.dn-root *, .dn-root *::before, .dn-root *::after{box-sizing:border-box; min-width:0}
+.dn-root img{max-width:100%; display:block}
+.dn-head{margin:var(--dn-s2) 0 var(--dn-s4)}
+.dn-head .dn-en{font-family:"Quicksand",sans-serif; font-size:11px; letter-spacing:.32em; color:var(--dn-pink); font-weight:700}
+.dn-head .dn-jp{font-size:clamp(20px,6vw,24px); font-weight:900; letter-spacing:.04em; margin-top:2px}
+.dn-head .dn-rule{width:34px; height:3px; border-radius:2px; background:var(--dn-pink); margin-top:var(--dn-s2)}
+.dn-card{background:var(--dn-cream); border:1px solid var(--dn-line); border-radius:var(--dn-r); box-shadow:var(--dn-shadow); overflow:hidden; margin-bottom:var(--dn-s4); text-decoration:none; color:var(--dn-ink); display:block}
+.dn-card .dn-thumb{aspect-ratio:16/7; object-fit:cover; width:100%; max-height:300px}
+.dn-card .dn-cbody{padding:var(--dn-s3) var(--dn-s4) var(--dn-s4)}
+.dn-card .dn-cttl{font-weight:900; font-size:16px}
+.dn-card .dn-csub{font-size:12px; color:var(--dn-sub); margin-top:2px}
+.dn-btn{display:flex; align-items:center; justify-content:center; gap:8px; background:var(--dn-pink); color:#fff; font-weight:900; font-size:16px; border-radius:999px; padding:14px 20px; text-decoration:none; transition:transform var(--dn-t); margin:var(--dn-s3) 0 var(--dn-s4)}
+.dn-btn:active{transform:scale(.97)}
+.dn-badge{display:inline-block; font-size:10.5px; font-weight:900; letter-spacing:.08em; color:#fff; background:var(--dn-pink-deep); border-radius:999px; padding:2px 9px}
+.dn-badge.mint{background:var(--dn-mint); color:var(--dn-ink)}
+.dn-sched{overflow:hidden; background:#241D22; color:var(--dn-cream); border-radius:10px; border:3px solid var(--dn-chrome); outline:1px solid #9aa7b1; padding:var(--dn-s5) var(--dn-s4); text-align:center; margin-bottom:var(--dn-s4); box-shadow:var(--dn-shadow);
+background-image:repeating-linear-gradient(#241D22 0 24px, rgba(255,246,236,.055) 24px 26px)}
+.dn-sched .dn-en{font-family:"Quicksand",sans-serif; font-size:11px; letter-spacing:.3em; color:var(--dn-pink-soft); font-weight:700}
+.dn-sched .dn-top{display:flex; align-items:center; justify-content:space-between; gap:var(--dn-s3)}
+.dn-neon{font-family:"Quicksand",sans-serif; font-size:11px; font-weight:700; letter-spacing:.18em; color:#FFD9E8; border:1.5px solid var(--dn-pink); border-radius:999px; padding:3px 10px; text-shadow:0 0 6px var(--dn-pink), 0 0 14px rgba(255,46,136,.7); box-shadow:0 0 10px rgba(255,46,136,.45), inset 0 0 6px rgba(255,46,136,.35); white-space:nowrap}
+.dn-sched .dn-big{font-size:clamp(22px,6vw,26px); font-weight:900; letter-spacing:.06em; line-height:1.25; margin-top:var(--dn-s2)}
+.dn-sched .dn-time{font-family:"Barlow Condensed",sans-serif; font-size:clamp(52px,15vw,64px); font-weight:600; letter-spacing:.04em; line-height:1.05; color:#fff}
+.dn-sched .dn-time-jst{font-family:"Zen Maru Gothic",sans-serif; font-size:.30em; font-weight:700; letter-spacing:.06em; white-space:nowrap; vertical-align:.35em}
+.dn-sched .dn-note{overflow-wrap:anywhere; font-size:12px; color:var(--dn-pink-soft); margin-top:var(--dn-s1)}
+.dn-week{list-style:none; display:flex; gap:4px; margin:var(--dn-s4) 0 0; padding:0}
+.dn-week li{flex:1 1 0; min-width:0; overflow:hidden; text-align:center; font-size:10.5px; background:rgba(255,246,236,.07); border:1px solid rgba(255,246,236,.22); border-radius:6px; padding:5px 0; color:#F6DCE9; font-weight:700}
+.dn-week li b{display:block; font-size:12.5px; color:#fff}
+.dn-week li.today{background:var(--dn-mint); color:var(--dn-ink)}
+.dn-week li.today b{color:var(--dn-ink)}
+.dn-sec{font-size:12px; font-weight:900; letter-spacing:.14em; color:var(--dn-sub); margin:var(--dn-s5) 0 var(--dn-s2)}
+.dn-row{display:flex; gap:var(--dn-s3); padding:10px 2px; border-bottom:1px solid var(--dn-line); font-size:13.5px; text-decoration:none; color:var(--dn-ink)}
+.dn-row time{color:var(--dn-pink); font-weight:900; font-size:12px; white-space:nowrap; padding-top:2px}
+
+.dn-row .dn-idx{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:15px; color:var(--dn-pink); min-width:26px}
+.dn-row .dn-num{margin-left:auto; font-family:"Barlow Condensed",sans-serif; font-weight:600; font-size:14px; color:var(--dn-sub); white-space:nowrap; padding-top:2px}
+.dn-row .dn-tag{font-size:10.5px; font-weight:900; color:#fff; background:var(--dn-ink); border-radius:6px; padding:2px 7px; white-space:nowrap; margin-top:1px}
+.dn-row .dn-tag.pink{background:var(--dn-pink-deep)}
+.dn-card .dn-menu-line{display:flex; align-items:baseline; gap:var(--dn-s2)}
+.dn-card .dn-menu-line .dn-num{margin-left:auto; font-family:"Barlow Condensed",sans-serif; font-weight:600; color:var(--dn-sub)}
+.dn-input{width:100%; font:inherit; font-size:14.5px; color:var(--dn-ink); background:#fff; border:1.5px solid var(--dn-line); border-radius:12px; padding:11px 13px; margin-bottom:var(--dn-s2)}
+.dn-input:focus{outline:2px solid var(--dn-pink); outline-offset:1px}
+.dn-paper{background:var(--dn-cream); border:1.5px dashed var(--dn-pink); border-radius:var(--dn-r); padding:var(--dn-s4); margin-bottom:var(--dn-s4)}
+.dn-root .bonus-stats{display:flex; gap:var(--dn-s2); margin-bottom:var(--dn-s3)}
+.dn-root .bonus-stat{flex:1; background:#fff; border:1px solid var(--dn-line); border-radius:12px; padding:8px 4px; text-align:center}
+.dn-root .bonus-stat .n{font-family:"Barlow Condensed",sans-serif; font-size:24px; font-weight:700}
+.dn-root .bonus-stat .l{font-size:10.5px; color:var(--dn-sub); font-weight:700}
+.dn-root .bonus-claim{width:100%; background:var(--dn-pink); color:#fff; font-weight:900; font-size:16px; border:none; border-radius:999px; padding:14px; cursor:pointer}
+.dn-root .bonus-claim:disabled{background:var(--dn-chrome); color:#fff}
+.dn-root .prof-head{display:flex; gap:var(--dn-s3); align-items:center; margin-bottom:var(--dn-s3)}
+.dn-root .prof-head .thumb{width:64px; height:64px; border-radius:50%; overflow:hidden; border:2px solid var(--dn-pink-soft); flex:none}
+.dn-root .prof-head .thumb img{width:100%; height:100%; object-fit:cover}
+.dn-root .prof-name{font-size:20px; font-weight:900}
+.dn-root .prof-name span{color:var(--dn-pink)}
+.dn-root .prof-yomi{font-size:11.5px; color:var(--dn-sub)}
+.dn-root .live-badge{display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:900; color:var(--dn-pink-deep); background:var(--dn-pink-soft); padding:3px 10px; border-radius:999px; margin-top:4px}
+.dn-root .live-badge .dot{width:8px; height:8px; border-radius:50%; background:var(--dn-pink)}
+.dn-root .chips{display:flex; flex-wrap:wrap; gap:6px}
+.dn-root .chip{font-size:12px; font-weight:700; background:#fff; border:1px solid var(--dn-line); border-radius:999px; padding:4px 11px}
+.dn-root .chip.purple{background:var(--dn-pink-soft); border-color:var(--dn-pink-soft)}
+.dn-root .chip.badge{background:var(--dn-cream); border-color:var(--dn-chrome)}
+.dn-checker{height:10px; border-radius:5px; margin:var(--dn-s4) 0;
+background:repeating-conic-gradient(var(--dn-pink-soft) 0% 25%, #fff 0% 50%) 0 0/20px 20px}
+@media (prefers-reduced-motion: reduce){ .dn-root *{animation:none!important; transition:none!important} }
+
+/* storage: chrome shelf (dn pass) */
+#storageView .shelf-board{background:linear-gradient(#f7fafc 0 2px,#dfe6ec 2px 5px,#b9c4cd 5px 100%); height:9px; border-radius:4px; box-shadow:0 3px 6px rgba(43,36,48,.20)}
+#storageView .shelf-items{background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.06)); border:1px solid rgba(169,183,193,.55); border-bottom:none; border-radius:14px 14px 0 0; padding:12px 6px 2px}
+
+/* gate/opening dn sign (preview) */
+#gate .g-sign{font-family:"Dela Gothic One",sans-serif; letter-spacing:.16em; color:#E0218A; font-size:16px; text-align:center; margin-bottom:2px}
+#gate .g-open{font-family:"Quicksand",sans-serif; font-weight:700; letter-spacing:.14em; color:#E0218A}
+#gate .g-time{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:19px}
+#gate .g-menu-label{font-size:11px; font-weight:900; color:#A78B9C; letter-spacing:.24em; text-align:center; margin-bottom:6px}
+#opening .op-en{color:#FF7EB6; text-shadow:0 0 8px rgba(255,46,136,.85), 0 0 24px rgba(255,46,136,.5); letter-spacing:.34em}
+
+/* ===== dn pass 2: opening / hero / room / objects / storage ===== */
+#opening::before{content:''; position:absolute; inset:14px; border:2px solid rgba(255,46,136,.55); border-radius:26px; box-shadow:0 0 18px rgba(255,46,136,.35), inset 0 0 18px rgba(255,46,136,.18); pointer-events:none}
+#opening::after{content:''; position:absolute; left:0; right:0; bottom:0; height:14px; background:repeating-conic-gradient(#33262E 0% 25%, #FFF6EC 0% 50%) 0 0/28px 28px; opacity:.85; pointer-events:none}
+#opening .op-en{animation:dnFlicker 1.6s ease-in-out 1}
+@keyframes dnFlicker{0%,100%{opacity:1} 8%{opacity:.35} 14%{opacity:1} 22%{opacity:.5} 30%{opacity:1} 55%{opacity:.65} 62%{opacity:1}}
+.hero-frame{border:3px solid #C9D2D9; outline:1px solid #9aa7b1}
+.hero-frame::before{content:'PICK UP'; position:absolute; top:10px; left:10px; z-index:3; font-family:"Quicksand",sans-serif; font-size:9.5px; font-weight:700; letter-spacing:.18em; color:#FFF6EC; background:#33262E; padding:3px 9px; border-radius:999px}
+
+#storageView .storage-name{font-family:"Zen Maru Gothic",sans-serif; font-weight:900; color:#33262E}
+#storageView .storage-name::before{content:'SHOWCASE ｜ '; font-family:"Quicksand",sans-serif; font-size:10.5px; font-weight:700; letter-spacing:.3em; color:#FF2E88}
+#storageView .sec-head{color:#33262E; font-size:12.5px; letter-spacing:.1em; border-bottom:2px solid #FFD9E8; padding-bottom:5px}
+#storageView .work img{border-radius:10px; border:1px solid #F1DCE6; box-shadow:0 3px 8px rgba(43,36,48,.12)}
+
+#storageView .wdate{white-space:nowrap; font-size:11px; font-family:"Barlow Condensed",sans-serif; letter-spacing:.04em}
+
+/* ===== showcase rebuild: flat plates, big featured, exit door bar ===== */
+#storageView .shelf-items{background:transparent; border:none; padding:14px 4px 2px}
+#storageView .work{background:#fff; border:1px solid #F3DCE8; border-radius:16px; padding:9px 9px 11px; box-shadow:0 3px 9px rgba(43,36,48,.08); width:45%}
+#storageView .obj3d{box-shadow:none; background:none}
+#storageView .obj3d::before, #storageView .obj3d::after{display:none !important}
+#storageView .obj3d .cover{background:transparent; border-radius:12px}
+#storageView .obj3d .cover img{border-radius:12px; border:2px solid #C9D2D9; outline:1px solid rgba(154,167,177,.6); box-shadow:0 4px 10px rgba(43,36,48,.13)}
+#storageView .disc{display:none}
+#storageView .work .cheer{margin-top:9px}
+#storageView .work.big{width:94%; position:relative}
+#storageView .work.big .cover img{aspect-ratio:16/10}
+#storageView .feat-shelf .stand{display:block; width:62%; margin:-2px auto 0}
+#storageView .feat-shelf .shelf-items{justify-content:center}
+#storageDoor{left:50%; bottom:12px; transform:translateX(-50%); width:auto; display:flex; align-items:center; gap:9px; background:#33262E; border:2px solid #C9D2D9; border-radius:999px; padding:7px 18px 7px 12px; box-shadow:0 6px 16px rgba(43,36,48,.3); z-index:5}
+#storageDoor:active{transform:translateX(-50%) scale(.95)}
+#storageDoor img{width:20px}
+#storageDoor .cap{position:static; transform:none; color:#FFF6EC; font-size:12px}
+#storageDoor.leaving img{animation:doorSwing .32s ease-in-out 2; transform-origin:left center}
+@keyframes doorSwing{0%,100%{transform:rotateY(0)}50%{transform:rotateY(-58deg)}}
+
+/* ===== door richness + motion, shelf equal heights ===== */
+#obj-door .door-leafwrap{transition:transform .8s cubic-bezier(.22,.9,.28,1.08)}
+#obj-door .door-glow{background:linear-gradient(160deg,#fffbe9,#ffe3f0 55%,#ffd0e4); filter:brightness(1.06)}
+.door-floorlight{position:absolute; left:-38%; bottom:-4.5%; width:175%; height:11%; background:linear-gradient(100deg,rgba(255,240,200,0),rgba(255,240,200,.85) 30%,rgba(255,214,232,.55) 75%,rgba(255,214,232,0)); clip-path:polygon(6% 18%,100% 0,94% 100%,0 82%); opacity:0; transition:opacity .5s ease .12s; pointer-events:none}
+#obj-door.opening .door-floorlight{opacity:.9}
+.door-sign{position:absolute; left:50%; top:21%; transform:translateX(-50%) rotate(-4deg); background:#33262E; color:#FFF6EC; font-family:Quicksand,sans-serif; font-weight:700; font-size:clamp(7px,2vw,10px); letter-spacing:.22em; padding:.28em .7em .28em .95em; border:1.5px solid #C9D2D9; border-radius:999px; box-shadow:0 2px 5px rgba(43,36,48,.35); pointer-events:none}
+#obj-door.opening .door-sign{animation:signSway .8s ease-in-out}
+@keyframes signSway{0%,100%{transform:translateX(-50%) rotate(-4deg)}30%{transform:translateX(-50%) rotate(7deg)}65%{transform:translateX(-50%) rotate(-10deg)}}
+#stage{transition:transform .32s ease-in, opacity .32s ease-in; transform-origin:84% 62%}
+#stage.through{transform:scale(1.05); opacity:.2}
+#storageView .shelf-items{align-items:stretch; justify-content:center; gap:14px}
+#storageView .work{display:flex; flex-direction:column}
+#storageView .work .wlink{flex:1; display:flex; flex-direction:column}
+#storageView .work .wttl{height:35px; overflow:hidden}
+#storageView .work .wdate{min-height:17px}
+#storageView .work .cheer{margin-top:auto}
+
+/* ===== 引き算パス：飾りを引いて、店の色と素材だけでダイナーにする ===== */
+.obj::before, #chara::before{display:none !important}
+#obj-door::before{display:none !important}
+#opening::after{display:none !important}
+#opening::before{border-width:1.5px; box-shadow:0 0 10px rgba(255,46,136,.22), inset 0 0 10px rgba(255,46,136,.10)}
+#opening .op-en{animation:opIn .8s .1s ease both; text-shadow:0 0 6px rgba(255,46,136,.45)}
+.hero-frame::before{display:none}
+.door-glint{display:none}
+
+/* ===== 会議レビュー統合：静かにする ===== */
+#hero .hero-arrow, #hero .hero-dots{display:none !important}
+#hero .hero-track{transform:none !important}
+#hero .hero-slide:not(:first-child){display:none}
+#opening::before{box-shadow:none; border-color:rgba(255,46,136,.35)}
+.dn-root .dn-neon{text-shadow:0 0 4px rgba(255,46,136,.4); box-shadow:0 0 5px rgba(255,46,136,.3)}
+.dn-root .dn-idx{font-size:11px; color:var(--dn-sub)}
+.dn-root .dn-num{font-size:11.5px; color:var(--dn-sub); font-weight:600}
+.dn-root .dn-tag{background:#F7EEF3; color:var(--dn-sub)}
+.dn-root .dn-tag.pink{background:#FBE3EE; color:var(--dn-pink-deep)}
+#panel-profile .chip{background:#FBF2F7; border:1px solid #F1DCE6; color:var(--dn-ink)}
+#panel-profile .chip.badge{background:#FFF8EC; border-color:#EDDCAE}
+#profWorks{display:none}
+#panel-bonus .bonus-stat{border:1px solid var(--dn-line); box-shadow:none}
+#panel-bonus .fortune{border-top:1px solid var(--dn-line)}
+#storageView .obj3d .cover img{border-width:1.5px; border-color:#D9DFE4; outline:none; box-shadow:0 2px 6px rgba(43,36,48,.10)}
+
+/* ===== 棚＋視点移動（試作） ===== */
+#obj-door .door-leafwrap{transform:none !important}
+#obj-door .door-glow, #obj-door .door-floorlight{display:none}
+#stage.to-shelf{transform:translate(-50%,-50%) scale(1.8); opacity:.12}
+
+/* ===== Lucian試作 (lu-) : 既存部品の「反応と動きの質」だけを上げる層。
+   色・書体はダイナーのトークンのみ使用（Lucian側の見た目は持ち込まない）。
+   --pink:#FF2E88(主操作だけ) / --pink-soft:#FFD9E8 / --cream:#FFF6EC / --mint:#9FE3CF
+   --chrome:#C9D2D9 / --ink:#33262E / --paper:#FFFAFC / 角丸18px / ボタンはピル / 影は柔らかい1種のみ */
+:root{
+--lu-pink:#FF2E88; --lu-pink-soft:#FFD9E8; --lu-cream:#FFF6EC; --lu-mint:#9FE3CF;
+--lu-chrome:#C9D2D9; --lu-ink:#33262E; --lu-paper:#FFFAFC;
+--lu-shadow:0 8px 22px rgba(51,38,46,.10); --lu-r:18px;
+--lu-ease:cubic-bezier(.22,1,.36,1); --lu-slide:cubic-bezier(.76,0,.24,1);
+}
+/* 1) 送信ボタン: 送信中(リング回転) -> 完了(チェック+ミント) -> 既定へ戻る */
+#msgSubmit{position:relative; transition:background .24s ease, color .24s ease, transform var(--t-press) var(--ease-out)}
+#msgSubmit .lu-ico{display:none; flex:none; align-items:center; justify-content:center; width:20px; height:20px}
+#msgSubmit .lu-ico svg{width:19px; height:19px; display:block}
+#msgSubmit .lu-ico-plane{display:inline-flex}
+#msgSubmit.lu-sending .lu-ico-plane{display:none}
+#msgSubmit.lu-sending .lu-ico-spin{display:inline-flex}
+#msgSubmit.lu-done .lu-ico-plane{display:none}
+#msgSubmit.lu-done .lu-ico-check{display:inline-flex}
+#msgSubmit .lu-ring{width:17px; height:17px; border-radius:50%; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; animation:luSpin .7s linear infinite}
+@keyframes luSpin{to{transform:rotate(360deg)}}
+#msgSubmit.lu-done{background:var(--lu-mint); color:var(--lu-ink); box-shadow:var(--lu-shadow)}
+/* 2) コピーボタン: 成功でチェック表示に切り替わり、数秒で戻る */
+#reqCopy{transition:background .24s ease, color .24s ease, transform var(--dn-t)}
+#reqCopy .lu-copy-check{display:none; font-weight:900}
+#reqCopy.lu-copied{background:var(--lu-mint); color:var(--lu-ink)}
+#reqCopy.lu-copied .lu-copy-check{display:inline}
+/* 3) スタンプ: 受け取り時に「押された」ように沈んで弾む */
+.bonus-stamp.lu-just{animation:luStamp .55s var(--lu-ease) 1}
+@keyframes luStamp{0%{transform:scale(1.28) translateY(-3px)}38%{transform:scale(.86) translateY(1px)}62%{transform:scale(1.07)}82%{transform:scale(.97)}100%{transform:scale(1)}}
+/* 4) 作品タブ: 選択中のピルが滑って移動する */
+#storageTabs .lu-tab-pill{position:absolute; z-index:0; border-radius:999px; background:var(--lu-pink); box-shadow:var(--lu-shadow); transition:left .32s var(--lu-slide), width .32s var(--lu-slide), top .32s var(--lu-slide), height .32s var(--lu-slide); pointer-events:none}
+#storageTabs .lu-tab-pill.lu-noanim{transition:none}
+#storageTabs button{z-index:1}
+#storageTabs button.on{background:transparent; border-color:transparent; color:#fff}
+@media (prefers-reduced-motion: reduce){
+.lu-tab-pill{transition:none!important}
+#msgSubmit .lu-ring{animation:none!important}
+.bonus-stamp.lu-just{animation:none!important}
+}
+
+/* ===== Lucian試作・足し算 (lu-) : A1スクラッチ運勢 / A2レコード / A3カルーセル ===== */
+/* A1 スクラッチ */
+.lu-scratch{position:relative; border-radius:var(--lu-r); overflow:hidden; background:var(--lu-cream); border:1.5px dashed var(--lu-pink); min-height:108px; box-shadow:var(--lu-shadow); margin-bottom:10px}
+.lu-scratch-under{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 14px; text-align:center}
+.lu-scratch-under .f-res{margin-top:0; font-size:19px}
+#luScratchCanvas{position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; transition:opacity .35s ease}
+.lu-scratch.lu-revealed #luScratchCanvas{opacity:0; pointer-events:none}
+.lu-scratch-hint{position:absolute; left:0; right:0; bottom:6px; text-align:center; font-size:11px; font-weight:800; letter-spacing:.06em; color:var(--lu-ink); pointer-events:none; transition:opacity .2s ease}
+.lu-scratch.lu-revealed .lu-scratch-hint{display:none}
+#luScratchReveal{margin-top:8px; font-size:13px; padding:10px}
+#luScratchReveal[hidden]{display:none!important}
+/* A2 レコードプレーヤー */
+.lu-player{position:relative; aspect-ratio:16/7; max-height:300px; overflow:hidden; background:var(--lu-cream)}
+.lu-sleeve{position:absolute; left:0; top:0; bottom:0; width:64%; z-index:2; box-shadow:var(--lu-shadow)}
+.lu-sleeve img{width:100%; height:100%; object-fit:cover; display:block}
+.lu-disc{position:absolute; top:4%; right:5%; height:92%; aspect-ratio:1; z-index:1; transform:translateX(-42%); transition:transform .6s var(--lu-ease)}
+.lu-disc-rotor{width:100%; height:100%; border-radius:50%; background:repeating-radial-gradient(circle,#241D22 0 2px,#3A2E36 2px 4px); border:2px solid var(--lu-chrome); position:relative; box-shadow:var(--lu-shadow); box-sizing:border-box}
+.lu-disc-rotor::after{content:''; position:absolute; inset:33%; border-radius:50%; background:var(--lu-pink); border:2px solid var(--lu-paper)}
+.lu-disc-rotor::before{content:''; position:absolute; inset:46.5%; border-radius:50%; background:var(--lu-paper); z-index:1}
+.lu-player.lu-playing .lu-disc{transform:translateX(0)}
+.lu-player.lu-playing .lu-disc-rotor{animation:luSpinDisc 2.2s linear infinite}
+@keyframes luSpinDisc{to{transform:rotate(360deg)}}
+.lu-play{position:absolute; left:10px; bottom:10px; z-index:3; background:var(--lu-pink); color:#fff; font-weight:900; font-size:13.5px; letter-spacing:.05em; border:none; border-radius:999px; padding:10px 18px; cursor:pointer; box-shadow:var(--lu-shadow); transition:transform var(--t-press) var(--ease-out)}
+.lu-play:active{transform:scale(.95)}
+.lu-ytlink{display:inline-block; margin-top:7px; font-size:13px; font-weight:900; color:var(--lu-pink); text-decoration:none}
+/* A3 メッセージ・カルーセル */
+.lu-carousel{position:relative; border:1.5px solid var(--lu-pink-soft); background:var(--lu-paper); border-radius:var(--lu-r); box-shadow:var(--lu-shadow); padding:13px 14px 11px; margin-bottom:12px; overflow:hidden}
+.lu-car-head{font-size:11px; letter-spacing:.2em; color:var(--lu-pink); font-weight:900; margin-bottom:8px}
+.lu-car-slide{display:none}
+.lu-car-slide.on{display:block; animation:luCarIn .35s var(--lu-ease)}
+@keyframes luCarIn{from{opacity:0; transform:translateX(14px)} to{opacity:1; transform:none}}
+.lu-car-top{display:flex; align-items:center; gap:9px; margin-bottom:5px}
+.lu-face{flex:none; width:38px; height:38px; border-radius:50%; background:var(--lu-pink-soft); color:var(--lu-ink); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; box-shadow:var(--lu-shadow)}
+.lu-car-nav{display:flex; align-items:center; gap:8px; margin-top:9px}
+.lu-car-btn{width:38px; height:38px; border-radius:50%; border:1.5px solid var(--lu-chrome); background:#fff; font-size:17px; font-weight:900; color:var(--lu-ink); cursor:pointer; line-height:1}
+.lu-car-dots{display:flex; gap:6px; margin-left:auto; align-items:center}
+.lu-car-dot{width:8px; height:8px; border-radius:50%; background:var(--lu-chrome); border:none; padding:0; cursor:pointer}
+.lu-car-dot.on{background:var(--lu-pink)}
+@media (prefers-reduced-motion: reduce){
+.lu-disc{transition:none!important}
+.lu-car-slide.on{animation:none!important}
+#luScratchCanvas{transition:none!important}
+}
+
+/* ===== Lucian第2弾 (lu-) : 全エリア足し算＋棚・オープニング改築＋動きと音のレイヤー ===== */
+/* 1. 玄関：回転する円形文字バッジ */
+.lu-sign-row{display:flex; align-items:center; justify-content:center; gap:12px}
+.lu-orbit{position:relative; width:64px; height:64px; flex:none; pointer-events:none}
+.lu-orbit svg{width:100%; height:100%; display:block; animation:luOrbit 18s linear infinite}
+.lu-orbit text{font-family:"Quicksand",sans-serif; font-size:9.5px; font-weight:700; letter-spacing:.1em; fill:var(--lu-pink)}
+.lu-orbit-star{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--lu-pink); font-size:15px}
+@keyframes luOrbit{to{transform:rotate(360deg)}}
+/* 2. ヒーロー：カルーセル復活（レビュー統合層の静止画化を lu 層で上書き。transformはCSS変数経由） */
+#hero .hero-arrow{display:flex !important}
+#hero .hero-dots{display:flex !important}
+#hero .hero-slide{display:block !important}
+#hero .hero-track{transform:translateX(var(--lu-hero-x,0%)) !important}
+#hero .hero-track.lu-drag{transition:none !important}
+/* 3. 配信：フリップ式カウントダウン */
+.lu-count{margin-top:12px; background:#fff; border:1px solid var(--dn-line); border-radius:14px; padding:10px 12px 12px; text-align:center}
+.lu-count-label{font-size:11px; font-weight:800; letter-spacing:.18em; color:var(--dn-sub); margin-bottom:8px}
+.lu-flips{display:flex; align-items:flex-start; justify-content:center; gap:6px}
+.lu-flip-col{display:flex; flex-direction:column; align-items:center}
+.lu-flip{width:64px; height:52px; border-radius:10px; background:var(--lu-ink); color:var(--lu-cream); display:flex; align-items:center; justify-content:center; box-shadow:var(--lu-shadow)}
+.lu-flip-num{font-family:"Barlow Condensed",sans-serif; font-size:34px; font-weight:700; letter-spacing:.06em; line-height:1; display:block}
+.lu-flip.lu-flip-go .lu-flip-num{animation:luFlipTick .3s var(--lu-ease)}
+@keyframes luFlipTick{0%{transform:rotateX(0)}45%{transform:rotateX(-72deg); opacity:.5}100%{transform:rotateX(0); opacity:1}}
+.lu-flip-sep{font-family:"Barlow Condensed",sans-serif; font-size:26px; font-weight:700; color:var(--lu-ink); line-height:52px}
+.lu-flip-unit{font-size:9.5px; font-weight:800; letter-spacing:.2em; color:var(--dn-sub); margin-top:4px}
+/* 4. ゲーム：その場で広がる詳細カード */
+.lu-game-head{display:block; width:100%; text-align:left; background:none; border:none; padding:0; cursor:pointer; font:inherit; color:inherit}
+.lu-game-row{display:flex; align-items:center}
+.lu-game-head .dn-cbody{display:block; flex:1}
+.lu-game-head .dn-cttl{display:block}
+.lu-game-head .dn-csub{display:block}
+.lu-game-arrow{flex:none; padding:0 14px 0 2px; font-size:15px; color:var(--lu-pink); transition:transform .3s var(--lu-ease)}
+.lu-game.open .lu-game-arrow{transform:rotate(180deg)}
+.lu-game-detail{display:grid; grid-template-rows:0fr; transition:grid-template-rows .38s var(--lu-ease)}
+.lu-game.open .lu-game-detail{grid-template-rows:1fr}
+.lu-game-detail-in{overflow:hidden; min-height:0}
+.lu-game-detail-body{padding:10px var(--dn-s4) var(--dn-s4); border-top:1px dashed var(--dn-line)}
+.lu-game-desc{font-size:13.5px; line-height:1.7}
+.lu-game-date{font-size:11.5px; color:var(--dn-sub); font-weight:700; margin-top:4px}
+.lu-game-play{display:inline-block; margin-top:10px; background:var(--lu-pink); color:#fff; font-weight:900; font-size:14px; letter-spacing:.06em; border-radius:999px; padding:10px 22px; text-decoration:none}
+/* 5. 机：制作工程フロー */
+.lu-flow{background:#fff; border:1px solid var(--dn-line); border-radius:14px; padding:12px 14px 11px; margin-bottom:var(--dn-s4)}
+.lu-flow-cap{font-size:11px; font-weight:800; letter-spacing:.18em; color:var(--dn-sub); margin-bottom:12px}
+.lu-flow-track{position:relative; display:flex; margin:0 2px}
+.lu-flow-line{position:absolute; left:12.5%; width:75%; top:9px; height:3px; background:var(--lu-pink-soft); border-radius:99px}
+.lu-flow-fill{height:100%; background:var(--lu-pink); border-radius:99px}
+.lu-step{position:relative; z-index:1; flex:1; display:flex; flex-direction:column; align-items:center; gap:6px}
+.lu-step-dot{width:19px; height:19px; border-radius:50%; background:#fff; border:2.5px solid var(--lu-pink-soft); box-sizing:border-box}
+.lu-step.lit .lu-step-dot{background:var(--lu-pink); border-color:var(--lu-pink)}
+.lu-step.now .lu-step-dot{animation:luStepPulse 1.8s ease-in-out infinite}
+@keyframes luStepPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,46,136,.35)}50%{box-shadow:0 0 0 6px rgba(255,46,136,0)}}
+.lu-step-name{font-size:11.5px; font-weight:800; color:var(--dn-sub)}
+.lu-step.lit .lu-step-name{color:var(--dn-ink)}
+.lu-step.now .lu-step-name{color:var(--lu-pink)}
+.lu-flow-note{margin-top:10px; font-size:12px; color:var(--dn-sub); line-height:1.6}
+/* 6. プロフィール：カウントアップ統計 */
+.lu-stats{display:flex; gap:8px; margin-bottom:6px}
+.lu-stat{flex:1; background:#fff; border:1px solid var(--dn-line); border-radius:12px; padding:9px 4px 8px; text-align:center}
+.lu-stat-n{font-family:"Barlow Condensed",sans-serif; font-size:26px; font-weight:700; color:var(--lu-pink); line-height:1.05}
+.lu-stat-l{font-size:10px; color:var(--dn-sub); font-weight:800; letter-spacing:.05em; margin-top:2px}
+.lu-stats-note{font-size:10.5px; color:var(--dn-sub); line-height:1.6; margin-bottom:var(--dn-s3)}
+/* 7. ボーナス：XPバー＋連続の炎 */
+.lu-bonus-prog{background:#fff; border:1px solid var(--dn-line); border-radius:14px; padding:11px 13px 12px; margin-bottom:12px}
+.lu-flame-row{display:flex; align-items:center; gap:8px; margin-bottom:9px}
+.lu-flame{font-size:20px; line-height:1; display:inline-block; transform-origin:50% 90%; transition:transform .5s var(--lu-ease), filter .3s ease, opacity .3s ease}
+.lu-flame-txt{font-size:12.5px; font-weight:800}
+.lu-xp-head{display:flex; justify-content:space-between; font-size:11px; font-weight:800; letter-spacing:.08em; color:var(--dn-sub); margin-bottom:6px}
+.lu-xp{height:10px; border-radius:99px; background:var(--lu-pink-soft); overflow:hidden}
+.lu-xp-fill{height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--lu-pink),#ff7eb6); transition:width .7s var(--lu-ease)}
+/* 8. 応援ハートバースト */
+.lu-heart-pop{position:absolute; left:50%; top:-2px; z-index:5; color:var(--lu-pink); font-size:13px; line-height:1; pointer-events:none; animation:luHeartPop .72s var(--lu-ease) forwards}
+@keyframes luHeartPop{0%{transform:translate(-50%,0) scale(.4) rotate(0deg); opacity:0}18%{opacity:1}100%{transform:translate(calc(-50% + var(--lu-tx,0px)),var(--lu-ty,-34px)) scale(1.15) rotate(var(--lu-rot,0deg)); opacity:0}}
+/* 9a. 部屋の棚：ショーケース化 */
+#obj-door .lu-case{position:absolute; inset:0; border-radius:10px; pointer-events:none; z-index:3; border:2px solid rgba(201,210,217,.85); box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), inset 0 14px 22px rgba(255,255,255,.28); background:linear-gradient(115deg, rgba(255,255,255,.34) 0%, rgba(255,255,255,.05) 34%, rgba(255,255,255,0) 55%, rgba(255,255,255,.14) 82%, rgba(255,255,255,0) 100%)}
+#obj-door .lu-case-spot{position:absolute; left:6%; right:6%; top:0; height:34%; pointer-events:none; z-index:3; background:linear-gradient(to bottom, rgba(255,246,220,.55), rgba(255,246,220,0)); clip-path:polygon(18% 0, 82% 0, 100% 100%, 0 100%)}
+
+/* 9b. 置き場：絞り込みで並び直る */
+#shelves .work{animation:luWorkIn .5s var(--lu-ease) both}
+#shelves .shelf-items .work:nth-child(2){animation-delay:.07s}
+#shelves .feat-shelf .work{animation-delay:.02s}
+@keyframes luWorkIn{from{opacity:0; transform:translateY(14px) scale(.97)}to{opacity:1; transform:translateY(0) scale(1)}}
+/* 9c. 置き場：ライトボックス */
+.lu-zoom{position:absolute; top:6px; right:6px; z-index:6; width:30px; height:30px; border-radius:50%; border:1.5px solid var(--lu-chrome); background:rgba(255,250,252,.94); color:var(--lu-ink); font-size:15px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--lu-shadow); padding:0}
+.lu-zoom:active{transform:scale(.92)}
+.lu-lightbox{position:fixed; inset:0; z-index:70; display:flex; align-items:center; justify-content:center; opacity:0; visibility:hidden; transition:opacity .3s var(--lu-ease), visibility 0s linear .3s}
+.lu-lightbox.on{opacity:1; visibility:visible; transition:opacity .3s var(--lu-ease)}
+.lu-lb-backdrop{position:absolute; inset:0; background:rgba(51,38,46,.62)}
+.lu-lb-card{position:relative; width:min(86vw,340px); background:var(--lu-paper); border-radius:18px; overflow:hidden; box-shadow:var(--lu-shadow); transform:scale(.94); transition:transform .3s var(--lu-ease)}
+.lu-lightbox.on .lu-lb-card{transform:scale(1)}
+.lu-lb-card img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:var(--lu-pink-soft)}
+.lu-lb-body{padding:13px 16px 16px}
+.lu-lb-ttl{font-size:16px; font-weight:900}
+.lu-lb-date{font-size:11.5px; color:var(--dn-sub); font-weight:700; margin-top:2px; min-height:14px}
+.lu-lb-go{display:inline-block; margin-top:11px; background:var(--lu-pink); color:#fff; font-weight:900; font-size:14px; border-radius:999px; padding:10px 20px; text-decoration:none}
+.lu-lb-x{position:absolute; top:8px; right:8px; width:38px; height:38px; border-radius:50%; background:rgba(255,250,252,.95); border:1.5px solid var(--lu-chrome); font-size:15px; color:var(--lu-ink); cursor:pointer; z-index:2; padding:0}
+/* 10. オープニング：ネオンが順に灯る（看板→OPEN札→名前→案内。点灯後は静止） */
+#opening .op-en{opacity:.1; text-shadow:none !important; animation:luNeonOn .5s linear .1s forwards !important}
+#opening .lu-op-open{opacity:.12; font-family:"Quicksand",sans-serif; font-weight:700; letter-spacing:.3em; text-indent:.3em; font-size:12px; color:var(--lu-pink); border:1.5px solid var(--lu-pink); border-radius:999px; padding:5px 14px 5px 17px; animation:luNeonBox .5s linear .62s forwards !important}
+#opening .op-name{opacity:.08; animation:luNameOn .45s linear 1.08s forwards !important}
+#opening .op-tap{opacity:0; animation:luFadeOn .4s ease 1.5s forwards !important}
+@keyframes luNeonOn{0%{opacity:.1; text-shadow:none}14%{opacity:.95; text-shadow:0 0 8px rgba(255,46,136,.8),0 0 22px rgba(255,46,136,.45)}24%{opacity:.25; text-shadow:none}42%{opacity:1; text-shadow:0 0 8px rgba(255,46,136,.85),0 0 24px rgba(255,46,136,.5)}58%{opacity:.4; text-shadow:0 0 3px rgba(255,46,136,.4)}76%,100%{opacity:1; text-shadow:0 0 7px rgba(255,46,136,.65),0 0 20px rgba(255,46,136,.4)}}
+@keyframes luNeonBox{0%{opacity:.12; box-shadow:none}14%{opacity:.95; box-shadow:0 0 14px rgba(255,46,136,.45), inset 0 0 8px rgba(255,46,136,.3)}24%{opacity:.3; box-shadow:none}42%{opacity:1; box-shadow:0 0 16px rgba(255,46,136,.5), inset 0 0 8px rgba(255,46,136,.35)}58%{opacity:.45; box-shadow:0 0 5px rgba(255,46,136,.25)}76%,100%{opacity:1; box-shadow:0 0 12px rgba(255,46,136,.35), inset 0 0 6px rgba(255,46,136,.22)}}
+@keyframes luNameOn{0%{opacity:.08}30%{opacity:.9}45%{opacity:.3}100%{opacity:1}}
+@keyframes luFadeOn{to{opacity:1}}
+/* 11. 動きレイヤー：パネル内の stagger フェードアップ */
+.panel .closeBtn{z-index:5}
+.panel.on .dn-root > *{animation:luStagger .55s var(--lu-ease) both}
+.panel.on .dn-root > *:nth-child(2){animation-delay:.04s}
+.panel.on .dn-root > *:nth-child(3){animation-delay:.08s}
+.panel.on .dn-root > *:nth-child(4){animation-delay:.12s}
+.panel.on .dn-root > *:nth-child(5){animation-delay:.16s}
+.panel.on .dn-root > *:nth-child(6){animation-delay:.2s}
+.panel.on .dn-root > *:nth-child(7){animation-delay:.24s}
+.panel.on .dn-root > *:nth-child(8){animation-delay:.28s}
+@keyframes luStagger{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:translateY(0)}}
+/* 11. 動きレイヤー：押下で沈む＋カードが浮く */
+.dn-btn,.lu-game-play,.lu-lb-go{transition:transform .14s var(--lu-ease)}
+.dn-btn:active,.lu-game-play:active,.lu-lb-go:active{transform:scale(.96)}
+.dn-card{transition:transform .24s var(--lu-ease)}
+.dn-card:active{transform:translateY(-2px)}
+/* 11. 動きレイヤー：ボタンの光沢（JSが .lu-sheen-on を付与した時だけ1回流れる） */
+.dn-btn,.bonus-claim,#enterBtn,.lu-play,.lu-game-play,.lu-lb-go,#fortuneBtn{position:relative; overflow:hidden}
+.dn-btn::after,.bonus-claim::after,#enterBtn::after,.lu-play::after,.lu-game-play::after,.lu-lb-go::after,#fortuneBtn::after{content:''; position:absolute; top:-10%; bottom:-10%; width:38%; left:-70%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent); transform:skewX(-18deg); pointer-events:none; opacity:0}
+.lu-sheen-on::after{animation:luSheen .55s ease}
+@keyframes luSheen{0%{left:-70%; opacity:0}15%{opacity:1}100%{left:135%; opacity:0}}
+/* 11. 音トグル（部屋の右上） */
+.lu-sound{position:fixed; top:10px; right:10px; z-index:65; width:42px; height:42px; border-radius:50%; background:rgba(255,250,252,.94); border:1.5px solid var(--lu-chrome); box-shadow:var(--lu-shadow); font-size:17px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--lu-ink); padding:0}
+.lu-sound.lu-off{color:var(--dn-sub)}
+.lu-sound.lu-off::after{content:''; position:absolute; left:6px; right:6px; top:50%; height:2px; border-radius:2px; background:var(--lu-pink); transform:rotate(-24deg)}
+@media (prefers-reduced-motion: reduce){
+.lu-orbit svg{animation:none !important}
+#hero .hero-track{transition:none !important}
+.lu-flip.lu-flip-go .lu-flip-num{animation:none !important}
+.lu-game-detail{transition:none !important}
+.lu-step.now .lu-step-dot{animation:none !important; box-shadow:0 0 0 3px rgba(255,46,136,.3)}
+.lu-heart-pop{display:none !important}
+#shelves .work{animation:none !important}
+.lu-lb-card{transition:none !important}
+#opening .op-en{animation:none !important; opacity:1 !important; text-shadow:0 0 7px rgba(255,46,136,.65),0 0 20px rgba(255,46,136,.4) !important}
+#opening .lu-op-open{animation:none !important; opacity:1 !important; box-shadow:0 0 12px rgba(255,46,136,.35), inset 0 0 6px rgba(255,46,136,.22)}
+#opening .op-name{animation:none !important; opacity:1 !important}
+#opening .op-tap{animation:none !important; opacity:1 !important}
+.panel.on .dn-root > *{animation:none !important}
+.lu-sheen-on::after{animation:none !important; opacity:0 !important}
+.lu-xp-fill{transition:none !important}
+.lu-flame{transition:none !important}
+}
+
+/* ===== Lucian第3弾 (lu-) : 色合いと演出のダイナー強化 =====
+   足す色と柄は「店の備品と札」だけ。本文まわりの地と文字は現行のまま。
+   ピンク主役は維持し、ティール＋レッドの面積は各画面のおおむね1割以下に抑える。 */
+:root{
+--lu-teal:#0E9594;
+--lu-cherry:#D92B3A;
+--lu-chrome-grad:linear-gradient(180deg,#F5F8FA 0%,#D8E0E7 30%,#93A3B1 50%,#E8EEF3 72%,#ACB9C5 100%);
+--lu-burst:polygon(50.0% 0.0%, 57.5% 12.2%, 69.1% 3.8%, 71.4% 18.0%, 85.4% 14.6%, 82.0% 28.6%, 96.2% 30.9%, 87.8% 42.5%, 100.0% 50.0%, 87.8% 57.5%, 96.2% 69.1%, 82.0% 71.4%, 85.4% 85.4%, 71.4% 82.0%, 69.1% 96.2%, 57.5% 87.8%, 50.0% 100.0%, 42.5% 87.8%, 30.9% 96.2%, 28.6% 82.0%, 14.6% 85.4%, 18.0% 71.4%, 3.8% 69.1%, 12.2% 57.5%, 0.0% 50.0%, 12.2% 42.5%, 3.8% 30.9%, 18.0% 28.6%, 14.6% 14.6%, 28.6% 18.0%, 30.9% 3.8%, 42.5% 12.2%);
+}
+/* --- ネオングロー：ピンク＋ティールの2色グロー（弱く品よく） --- */
+#gate .g-sign{text-shadow:0 0 6px rgba(255,46,136,.45), 0 0 18px rgba(14,149,148,.32)}
+.dn-root .dn-neon{text-shadow:0 0 6px var(--dn-pink), 0 0 14px rgba(255,46,136,.7), 0 0 22px rgba(14,149,148,.35); box-shadow:0 0 10px rgba(255,46,136,.45), 0 0 24px rgba(14,149,148,.25), inset 0 0 6px rgba(255,46,136,.35)}
+#opening .op-en{animation-name:luNeonOn3 !important}
+@keyframes luNeonOn3{0%{opacity:.1; text-shadow:none}14%{opacity:.95; text-shadow:0 0 8px rgba(255,46,136,.8),0 0 22px rgba(14,149,148,.45)}24%{opacity:.25; text-shadow:none}42%{opacity:1; text-shadow:0 0 8px rgba(255,46,136,.85),0 0 24px rgba(14,149,148,.5)}58%{opacity:.4; text-shadow:0 0 3px rgba(255,46,136,.4)}76%,100%{opacity:1; text-shadow:0 0 7px rgba(255,46,136,.6),0 0 20px rgba(14,149,148,.38)}}
+#opening .lu-op-open{color:var(--lu-cherry); border-color:var(--lu-cherry); animation-name:luNeonCherry !important}
+@keyframes luNeonCherry{0%{opacity:.12; box-shadow:none}14%{opacity:.95; box-shadow:0 0 14px rgba(217,43,58,.45), inset 0 0 8px rgba(217,43,58,.3)}24%{opacity:.3; box-shadow:none}42%{opacity:1; box-shadow:0 0 16px rgba(217,43,58,.5), 0 0 26px rgba(14,149,148,.22), inset 0 0 8px rgba(217,43,58,.35)}58%{opacity:.45; box-shadow:0 0 5px rgba(217,43,58,.25)}76%,100%{opacity:1; box-shadow:0 0 12px rgba(217,43,58,.35), 0 0 22px rgba(14,149,148,.18), inset 0 0 6px rgba(217,43,58,.22)}}
+/* --- チェリーレッド：OPEN札（玄関） --- */
+#gate .g-live{color:var(--lu-cherry)}
+#gate .g-live .dot{background:var(--lu-cherry)}
+/* --- ティール：店の備品 --- */
+.lu-orbit text{fill:var(--lu-teal)}
+#panel-speaker .dn-idx{color:var(--lu-teal)}
+#panel-speaker .dn-num{color:var(--lu-teal)}
+.lu-player{box-shadow:inset 0 0 0 2px var(--lu-teal)}
+.lu-player::after{content:''; position:absolute; left:0; right:0; bottom:0; height:6px; background:var(--lu-teal); z-index:4; pointer-events:none}
+.lu-sleeve{border-right:3px solid var(--lu-teal)}
+.lu-count{border:1.5px solid var(--lu-teal)}
+/* --- クロームの質感：縦グラデーションの金属反射に統一 --- */
+.dn-root .dn-sched{border:3px solid transparent; background:repeating-linear-gradient(rgba(0,0,0,.45) 0, rgba(0,0,0,.45) 2px, rgba(255,246,236,.08) 2px, rgba(255,246,236,.08) 3px, transparent 3px, transparent 28px) padding-box, linear-gradient(#241D22,#241D22) padding-box, var(--lu-chrome-grad) border-box}
+.lu-lb-card{border:2px solid transparent; background:linear-gradient(var(--lu-paper),var(--lu-paper)) padding-box, var(--lu-chrome-grad) border-box}
+.lu-car-btn{border:1.5px solid transparent; background:linear-gradient(#fff,#fff) padding-box, var(--lu-chrome-grad) border-box}
+.lu-zoom{border:1.5px solid transparent; background:linear-gradient(rgba(255,250,252,.94),rgba(255,250,252,.94)) padding-box, var(--lu-chrome-grad) border-box}
+.lu-lb-x{border:1.5px solid transparent; background:linear-gradient(rgba(255,250,252,.95),rgba(255,250,252,.95)) padding-box, var(--lu-chrome-grad) border-box}
+.lu-sound{border:1.5px solid transparent; background:linear-gradient(rgba(255,250,252,.94),rgba(255,250,252,.94)) padding-box, var(--lu-chrome-grad) border-box}
+
+#obj-door .lu-case{border-color:transparent}
+#obj-door .lu-case::before{content:''; position:absolute; inset:0; border-radius:10px; padding:2px; background:var(--lu-chrome-grad); -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite:exclude}
+/* --- チェッカー柄の帯（帯だけ。全面使用はしない） --- */
+.dn-root .dn-checker{background:repeating-conic-gradient(var(--lu-pink) 0% 25%, var(--lu-cream) 0% 50%) 0 0/18px 18px}
+#obj-door .lu-case::after{content:''; position:absolute; left:0; right:0; bottom:0; height:8%; background:repeating-conic-gradient(var(--lu-pink) 0% 25%, var(--lu-cream) 0% 50%) 0 0/14px 14px; opacity:.85; border-radius:0 0 8px 8px}
+/* 置き場の名前帯チェッカーはタブ帯と干渉したため第3弾では見送り（チェッカー帯は見出し・蹴込み・パネル末尾に集約） */
+/* --- ジュークボックス型アーチ見出し（全パネル共通）＋下帯チェッカー --- */
+.panel .dn-head{position:relative; overflow:hidden; text-align:center; border:2px solid transparent; border-radius:64px 64px 16px 16px / 42px 42px 16px 16px; background:linear-gradient(var(--lu-paper),var(--lu-paper)) padding-box, var(--lu-chrome-grad) border-box; padding:13px 16px 17px}
+.panel .dn-head .dn-rule{margin-left:auto; margin-right:auto}
+.panel .dn-head::after{content:''; position:absolute; left:0; right:0; bottom:0; height:9px; background:repeating-conic-gradient(var(--lu-pink) 0% 25%, var(--lu-cream) 0% 50%) 0 0/18px 18px}
+/* --- スターバーストバッジ（既存の札がある場所だけ） --- */
+.hero-frame::before{background:var(--lu-cherry); color:var(--lu-cream); clip-path:var(--lu-burst); border-radius:0; width:56px; height:56px; padding:0; display:flex; align-items:center; justify-content:center; text-align:center; line-height:1.15; top:4px; left:4px; transform:rotate(-8deg)}
+#panel-speaker .dn-badge{background:var(--lu-cherry); color:var(--lu-cream); clip-path:var(--lu-burst); border-radius:0; padding:10px 14px; transform:rotate(-4deg)}
+.lu-car-head::before{content:'★'; display:inline-flex; align-items:center; justify-content:center; width:27px; height:27px; margin-right:7px; vertical-align:-8px; background:var(--lu-cherry); color:var(--lu-cream); font-size:12px; clip-path:var(--lu-burst)}
+/* --- ネオン反射：部屋の床面に薄く敷く（点滅なし） --- */
+#stage::before{content:''; position:absolute; left:0; right:0; bottom:0; height:24%; z-index:0; pointer-events:none; background:radial-gradient(58% 92% at 32% 110%, rgba(255,46,136,.20), rgba(255,46,136,0) 70%), radial-gradient(42% 82% at 78% 112%, rgba(14,149,148,.14), rgba(14,149,148,0) 70%)}
+@media (prefers-reduced-motion: reduce){
+#opening .op-en{text-shadow:0 0 7px rgba(255,46,136,.6),0 0 20px rgba(14,149,148,.38) !important}
+#opening .lu-op-open{box-shadow:0 0 12px rgba(217,43,58,.35), 0 0 22px rgba(14,149,148,.18), inset 0 0 6px rgba(217,43,58,.22)}
+}
+
+/* ===== Lucian第4弾 (lu4-) : 監査A分類の修正（読みやすさ・操作性） =====
+   見た目は維持する。小さい文字の濃さ／当たり判定／カルーセルの停止手段／
+   見出し階層／フォーカス表示／光沢アニメーションの transform 化だけを直す。 */
+/* 1. 補助テキスト色 --dn-sub を紫グレーの系統のまま濃くする
+   採用値 #675E6E の実測コントラスト: クリーム#FFF6EC 5.77 / 紙#FFFAFC 5.97 / ピンクソフト#FFD9E8 4.80（全て 4.5:1 以上） */
+.dn-root{--dn-sub:#675E6E}
+/* 2. 英語小ラベル専用の深ピンク（主役ピンク #FF2E88 自体は不変。大きい文字・ボタンは対象外）
+   採用値 #C70056 の実測コントラスト: クリーム 5.51 / 紙 5.71 / ピンクソフト 4.59 / 白 5.89（全て 4.5:1 以上） */
+.dn-head .dn-en, .p-en, .sched .sched-en, .pick-label{color:#C70056}
+/* 4. カルーセルの当たり判定だけを拡張する（見た目の大きさは不変）
+   ドット: 8px + 透明 ::after で 24px四方 / 矢印: 38px + 透明 ::after で 44px四方
+   （::after の inset は padding box 基準のため、矢印は枠1.5px分を見込んで -5px にする） */
+.lu-car-dot{position:relative}
+.lu-car-dot::after{content:''; position:absolute; inset:-8px; border-radius:50%}
+.lu-car-btn{position:relative}
+.lu-car-btn::after{content:''; position:absolute; inset:-5px; border-radius:50%}
+/* 5. h2 化したパネル見出しの UA 既定を消し、従来の div と見た目を完全同一にする */
+h2.dn-head{font-size:inherit; font-weight:inherit; line-height:inherit}
+/* 6. 応援カルーセルの停止/再生トグル（矢印ボタンと同系統の小さい丸ボタン） */
+.lu-car-toggle{flex:none; width:30px; height:30px; border-radius:50%; border:1.5px solid transparent; background:linear-gradient(#fff,#fff) padding-box, var(--lu-chrome-grad) border-box; font-size:9px; font-weight:900; color:var(--lu-ink); cursor:pointer; line-height:1; padding:0; margin-left:2px}
+.lu-car-toggle[aria-pressed="true"]{background:linear-gradient(var(--lu-pink-soft),var(--lu-pink-soft)) padding-box, var(--lu-chrome-grad) border-box}
+/* 7. 光沢アニメーションを left から transform へ置換（移動量は従来と等価換算）
+   heroShine: 要素幅34%基準で -32%→114% の移動 = translateX -94.1%→335.3%
+   luSheen: 要素幅38%基準で -70%→135% の移動 = translateX -184.2%→355.3% */
+.hero-frame::after{left:0; transform:skewX(-18deg) translateX(-94.1%); animation-name:lu4HeroShine}
+@keyframes lu4HeroShine{0%,74%{transform:skewX(-18deg) translateX(-94.1%)}94%,100%{transform:skewX(-18deg) translateX(335.3%)}}
+.dn-btn::after,.bonus-claim::after,#enterBtn::after,.lu-play::after,.lu-game-play::after,.lu-lb-go::after,#fortuneBtn::after{left:0; transform:skewX(-18deg) translateX(-184.2%)}
+.lu-sheen-on::after{animation-name:lu4Sheen}
+@keyframes lu4Sheen{0%{transform:skewX(-18deg) translateX(-184.2%); opacity:0}15%{opacity:1}100%{transform:skewX(-18deg) translateX(355.3%); opacity:0}}
+/* 8. キーボード操作時のフォーカス表示（マウス操作では出ない :focus-visible） */
+:focus-visible{outline:2.5px solid #C70056; outline-offset:2px}
+.dn-input:focus-visible{outline:2.5px solid #C70056; outline-offset:1px}
+
+/* ===== Lucian第5弾 (lu5-) : 棚の再設計＋メニューの分かりやすさ =====
+   棚は「イチオシ→おすすめ→ほかの作品」の序列に再設計し、同じ作品を複数セクションへ重ねない。
+   旧形式（おすすめ/最新/ぜんぶの重複表示・2つ並べの行棚・物の形ケース）は lu5 では使わない。
+   カテゴリ表示はそのカテゴリの全作品を、先頭1作ワイド＋残り均等グリッドで見せる。 */
+/* --- A. 棚：セクション＝店のショーケース（見出し札＋ガラス面＋クローム棚板） --- */
+#storageView .storage-sec{background:linear-gradient(rgba(255,255,255,.66),rgba(255,255,255,.18)); border:1px solid rgba(169,183,193,.55); border-radius:18px; padding:10px 10px 12px; margin-bottom:20px; box-shadow:0 4px 12px rgba(43,36,48,.06)}
+#storageView .sec-head{display:flex; align-items:center; gap:8px; color:var(--lu-cream); font-size:13px; font-weight:900; letter-spacing:.12em; border:2px solid transparent; background:linear-gradient(var(--lu-ink),var(--lu-ink)) padding-box, var(--lu-chrome-grad) border-box; border-radius:10px; padding:8px 12px; margin:0 0 12px}
+#storageView .sec-head b{color:#FF7EB6}
+.lu5-count{margin-left:auto; font-family:"Barlow Condensed",sans-serif; font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--lu-cream); background:rgba(255,255,255,.16); border-radius:999px; padding:2px 9px; white-space:nowrap}
+.lu5-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; align-items:stretch}
+#storageView .lu5-grid .work{width:auto; height:100%}
+#storageView .work .obj3d .cover img{aspect-ratio:4/3}
+#storageView .work.lu5-hero, #storageView .work.lu5-lead{grid-column:1 / -1}
+#storageView .work.lu5-hero .obj3d .cover img, #storageView .work.lu5-lead .obj3d .cover img{aspect-ratio:16/9}
+#storageView .work .wttl{text-align:left; font-size:13.5px; line-height:1.4; min-height:38px; height:auto; margin-top:9px}
+#storageView .work.lu5-hero .wttl{font-size:17px; min-height:0}
+.lu5-tags{display:flex; flex-wrap:wrap; gap:5px; margin-top:7px; min-height:19px}
+.lu5-kind{font-size:10px; font-weight:900; letter-spacing:.08em; color:var(--lu-cream); background:var(--lu-ink); border-radius:999px; padding:2.5px 8px}
+.lu5-flag{font-size:10px; font-weight:900; letter-spacing:.08em; border-radius:999px; padding:2.5px 8px}
+.lu5-flag.new{background:var(--lu-cherry); color:var(--lu-cream)}
+.lu5-flag.wip{background:var(--lu-mint); color:var(--lu-ink)}
+.lu5-flag.pick{background:var(--lu-pink); color:#fff}
+.lu5-desc{display:block; font-size:11.5px; line-height:1.55; color:#675E6E; margin-top:5px; text-align:left}
+#storageView .work .wtag{display:none}
+#storageView .work .wdate{text-align:left; margin-top:5px}
+#storageView .work .cheer{width:100%}
+.lu5-board{height:10px; border-radius:4px; margin-top:12px; background:var(--lu-chrome-grad); box-shadow:0 3px 6px rgba(43,36,48,.20)}
+#shelves .lu5-grid .work{animation:luWorkIn .5s var(--lu-ease) both}
+#shelves .lu5-grid .work:nth-child(2){animation-delay:.06s}
+#shelves .lu5-grid .work:nth-child(3){animation-delay:.12s}
+#shelves .lu5-grid .work:nth-child(4){animation-delay:.18s}
+@media (prefers-reduced-motion: reduce){ #shelves .lu5-grid .work{animation:none !important} }
+/* --- B1. 置き場タブ：選択中をドット＋ピル＋aria-pressed で明示 --- */
+#storageTabs button.on::before{content:''; display:inline-block; width:7px; height:7px; border-radius:50%; background:#fff; margin-right:6px; vertical-align:2px}
+/* --- B2. 部屋の導線ラベル：第11弾で全廃（部屋の見える文字を無くし、導線はドックに一本化。
+   aria-label は各ボタンに残っているので操作・読み上げは成立する） --- */
+/* --- B3. ゲームのアコーディオン：開閉の状態を言葉でも示す --- */
+.lu5-acc-state{flex:none; align-self:center; font-size:10.5px; font-weight:900; letter-spacing:.06em; color:#C70056; background:var(--lu-pink-soft); border-radius:999px; padding:3px 9px; margin-left:10px}
+.lu-game-head[aria-expanded="false"] .lu5-acc-state::before{content:'ひらく'}
+.lu-game-head[aria-expanded="true"] .lu5-acc-state::before{content:'とじる'}
+.lu-game-head[aria-expanded="true"] .lu5-acc-state{background:var(--lu-mint); color:var(--lu-ink)}
+
+/* ===== Lucian第6弾 (lu6-) : 棚の再々設計「店の什器で並べる」 =====
+   第5弾（Featured＋均等グリッド＋札）への「AIスロップ」却下を受け、UIの型ではなく
+   実在のダイナー什器の形の規則から起こす：
+   ・ゲーム＝アーケード筐体の列（上部マーキーに名前／画面はベゼルに沈む／筐体ごとに色と形が違う）
+   ・曲＝ジュークボックス選曲面（紙のタイトルストリップ＋コード）とレコードビン（ジャケット正面・盤が覗く）
+   ・サイト＝壁の掲示（額装フレーム／レターボードの差し込み文字の行）
+   ・回転パイケースの規則（実物を大きくそのまま見せ、名前は小さく添えるだけ）を全体の原則にする。
+   作品は同一カード形式にしない。色・書体は確定トークンのまま。 */
+/* --- 共通：什器の看板プレート（什器そのものの一部として1什器に1つだけ） --- */
+.lu6-plate{display:block; width:fit-content; margin:0 auto 11px; font-size:11px; font-weight:900; letter-spacing:.22em; text-indent:.22em; color:var(--lu-ink); background:var(--lu-chrome-grad); border-radius:999px; padding:4px 14px; box-shadow:0 2px 5px rgba(43,36,48,.25)}
+#storageView .lu6-fx .work{background:transparent; border:none; box-shadow:none; border-radius:0; padding:0; width:auto}
+#storageView .lu6-fx .work .wtag{display:none}
+/* --- 什器1：アーケード筐体の列 --- */
+.lu6-arcade{margin-bottom:30px}
+.lu6-cabs{display:grid; grid-template-columns:1fr 1fr; gap:14px 10px; align-items:end; position:relative; padding:2px 2px 12px}
+.lu6-cabs::after{content:''; position:absolute; left:-4px; right:-4px; bottom:0; height:10px; border-radius:3px; background:linear-gradient(180deg,#57485A,#33262E); box-shadow:inset 0 1.5px 0 rgba(201,210,217,.75), 0 3px 6px rgba(43,36,48,.25)}
+#storageView .lu6-fx .lu6-cab{position:relative; border-radius:12px 12px 5px 5px; padding:9px 9px 10px; display:flex; flex-direction:column; box-shadow:0 10px 14px -8px rgba(43,36,48,.5)}
+#storageView .lu6-fx .lu6-cab-usagori{grid-column:1 / -1; background:linear-gradient(165deg,#FF5CA2,#FF2E88 55%,#DE1270)}
+#storageView .lu6-fx .lu6-cab-yukagen{background:linear-gradient(165deg,#13A7A6,#0E9594 55%,#0A7372)}
+#storageView .lu6-fx .lu6-cab-ebikani{background:linear-gradient(165deg,#E84857,#D92B3A 55%,#B01E2D)}
+#storageView .lu6-fx .lu6-cab-kani{background:linear-gradient(165deg,#FFF1DC,#FFE3C2 60%,#F6D3A7)}
+#storageView .lu6-cab .wlink{display:flex; flex-direction:column}
+#storageView .lu6-cab .wttl{order:1; height:auto; min-height:0; overflow:visible; margin:0 0 8px; text-align:center; font-family:"Dela Gothic One",sans-serif; font-weight:400; font-size:12.5px; letter-spacing:.03em; line-height:1.3; color:var(--lu-ink); background:linear-gradient(180deg,#FFFBF2,#FFF1DC); border-radius:6px; padding:7px 22px 7px 6px; box-shadow:0 0 10px rgba(255,246,220,.5), inset 0 0 0 1.5px rgba(201,210,217,.85), inset 0 -2px 0 rgba(201,210,217,.5)}
+#storageView .lu6-cab-usagori .wttl{font-size:16px; padding:9px 24px 9px 8px}
+#storageView .lu6-cab .obj3d{order:2; background:#26232E; border-radius:6px; padding:7px; box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.09), inset 0 2px 9px rgba(0,0,0,.65)}
+#storageView .lu6-cab .obj3d .cover{border-radius:3px; background:none}
+#storageView .lu6-cab .obj3d .cover::after{content:''; position:absolute; inset:0; background:linear-gradient(112deg,transparent 52%,rgba(255,255,255,.15) 70%,transparent 86%); pointer-events:none}
+#storageView .lu6-cab .obj3d .cover img{border:none; outline:none; box-shadow:none; border-radius:3px; aspect-ratio:4/3}
+#storageView .lu6-cab-usagori .obj3d .cover img{aspect-ratio:16/9}
+#storageView .lu6-cab-kani .obj3d .cover img{filter:saturate(.82) brightness(.97)}
+#storageView .lu6-cab .wdate{order:3; min-height:0; margin-top:7px; text-align:center; color:rgba(255,246,236,.95); font-size:11.5px}
+#storageView .lu6-cab-kani .wdate{color:#8A6D4F}
+#storageView .lu6-cab .cheer{width:auto; align-self:center; margin-top:8px; background:rgba(255,250,252,.96)}
+.lu6-note{position:absolute; top:46px; right:-3px; z-index:7; transform:rotate(5deg); background:#FFF6EC; color:#33262E; font-size:10.5px; font-weight:900; letter-spacing:.08em; padding:5px 9px 6px; border-radius:1px; box-shadow:0 3px 7px rgba(43,36,48,.32)}
+.lu6-note::before{content:''; position:absolute; top:-7px; left:50%; transform:translateX(-50%) rotate(-2deg); width:34px; height:12px; background:rgba(255,217,232,.8); border-left:1px dashed rgba(43,36,48,.14); border-right:1px dashed rgba(43,36,48,.14)}
+/* --- 什器2：ジュークボックス選曲面＋レコードビン --- */
+.lu6-juke{margin-bottom:30px; border:2px solid transparent; border-radius:18px; background:linear-gradient(var(--lu-paper),var(--lu-paper)) padding-box, var(--lu-chrome-grad) border-box; padding:12px 12px 15px; box-shadow:0 6px 14px rgba(43,36,48,.10)}
+#storageView .lu6-strip{margin-bottom:16px}
+#storageView .lu6-strip:last-child{margin-bottom:2px}
+#storageView .lu6-strip .wlink{display:flex; flex-direction:column}
+#storageView .lu6-strip .wttl{order:1; height:auto; min-height:0; overflow:visible; margin:0; text-align:left; display:flex; align-items:center; gap:8px; font-size:13px; line-height:1.35; color:var(--lu-ink); background:linear-gradient(180deg,#FFFCF6,#FFF3E2); border-top:1.5px solid rgba(43,36,48,.55); border-bottom:1.5px solid rgba(43,36,48,.55); padding:6px 9px; box-shadow:0 1px 3px rgba(43,36,48,.12)}
+#storageView .lu6-strip .wttl::before{content:attr(data-code); flex:none; font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:12px; letter-spacing:.06em; color:var(--lu-cream); background:var(--lu-ink); border-radius:3px; padding:1.5px 6px}
+#storageView .lu6-strip .wttl::after{content:attr(data-kind); margin-left:8px; flex:none; font-size:10px; font-weight:900; letter-spacing:.1em; color:#675E6E}
+#storageView .lu6-strip-on .wttl{background:linear-gradient(180deg,#FFE9F3,#FFD9E8); border-top-color:rgba(199,0,86,.55); border-bottom-color:rgba(199,0,86,.55)}
+#storageView .lu6-strip-on .wttl::before{background:var(--lu-pink)}
+#storageView .lu6-strip .obj3d{order:2; width:66%; margin:14px auto 0; transform:rotate(-1.3deg); background:none; box-shadow:none}
+#storageView .lu6-strip-on .obj3d{width:82%; transform:rotate(.6deg)}
+#storageView .lu6-strip .o-cd .cover{background:rgba(255,255,255,.92); border:1.5px solid rgba(43,36,48,.2); padding:4px; border-radius:7px; box-shadow:0 10px 13px -8px rgba(43,36,48,.5)}
+#storageView .lu6-strip .o-cd .cover img{border:none; outline:none; box-shadow:none; border-radius:4px; aspect-ratio:4/3}
+#storageView .lu6-strip .disc{display:block}
+#storageView .lu6-strip-on .disc{top:-17%}
+#storageView .lu6-strip .wdate{display:none}
+#storageView .lu6-strip .cheer{margin-top:11px}
+/* --- 什器3：壁の掲示（額装＋レターボード） --- */
+.lu6-wall{margin-bottom:26px; position:relative; padding:16px 2px 2px}
+.lu6-wall::before{content:''; position:absolute; top:0; left:-4px; right:-4px; height:6px; border-radius:3px; background:var(--lu-chrome-grad); box-shadow:0 2px 4px rgba(43,36,48,.2)}
+#storageView .lu6-fx .lu6-frame{width:64%; margin-bottom:18px}
+#storageView .lu6-frame .wlink{display:flex; flex-direction:column; align-items:center}
+#storageView .lu6-frame .obj3d{order:1; width:100%; background:linear-gradient(150deg,#9C663D,#7C4F30 60%,#684325); padding:9px; border-radius:4px; box-shadow:0 10px 16px -8px rgba(43,36,48,.55)}
+#storageView .lu6-frame .obj3d .cover{background:var(--lu-cream); padding:7px; border-radius:1px}
+#storageView .lu6-frame .obj3d .cover img{border:none; outline:none; box-shadow:none; border-radius:1px; aspect-ratio:4/3}
+#storageView .lu6-frame .wttl{order:2; height:auto; min-height:0; overflow:visible; margin-top:9px; text-align:center; font-size:12px; line-height:1.35; color:var(--lu-ink); background:linear-gradient(180deg,#F3E3C2,#E8D3A8); border:1px solid rgba(124,79,48,.45); border-radius:3px; padding:4px 10px}
+#storageView .lu6-frame .wdate{order:3; min-height:0; margin-top:5px; text-align:center}
+#storageView .lu6-frame .cheer{margin-top:9px}
+#storageView .lu6-fx .lu6-board{width:100%}
+#storageView .lu6-board .wlink{display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:10px; background-color:#33262E; background-image:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 2px, transparent 2px 15px); border-radius:9px; padding:11px 12px; box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 8px 14px -8px rgba(43,36,48,.5)}
+#storageView .lu6-board .obj3d{flex:none; width:74px; background:none; box-shadow:none}
+#storageView .lu6-board .obj3d .cover{background:none; border-radius:3px}
+#storageView .lu6-board .obj3d .cover img{border:none; outline:none; box-shadow:none; border-radius:3px; aspect-ratio:4/3}
+#storageView .lu6-board .wttl{flex:1; min-width:110px; height:auto; min-height:0; overflow:visible; margin:0; text-align:left; color:var(--lu-cream); font-size:13.5px; letter-spacing:.13em; line-height:1.45}
+#storageView .lu6-board .wdate{min-height:0; margin:0 0 0 auto; padding-right:38px; color:var(--lu-pink-soft); font-size:12.5px}
+#storageView .lu6-board .cheer{margin-top:9px}
+
+/* ===== Lucian第7弾 (lu7-) : 操作の骨格をドック中心に =====
+   主経路は下部ドック：下段＝主要5行き先（配信/ゲーム/音楽/作品/応援）、
+   上段＝既存ドック（今夜の営業／今日のスタンプ）をそのまま真上に積む。
+   部屋・家具タップは副経路として維持。ドックは入店後のみ表示し、
+   パネル(z50)・スクリム(z40)・置き場(z26)より上、ライトボックス(z70)より下に置く */
+:root{ --lu7-main-h:64px; --lu7-gap:8px; --lu7-base:max(10px, env(safe-area-inset-bottom)); }
+/* --- 下段：メインドック --- */
+#lu7Dock{
+position:fixed; left:50%; bottom:var(--lu7-base); z-index:60;
+transform:translate(-50%,12px);
+display:flex; gap:2px; width:min(94vw,430px);
+background:linear-gradient(180deg,#FDFBFC,#F1E9ED);
+border:1.5px solid var(--lu-chrome); border-radius:20px;
+padding:6px; box-shadow:0 10px 28px rgba(43,36,48,.28), inset 0 1px 0 #fff;
+opacity:0; visibility:hidden; pointer-events:none;
+transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s linear .35s;
+}
+body.lu7-entered #lu7Dock{opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s}
+.lu7-item{
+flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+min-height:52px; padding:5px 0 4px; border:none; background:transparent; border-radius:14px;
+color:var(--lu-ink); cursor:pointer; position:relative;
+font-family:"Zen Maru Gothic",sans-serif;
+transition:transform var(--t-press) var(--ease-out), background .2s var(--lu-ease), color .2s var(--lu-ease);
+}
+.lu7-item:active{transform:scale(.94)}
+.lu7-item svg{width:23px; height:23px; flex:none}
+.lu7-lb{font-size:11px; font-weight:900; letter-spacing:.06em; line-height:1.1}
+.lu7-item.on{background:var(--lu-pink-soft); color:#C70056}
+.lu7-item.on::before{content:''; position:absolute; top:4px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:50%; background:var(--lu-pink)}
+.lu7-item:focus-visible{outline:2.5px solid #C70056; outline-offset:-2px}
+/* --- 上段：既存ドックを主ドックの真上へ移し、同じ出し入れに揃える --- */
+#dock{
+z-index:60;
+bottom:calc(var(--lu7-base) + var(--lu7-main-h) + var(--lu7-gap));
+opacity:0; visibility:hidden; pointer-events:none;
+transform:translate(-50%,12px);
+transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s linear .35s;
+}
+body.lu7-entered #dock{opacity:1; visibility:visible; pointer-events:auto; transform:translate(-50%,0); transition:opacity .35s var(--lu-ease), transform .35s var(--lu-ease), visibility 0s}
+#bonusBtn.lu7-on{background:var(--lu-pink); color:#fff; border-color:var(--lu-pink)}
+#bonusBtn.lu7-on .bonus-dot{background:#fff}
+/* --- パネル下端：ドック（上下段＋余白 ≒132px）に隠れない余白を確保 --- */
+.panel{padding-bottom:calc(22px + env(safe-area-inset-bottom) + 132px)}
+/* --- 背の低い画面では置き場ステージを少し上げ、ドックと下端の重なりを避ける --- */
+@media (max-height:740px){
+#storageStage{transform:translate(-50%,calc(-50% - 30px))}
+}
+@media (prefers-reduced-motion: reduce){
+#lu7Dock, #dock{transition:opacity .01s, visibility 0s}
+}
+
+/* ===== Lucian第8弾 (lu8-) : ドックを1段に統合し、バランスを取り直す =====
+   第7弾の2段構成（上段＝既存ドック＋下段＝メインドック、下部約132px占有）を廃し、
+   主要5項目＋スタンプの6項目をガラス質感の1段（高さ約60px）に統合する。
+   「今夜の営業」はドックから外し、部屋のヒーロー下に看板ピルとして戻す
+   （Mirrativ導線は配信パネル内に既存リンクがあるため、部屋文脈の看板に一本化）。
+   旧ドック #dock は畳むが、#bonusBtn は開閉経路としてDOMに残す */
+/* --- 旧ドック（2段目）を畳む --- */
+#dock{display:none !important}
+/* --- 統合ドック：半透明＋ぼかしのガラス質感、影と枠は最小限 --- */
+#lu7Dock{
+background:rgba(255,250,252,.72);
+-webkit-backdrop-filter:blur(14px) saturate(1.25);
+backdrop-filter:blur(14px) saturate(1.25);
+border:1px solid rgba(201,210,217,.55);
+border-radius:22px;
+padding:5px;
+box-shadow:0 6px 18px rgba(43,36,48,.13), inset 0 1px 0 rgba(255,255,255,.65);
+}
+.lu7-item{min-height:50px; border-radius:16px}
+.lu7-item svg{width:22px; height:22px}
+.lu7-lb{font-size:10.5px}
+/* --- パネル下端の余白は1段分に詰め直す（隠れ回避の余白自体は維持） --- */
+.panel{padding-bottom:calc(22px + env(safe-area-inset-bottom) + 78px)}
+/* --- 置き場ステージの持ち上げ（2段前提）は1段化で不要に戻す --- */
+@media (max-height:740px){
+#storageStage{transform:translate(-50%,-50%)}
+}
+/* --- 「今夜の営業」看板ピル：部屋の上（ステージ上の余白）に掛ける。
+   ステージ内はヒーロー下の帯が吹き出し・ラベルで埋まっているため、
+   部屋ビューの上部余白を「店の看板」位置として使う --- */
+#liveBtn{
+position:absolute; left:50%; top:max(12px, env(safe-area-inset-top)); transform:translateX(-50%); z-index:5;
+display:flex; align-items:center; gap:7px;
+font-size:13px; font-weight:800; letter-spacing:.03em; white-space:nowrap;
+border-radius:999px; padding:9px 16px; text-decoration:none;
+box-shadow:0 4px 12px rgba(255,46,136,.35);
+transition:transform var(--t-press) var(--ease-out);
+}
+#liveBtn:active{transform:translateX(-50%) scale(.95)}
+
 </style>
 </head>
 <body>
 
 <!-- 玄関 -->
 <div id="opening" role="button" aria-label="タップではじめる">
-<img src="assets/parts/mirrativ-emomo.webp" alt="">
-<div class="op-en">SAKIYA OFFICIAL ROOM</div>
+<img src="../assets/parts/mirrativ-emomo.webp" alt="">
+<div class="op-en">SAKIYA DINER</div>
+<div class="lu-op-open" aria-hidden="true">OPEN</div>
 <div class="op-name">八乙女さきや</div>
 <div class="op-tap">タップではじめる</div>
 </div>
 <div id="gate">
+<div class="lu-sign-row"><div class="g-sign">SAKIYA DINER</div><div class="lu-orbit" aria-hidden="true"><svg viewBox="0 0 100 100"><defs><path id="luOrbitPath" d="M50,50 m-37,0 a37,37 0 1,1 74,0 a37,37 0 1,1 -74,0"/></defs><text><textPath href="#luOrbitPath">SAKIYA DINER ★ OPEN ★ SAKIYA DINER ★ OPEN ★</textPath></text></svg><span class="lu-orbit-star">★</span></div></div>
 <h1 class="name">八乙女<b>さき<span class="p">や</span></b></h1>
 <div class="g-info">
 <div class="g-role">ミラティブ配信者</div>
-<div class="g-chips"><span>配信</span><span>ゲーム</span><span>AI音楽</span></div>
-<div class="g-live"><span class="dot"></span>毎晩22時から配信</div>
+<div class="g-live"><span class="dot"></span><span class="g-open">OPEN</span></div>
 </div>
-<button id="enterBtn" type="button">入る</button>
+<button id="enterBtn" type="button">お店に入る</button>
 </div>
 
 <!-- 部屋 -->
 <main id="room" aria-hidden="true">
+<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>今夜の営業 22:00〜</a>
 <div id="stage">
-<div class="room-name"><b>八乙女さきや</b> の部屋</div>
-
 <div id="hero" aria-label="ピックアップ">
 <div class="hero-frame" id="heroFrame">
 <div class="hero-view">
 <div class="hero-track" id="heroTrack">
 <a class="hero-slide" draggable="false" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="配信：Mirrativ">
-<img src="assets/parts/mirrativ-emomo.webp" alt="" draggable="false" loading="lazy" decoding="async">
+<img src="../assets/parts/mirrativ-emomo.webp" alt="" draggable="false" loading="lazy" decoding="async">
 <span class="hero-cap"><span class="tag pink">配信</span><span class="hero-ttl">Mirrativ 配信</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener" aria-label="ゲーム：うさぎ、ゴリラを殴る。3D">
-<img src="assets/parts/hero-usagori-real.webp" alt="" draggable="false">
+<img src="../assets/parts/hero-usagori-real.webp" alt="" draggable="false">
 <span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">うさぎ、ゴリラを殴る。3D</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener" aria-label="ゲーム：ちょうどいい湯かげん">
-<img src="assets/parts/hero-yukagen-real.webp" alt="" draggable="false" loading="lazy" decoding="async">
+<img src="../assets/parts/hero-yukagen-real.webp" alt="" draggable="false" loading="lazy" decoding="async">
 <span class="hero-cap"><span class="tag">ゲーム</span><span class="hero-ttl">ちょうどいい湯かげん</span></span>
 </a>
 <a class="hero-slide" draggable="false" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener" aria-label="曲・MV：そばにいて">
-<img src="assets/parts/hero-song-real.webp" alt="" draggable="false">
+<img src="../assets/parts/hero-song-real.webp" alt="" draggable="false">
 <span class="hero-cap"><span class="tag pink">曲・MV</span><span class="hero-ttl">そばにいて</span></span>
 </a>
 </div>
@@ -817,7 +1488,7 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="obj" id="obj-tv" type="button" data-panel="tv" aria-label="テレビ：配信と動画">
 <span class="ring"></span>
 <span class="bubble" id="tvBubble" aria-hidden="true"></span>
-<img src="assets/parts/tv.webp" alt="">
+<img src="diner-img/tv.webp" alt="">
 <span class="tv-screen" aria-hidden="true">
 <span class="tv-scene sc-a on"></span>
 <span class="tv-scene sc-b"></span>
@@ -829,24 +1500,24 @@ transition:transform var(--t-press) var(--ease-out);
 
 <button class="obj" id="obj-game" type="button" data-panel="game" aria-label="ゲーム機：ゲーム">
 <span class="ring"></span>
-<img src="assets/parts/console.webp" alt="">
+<img src="diner-img/console.webp" alt="">
 <span class="lamp" aria-hidden="true"></span>
 </button>
 
 <div id="plant" aria-hidden="true">
-<img src="assets/parts/plant.webp" alt="" loading="lazy" decoding="async">
+<img src="diner-img/plant.webp" alt="" loading="lazy" decoding="async">
 <span class="flower"><svg viewBox="0 0 40 40" width="100%" height="100%"><circle cx="20" cy="11" r="6.4" fill="#ff7eb6"/><circle cx="28.6" cy="17.2" r="6.4" fill="#ff7eb6"/><circle cx="25.3" cy="27.8" r="6.4" fill="#ff7eb6"/><circle cx="14.7" cy="27.8" r="6.4" fill="#ff7eb6"/><circle cx="11.4" cy="17.2" r="6.4" fill="#ff7eb6"/><circle cx="20" cy="19.5" r="4.4" fill="#ffcf4d"/></svg></span>
 </div>
 <button id="plantHit" type="button" aria-label="観葉植物"></button>
 
 <button class="obj" id="obj-desk" type="button" data-panel="desk" aria-label="机：制作机">
 <span class="ring"></span>
-<img src="assets/parts/desk.webp" alt="">
+<img src="diner-img/desk.webp" alt="">
 </button>
 
 <button class="obj" id="obj-speaker" type="button" data-panel="speaker" aria-label="スピーカー：曲">
 <span class="ring"></span>
-<img src="assets/parts/speaker.webp" alt="">
+<img src="diner-img/speaker.webp" alt="">
 <span class="notes" aria-hidden="true"><span>♪</span><span>♫</span></span>
 </button>
 
@@ -858,28 +1529,33 @@ transition:transform var(--t-press) var(--ease-out);
 <span class="bob" role="img" aria-label="八乙女さきや ミニキャラ"></span>
 </button>
 
-<button id="sunsun" type="button" aria-label="スンスン：押すと喋る">
-<span class="ring"></span>
-<img src="assets/parts/sunsun.webp" alt="ピンクのミニスンスン" loading="lazy" decoding="async">
-<span class="bubble" id="sunBubble" aria-hidden="true"></span>
-</button>
-
-<button class="obj" id="obj-door" type="button" aria-label="ドア：作品置き場へ">
+<button class="obj" id="obj-door" type="button" aria-label="棚：作品置き場へ">
 <span class="door-glow" aria-hidden="true"></span>
-<span class="door-leafwrap" aria-hidden="true"><img src="assets/parts/door.webp" alt=""><span class="door-glint">✦</span></span>
+<span class="door-floorlight" aria-hidden="true"></span>
+<span class="door-leafwrap" aria-hidden="true"><img src="diner-img/shelf.webp" alt=""><span class="door-glint">✦</span></span>
+<span class="lu-case" aria-hidden="true"></span><span class="lu-case-spot" aria-hidden="true"></span>
 </button>
 
 <button class="obj" id="obj-post" type="button" data-panel="post" aria-label="ポスト：応援メッセージ">
 <span class="ring"></span>
-<img src="assets/parts/post.webp" alt="" loading="lazy" decoding="async">
+<img src="diner-img/post.webp" alt="" loading="lazy" decoding="async">
 </button>
 <div id="tapmark" aria-hidden="true"></div>
 </div>
 </main>
 <div id="dock">
-<a id="liveBtn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" aria-label="Mirrativ配信：毎晩22時"><span class="live-dot" aria-hidden="true"></span>Mirrativ 毎晩22時</a>
-<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のボーナス</button>
+<button id="bonusBtn" type="button" data-panel="bonus" aria-label="今日のログインボーナス"><span class="bonus-dot" aria-hidden="true"></span>今日のスタンプ</button>
 </div>
+
+<!-- Lucian第7弾：メインドック（主要行き先へどこからでも1タップ） -->
+<nav id="lu7Dock" aria-label="メインメニュー">
+<button type="button" class="lu7-item" data-lu7-to="tv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M10.2 9.8l4.8 2.2-4.8 2.2z" fill="currentColor" stroke="none"/></svg><span class="lu7-lb">配信</span></button>
+<button type="button" class="lu7-item" data-lu7-to="game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="8" width="19" height="9.5" rx="4.75"/><path d="M8.2 10.8v4M6.2 12.8h4"/><circle cx="15.8" cy="11.6" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="14" r="1" fill="currentColor" stroke="none"/></svg><span class="lu7-lb">ゲーム</span></button>
+<button type="button" class="lu7-item" data-lu7-to="speaker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 18.2V6.8L19 5v10.8"/><circle cx="6.8" cy="18.2" r="2.7"/><circle cx="16.3" cy="15.8" r="2.7"/></svg><span class="lu7-lb">音楽</span></button>
+<button type="button" class="lu7-item" data-lu7-to="storage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9h17M3.5 17.5h17"/><path d="M6.5 9V5.8h3.4V9M14 17.5v-3.2h3.4v3.2"/></svg><span class="lu7-lb">作品</span></button>
+<button type="button" class="lu7-item" data-lu7-to="post"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.2S3.8 15.3 2.9 10.9C2.3 8 4.3 5.4 7.2 5.4c2 0 3.7 1.1 4.8 2.9 1.1-1.8 2.8-2.9 4.8-2.9 2.9 0 4.9 2.6 4.3 5.5-.9 4.4-9.1 9.3-9.1 9.3z"/></svg><span class="lu7-lb">応援</span></button>
+<button type="button" class="lu7-item" data-lu8-bonus aria-label="今日のログインボーナス"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.6l2.47 5.35 5.87.66-4.35 4.02 1.18 5.79L12 16.9l-5.17 2.52 1.18-5.79-4.35-4.02 5.87-.66z"/></svg><span class="lu7-lb">スタンプ</span></button>
+</nav>
 
 <!-- 作品置き場 -->
 <div id="storageView" aria-hidden="true">
@@ -888,7 +1564,7 @@ transition:transform var(--t-press) var(--ease-out);
 <div id="storageTabs" aria-label="カテゴリ"></div>
 <div id="shelves"></div>
 <button id="storageDoor" type="button" aria-label="部屋にもどる">
-<img src="assets/parts/door-front.webp" alt="">
+<img src="diner-img/door-front.webp" alt="">
 <span class="cap">部屋へもどる</span>
 </button>
 </div>
@@ -900,39 +1576,40 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-tv" aria-label="配信と動画">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">STREAM</div>
-<h2>テレビ ｜ <b>配信と動画</b></h2>
-<a class="card card-first" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
-<div class="face f-live">
-<img src="assets/parts/mirrativ-emomo-banner.webp" alt="八乙女さきやのエモモ（Mirrativ公式から取得・2026.11.23時点）" draggable="false" style="object-position:center top">
-<span class="play" aria-hidden="true"></span>
-</div>
-<div class="meta"><span class="tag pink">配信</span><span>Mirrativ｜八乙女さきや</span><span class="mirrativ-updated">2026.11.23</span><span class="go">会いにいく →</span></div>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">STREAM</div><div class="dn-jp">配信と動画</div><div class="dn-rule"></div></h2>
+<a class="dn-btn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ で会いにいく →</a>
+<a class="dn-card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
+<img class="dn-thumb" src="../assets/parts/mirrativ-emomo-banner.webp" alt="八乙女さきやのエモモ">
+<div class="dn-cbody"><div class="dn-cttl">Mirrativ｜八乙女さきや</div><div class="dn-csub">フォロワー 596人（2026.11.23時点）</div></div>
 </a>
-<div class="sched"><span class="sched-en">SCHEDULE</span><b>毎晩 22:00〜</b><span>連続配信 445日（2026.11.23時点）</span></div>
-<div class="pick-label">お知らせ</div>
-<ul class="news-list">
-<li><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」と「童話キャラ16タイプ診断」を公開しました</span></li>
-<li><time>2026.11.18</time><span>ゲーム「ちょうどいい湯かげん」を公開しました</span></li>
-</ul>
-<div class="pick-label">まず見て</div>
-<a class="card card-first" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
-<div class="face f-clip">
-<img src="assets/parts/tv-clip.webp" alt="配信切り抜きShorts「雪山にスーツで出張!?」のサムネイル" draggable="false">
-<span class="play" aria-hidden="true"></span>
+<div class="dn-sched">
+<div class="dn-top"><div class="dn-en">EVERY NIGHT</div><div class="dn-neon">MIRRATIV</div></div>
+<div class="dn-big">毎晩</div>
+<div class="dn-time">22:00〜<span class="dn-time-jst">（日本時間）</span></div>
+<div class="lu-count" id="luCount">
+<div class="lu-count-label" id="luCountLabel">今夜22:00（日本時間）まで</div>
+<div class="lu-flips" role="timer" aria-label="配信までのカウントダウン">
+<div class="lu-flip-col"><div class="lu-flip" data-lu-flip="h"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">HOURS</div></div>
+<span class="lu-flip-sep">:</span>
+<div class="lu-flip-col"><div class="lu-flip" data-lu-flip="m"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">MIN</div></div>
+<span class="lu-flip-sep">:</span>
+<div class="lu-flip-col"><div class="lu-flip" data-lu-flip="s"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">SEC</div></div>
 </div>
-<div class="meta"><span class="tag pink">切り抜き</span><span class="clip-ttl">雪山にスーツで出張!? ホラゲで働き方を心配し始めた</span><span class="go">見る →</span></div>
-</a>
-<a class="card" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">
-<div class="face f-yt">
-<svg width="30" height="30" viewBox="0 0 30 30"><path d="M11 8 L23 15 L11 22 Z" fill="#fff"/></svg>
-<span class="ttl">YouTube 動画</span>
 </div>
-<div class="meta"><span class="tag dark">動画</span><span>八乙女さきや</span><span class="go">ひらく →</span></div>
+<div class="dn-note">連続配信 445日（2026.11.23時点）｜雑談・ゲーム・歌</div>
+</div>
+<div class="dn-sec">お知らせ</div>
+<a class="dn-row" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」を公開しました</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener"><time>2026.11.23</time><span>診断「童話キャラ16タイプ診断」を公開しました</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><time>2026.11.18</time><span>ゲーム「ちょうどいい湯かげん」を公開しました</span></a>
+<div class="dn-sec">切り抜き</div>
+<a class="dn-card" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
+<img class="dn-thumb" src="../assets/parts/tv-clip.webp" alt="配信切り抜きShortsのサムネイル">
+<div class="dn-cbody"><div class="dn-cttl">雪山にスーツで出張!? ホラゲで働き方を心配し始めた</div><div class="dn-csub">YouTube 切り抜きShorts</div></div>
 </a>
-<div class="meet-cta">
-<div class="meet-txt">今夜22時、配信で会おう</div>
-<a class="meet-btn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ で会う →</a>
+<a class="dn-row" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener"><time>動画</time><span>YouTube チャンネル「八乙女さきや【公式】」をひらく →</span></a>
+<div class="dn-checker"></div>
 </div>
 </section>
 
@@ -940,69 +1617,78 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-game" aria-label="ゲーム">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">GAMES</div>
-<h2>ゲーム機 ｜ <b>あそぶ</b></h2>
-<a class="card imgcard" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">
-<div class="face f-usagori"><img class="cardimg" src="assets/parts/card-usagori.webp" alt="" draggable="false" loading="lazy">
-<svg width="34" height="34" viewBox="0 0 34 34"><circle cx="13" cy="20" r="6" fill="#fff"/><path d="M10 15 q-2-7 1-9 q3 1 2 7 M16 15 q1-7 4-7 q2 2-1 8" fill="#fff"/></svg>
-<span class="ttl">うさぎ、ゴリラを殴る。3D</span>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">GAMES</div><div class="dn-jp">あそぶ</div><div class="dn-rule"></div></h2>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail1">
+<img class="dn-thumb" src="../assets/parts/card-usagori.webp" alt="">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">うさぎ、ゴリラを殴る。3D</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">巨大ゴリラと75秒ボス戦</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail" id="luGameDetail1"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">巨大ゴリラと75秒ボス戦</div>
+<div class="lu-game-date">公開日：2026.11.23</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
 </div>
-<div class="meta"><span class="tag">ゲーム</span><span>巨大ゴリラと75秒ボス戦</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
-</a>
-<a class="card imgcard" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">
-<div class="face f-yu"><img class="cardimg" src="assets/parts/card-yukagen.webp" alt="" draggable="false" loading="lazy">
-<svg width="34" height="34" viewBox="0 0 34 34"><path d="M4 24 q5-4 10 0 t10 0 t6 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 16 q2-5 5-5 M19 13 q3-3 6-1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"/></svg>
-<span class="ttl">ちょうどいい湯かげん</span>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail2">
+<img class="dn-thumb" src="../assets/parts/card-fairytale.webp" alt="">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">童話キャラ16タイプ診断</span><span class="dn-num">2026.11.23</span></span><span class="dn-csub">20問でわかる童話診断</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail" id="luGameDetail2"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">20問でわかる童話診断</div>
+<div class="lu-game-date">公開日：2026.11.23</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
 </div>
-<div class="meta"><span class="tag">ゲーム</span><span>お湯の温度を合わせる</span><span class="go">あそぶ →</span></div>
-</a>
-<a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
-<div class="face f-kani"><img class="cardimg" src="assets/parts/card-kani.webp" alt="" draggable="false" loading="lazy">
-<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
-<span class="ttl">カニ飛ばし</span>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail3">
+<img class="dn-thumb" src="../assets/parts/card-yukagen.webp" alt="">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">ちょうどいい湯かげん</span><span class="dn-num">2026.11.18</span></span><span class="dn-csub">お湯の温度を合わせる</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail" id="luGameDetail3"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">お湯の温度を合わせる</div>
+<div class="lu-game-date">公開日：2026.11.18</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
 </div>
-<div class="meta"><span class="tag">ゲーム</span><span>カニをぶっ飛ばす</span><span class="go">あそぶ →</span></div>
-</a>
-<a class="card imgcard" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">
-<div class="face f-ebi"><img class="cardimg" src="assets/parts/work-ebi.webp" alt="" draggable="false" loading="lazy">
-<svg width="34" height="34" viewBox="0 0 34 34"><text x="17" y="25" font-size="21" font-weight="800" fill="#fff" text-anchor="middle">?</text></svg>
-<span class="ttl">EBI KANI?</span>
+<div class="dn-card lu-game">
+<button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail4">
+<img class="dn-thumb" src="../assets/parts/work-ebi.webp" alt="">
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">EBI KANI?</span></span><span class="dn-csub">写真でエビかカニかを判定する裁判ゲーム</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+</button>
+<div class="lu-game-detail" id="luGameDetail4"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
+<div class="lu-game-desc">写真でエビかカニかを判定する裁判ゲーム</div>
+<a class="lu-game-play" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">あそぶ →</a>
+</div></div></div>
 </div>
-<div class="meta"><span class="tag">ゲーム</span><span>エビかカニか</span><span class="go">あそぶ →</span></div>
-</a>
-<a class="card imgcard" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener">
-<div class="face f-fairy"><img class="cardimg" src="assets/parts/card-fairytale.webp" alt="" draggable="false" loading="lazy">
-<svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 4 l2.5 7.5 L27 14 l-7.5 2.5 L17 24 l-2.5-7.5 L7 14 l7.5-2.5 Z" fill="#fff"/></svg>
-<span class="ttl">童話キャラ16タイプ診断</span>
+<div class="dn-checker"></div>
 </div>
-<div class="meta"><span class="tag">診断</span><span>20問でわかる童話診断</span><span class="date">2026.11.23</span><span class="go">あそぶ →</span></div>
-</a>
 </section>
 
 <!-- スピーカー：曲の面を先頭に -->
 <section class="panel" id="panel-speaker" aria-label="曲">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">MUSIC</div>
-<h2>スピーカー ｜ <b>きく</b></h2>
-<a class="card" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">
-<div class="face f-song" style="height:128px">
-<svg width="34" height="34" viewBox="0 0 34 34"><path d="M13 26 V10 l14-3 v15" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="9.5" cy="26" r="4" fill="#fff"/><circle cx="23.5" cy="22" r="4" fill="#fff"/></svg>
-<span class="ttl">そばにいて</span>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">MUSIC</div><div class="dn-jp">きく</div><div class="dn-rule"></div></h2>
+<div class="dn-card">
+<div class="lu-player" id="luPlayer">
+<div class="lu-sleeve"><img src="../assets/parts/hero-song-real.webp" alt=""></div>
+<div class="lu-disc" aria-hidden="true"><div class="lu-disc-rotor"></div></div>
+<button type="button" class="lu-play" id="luPlayBtn" aria-pressed="false">▶ レコードを回す</button>
 </div>
-<div class="meta"><span class="tag pink">曲・MV</span><span>ミュージックビデオ</span><span class="go">聴く →</span></div>
-</a>
-<a class="card" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener">
-<div class="face f-ai">
-<svg width="34" height="34" viewBox="0 0 34 34"><path d="M13 26 V10 l14-3 v15" stroke="#fff" stroke-width="2.6" fill="none" stroke-linejoin="round"/><circle cx="9.5" cy="26" r="4" fill="#fff"/><circle cx="23.5" cy="22" r="4" fill="#fff"/></svg>
-<span class="ttl">空っぽの愛</span>
+<div class="dn-cbody"><span class="dn-badge">NEW</span><div class="dn-cttl">そばにいて</div><div class="dn-csub">最新の歌ってみた／AIソング（MV）</div><a class="lu-ytlink" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener">YouTubeで聴く →</a></div>
 </div>
-<div class="meta"><span class="tag pink">曲</span><span>HYSTERIC ZOMBIES</span><span class="go">聴く →</span></div>
-</a>
-<div class="reqcard">
-<div class="r-ttl">歌リクエスト</div>
-<div class="r-note">配信で歌ってほしい曲は、この文をコピーして配信のコメントに貼ってね。</div>
-<button type="button" id="reqCopy">リクエスト文をコピー</button><span class="r-done" id="reqDone"></span>
+<div class="dn-sec">ジュークボックス</div>
+<a class="dn-row" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="dn-idx">A2</span><span>空っぽの愛</span><span class="dn-num">AI SONG</span></a>
+<div class="dn-sec">歌リクエスト</div>
+<div class="dn-card"><div class="dn-cbody">
+<div class="dn-csub" style="margin-bottom:10px">配信で歌ってほしい曲は、この文をコピーして配信のコメントに貼ってね。</div>
+<button type="button" id="reqCopy" class="dn-btn" style="width:100%;border:none;cursor:pointer;margin:0"><span class="lu-copy-label">リクエスト文をコピー</span><span class="lu-copy-check" aria-hidden="true">✓</span></button>
+<div class="dn-csub" id="reqDone" style="margin-top:8px;color:var(--dn-pink-deep);font-weight:700"></div>
+</div></div>
+<div class="dn-checker"></div>
 </div>
 </section>
 
@@ -1010,134 +1696,126 @@ transition:transform var(--t-press) var(--ease-out);
 <section class="panel" id="panel-desk" aria-label="制作机">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">STUDIO</div>
-<h2>机 ｜ <b>制作机</b></h2>
-<div class="desk-sec">いま作ってるもの</div>
-<a class="card imgcard" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
-<div class="face f-kani"><img class="cardimg" src="assets/parts/card-kani.webp" alt="" draggable="false" loading="lazy">
-<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>
-<span class="ttl">カニ飛ばし</span>
-</div>
-<div class="meta"><span class="tag pink">制作中</span><span>カニをぶっ飛ばすゲーム</span><span class="go">あそぶ →</span></div>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">STUDIO</div><div class="dn-jp">制作机</div><div class="dn-rule"></div></h2>
+<div class="dn-sec">仕込み中</div>
+<a class="dn-card" href="https://sakiyayoi.github.io/sakiya-crab-flight-play/" target="_blank" rel="noopener">
+<img class="dn-thumb" src="../assets/parts/card-kani.webp" alt="">
+<div class="dn-cbody"><span class="dn-badge mint">仕込み中</span><div class="dn-cttl">カニ飛ばし</div><div class="dn-csub">カニをぶっ飛ばすゲーム</div></div>
 </a>
-<div class="desk-sec next">作ったもの</div>
-<a class="mini-link" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>うさぎ、ゴリラを殴る。3D<span class="go">→</span></a>
-<a class="mini-link" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>ちょうどいい湯かげん<span class="go">→</span></a>
-<a class="mini-link" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener"><span class="tag">ゲーム</span>EBI KANI?<span class="go">→</span></a>
-<a class="mini-link" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener"><span class="tag">診断</span>童話キャラ16タイプ診断<span class="go">→</span></a>
-<a class="mini-link" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener"><span class="tag pink">曲</span>そばにいて（MV）<span class="go">→</span></a>
-<a class="mini-link" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="tag pink">曲</span>空っぽの愛<span class="go">→</span></a>
+<div class="lu-flow" id="luFlow">
+<div class="lu-flow-cap">カニ飛ばし｜制作工程</div>
+<div class="lu-flow-track">
+<div class="lu-flow-line"><div class="lu-flow-fill" style="width:33.3%"></div></div>
+<div class="lu-step lit"><span class="lu-step-dot"></span><span class="lu-step-name">企画</span></div>
+<div class="lu-step lit now"><span class="lu-step-dot"></span><span class="lu-step-name">試作</span></div>
+<div class="lu-step"><span class="lu-step-dot"></span><span class="lu-step-name">調整</span></div>
+<div class="lu-step"><span class="lu-step-dot"></span><span class="lu-step-name">公開</span></div>
+</div>
+<div class="lu-flow-note">カニ飛ばしはいま「試作」の段階（仕込み中）。</div>
+</div>
+<div class="dn-sec">仕込みメモ（作ったもの）</div>
+<a class="dn-row" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><span class="dn-tag">ゲーム</span><span>うさぎ、ゴリラを殴る。3D</span><span class="dn-num">→</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><span class="dn-tag">ゲーム</span><span>ちょうどいい湯かげん</span><span class="dn-num">→</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener"><span class="dn-tag">ゲーム</span><span>EBI KANI?</span><span class="dn-num">→</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener"><span class="dn-tag">診断</span><span>童話キャラ16タイプ診断</span><span class="dn-num">→</span></a>
+<a class="dn-row" href="https://youtube.com/watch?v=i6zgNb9RhZI" target="_blank" rel="noopener"><span class="dn-tag pink">曲</span><span>そばにいて（MV）</span><span class="dn-num">→</span></a>
+<a class="dn-row" href="https://youtube.com/watch?v=ABf9efnTBhI" target="_blank" rel="noopener"><span class="dn-tag pink">曲</span><span>空っぽの愛</span><span class="dn-num">→</span></a>
+<div class="dn-checker"></div>
+</div>
 </section>
 
 <!-- ミニキャラ：プロフィール（配信者カード／事実のみ） -->
 <section class="panel" id="panel-profile" aria-label="プロフィール">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">PROFILE</div>
-<h2>さきや ｜ <b>プロフィール</b></h2>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">PROFILE</div><div class="dn-jp">プロフィール</div><div class="dn-rule"></div></h2>
 <div class="prof-head">
-<div class="thumb"><img src="assets/parts/chara.webp" alt="八乙女さきや ミニキャラ" loading="lazy" decoding="async"></div>
+<div class="thumb"><img src="../assets/parts/chara.webp" alt="八乙女さきや ミニキャラ"></div>
 <div>
 <div class="prof-name">八乙女<span>さきや</span></div>
 <div class="prof-yomi">やおとめ さきや</div>
 <div class="live-badge"><span class="dot"></span>Mirrativ 毎晩22時から配信</div>
 </div>
 </div>
-<p class="prof-intro">ミラティブ配信者。ゲーム・曲・動画を全部ひとりで作って、配信と投稿をしている。</p>
-<div class="likes">
-<div class="ttl">合言葉・FM</div>
-<div class="chips">
-<span class="chip">合言葉：やにかすおとめ</span>
-<span class="chip purple">FM：🩷🌈💜</span>
+<div class="lu-stats">
+<div class="lu-stat"><div class="lu-stat-n" data-lu-count="445">0</div><div class="lu-stat-l">連続配信（日）</div></div>
+<div class="lu-stat"><div class="lu-stat-n" data-lu-count="596">0</div><div class="lu-stat-l">フォロワー</div></div>
+<div class="lu-stat"><div class="lu-stat-n" data-lu-count="6">0</div><div class="lu-stat-l">公開作品（ゲーム・曲）</div></div>
 </div>
+<p class="lu-stats-note">連続配信・フォロワーは2026.11.23時点の数字。公開作品はこのサイトに載っているゲーム4＋曲2を数えたもの。</p>
+<p style="font-size:14px;margin-bottom:var(--dn-s3)">騒がしいかと思えば、しっかりお話も聞いている変なお兄さん。<br>よく叫びよく笑う！みんなで一緒に何でも楽しみたい！</p>
+<a class="dn-row" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener"><span class="dn-tag pink">活動</span><span>Mirrativ（毎晩22時）／ YouTube ／ X</span></a>
+<div class="dn-row"><span class="dn-tag">合言葉</span><span>やにかすおとめ</span></div>
+<div class="dn-row"><span class="dn-tag">FM</span><span>🩷🌈💜</span></div>
+<div class="dn-sec">とくいなこと</div>
+<div class="chips"><span class="chip">声と喋り</span><span class="chip purple">場をまとめる</span><span class="chip purple">目標を立てて分解する</span><span class="chip purple">相手の気持ちに立つ</span><span class="chip purple">組織を回す</span><span class="chip purple">療育の知識</span></div>
+<div class="dn-sec">すきなもの</div>
+<div class="chips"><span class="chip">うたうこと</span><span class="chip">おしゃべり</span><span class="chip">みんなとあそぶこと</span></div>
+<div style="display:flex;gap:8px;margin-top:var(--dn-s4)">
+<a class="dn-btn" style="flex:1;margin:0" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ ↗</a>
+<a class="dn-btn" style="flex:1;margin:0;background:var(--dn-ink)" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube ↗</a>
 </div>
-<div class="chips">
-<span class="chip purple">天使と悪魔の少年・女装男子</span>
+<button class="dn-btn" id="profWorks" type="button" style="width:100%;background:#fff;color:var(--dn-ink);border:1.5px solid var(--dn-line);cursor:pointer">作品置き場へ（ゲーム・曲・記念サイト）→</button>
+<div class="dn-checker"></div>
 </div>
-<div class="likes">
-<div class="ttl">配信でやってること</div>
-<div class="chips">
-<span class="chip">歌</span>
-<span class="chip purple">ゲーム</span>
-<span class="chip purple">雑談</span>
-</div>
-</div>
-<div class="likes">
-<div class="ttl">実績</div>
-<div class="chips">
-<span class="chip badge">イケボ🌈 1位</span>
-<span class="chip badge">スタークラスB 達成</span>
-<span class="chip badge">週デビュー 1位</span>
-<span class="chip badge">月デビュー 1位</span>
-<span class="chip badge">ロイヤル候補生 申請中</span>
-</div>
-</div>
-<div class="likes">
-<div class="ttl">とくいなこと</div>
-<div class="chips">
-<span class="chip">声と喋り</span>
-<span class="chip purple">場をまとめる</span>
-<span class="chip purple">目標を立てて分解する</span>
-<span class="chip purple">相手の気持ちに立つ</span>
-<span class="chip purple">組織を回す</span>
-<span class="chip purple">療育の知識</span>
-</div>
-</div>
-<div class="likes">
-<div class="ttl">すきなもの</div>
-<div class="chips">
-<span class="chip">ミルクティー（いちばん好き）</span>
-<span class="chip purple">ラーメン</span>
-<span class="chip purple">カツ丼</span>
-<span class="chip purple">寿司</span>
-</div>
-</div>
-<div class="prof-links">
-<a class="pl-live" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ ↗</a>
-<a class="pl-yt" href="https://www.youtube.com/@yaotome_sakiya" target="_blank" rel="noopener">YouTube ↗</a>
-</div>
-<button class="prof-works" id="profWorks" type="button">作品置き場へ（ゲーム・曲・記念サイト）<span class="go">→</span></button>
 </section>
 
 <!-- ポスト：応援メッセージ（投稿は部屋APIへ直接送信し未承認で保存／表示は承認済みのみ） -->
 <section class="panel" id="panel-post" aria-label="応援メッセージ">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">MESSAGE</div>
-<h2>ポスト ｜ <b>応援メッセージ</b></h2>
-<p class="note">送ってくれたメッセージは、内容を確認してからここに飾られます。すぐには表示されません。</p>
-<div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">GUEST BOOK</div><div class="dn-jp">お客さまノート</div><div class="dn-rule"></div></h2>
+<p style="font-size:13px;color:var(--dn-sub);margin-bottom:var(--dn-s3)">送ってくれたメッセージは、内容を確認してから壁に貼られます。すぐには表示されません。</p>
 <form class="msg-form" id="msgForm">
-<input type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off">
-<textarea id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ"></textarea>
-<button class="msg-send" id="msgSubmit" type="submit">メッセージを送る</button>
+<input class="dn-input" type="text" id="msgName" maxlength="30" placeholder="お名前（任意）" autocomplete="off" aria-label="お名前">
+<textarea class="dn-input" id="msgText" maxlength="500" rows="4" placeholder="応援メッセージをどうぞ" aria-label="応援メッセージ"></textarea>
+<button class="dn-btn lu-send" id="msgSubmit" type="submit" style="width:100%;border:none;cursor:pointer"><span class="lu-ico lu-ico-plane" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M21 3L10.2 13.8M21 3l-6.8 18-3.4-7.2L3.6 10.4L21 3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></span><span class="lu-ico lu-ico-spin" aria-hidden="true"><span class="lu-ring"></span></span><span class="lu-ico lu-ico-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.5 12.5l5 5L19.5 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lu-send-label">壁に貼る（送る）</span></button>
 <p class="msg-status" id="msgStatus" role="status"></p>
 </form>
+<div class="msg-list" id="msgList"><p class="msg-empty">まだメッセージはありません。最初の一通を送ってみてね。</p></div>
+
+</div>
 </section>
 
 <!-- ログインボーナス：毎日触れる日替わり報酬（端末に記録） -->
 <section class="panel" id="panel-bonus" aria-label="今日のボーナス">
 <div class="grab"></div>
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
-<div class="p-en">DAILY</div>
-<h2>今日のボーナス ｜ <b>まいにち特典</b></h2>
+<div class="dn-root">
+<h2 class="dn-head"><div class="dn-en">DAILY</div><div class="dn-jp">今日のボーナス</div><div class="dn-rule"></div></h2>
 <p class="note" id="bonusToday">今日の日付を確認中…</p>
 <div class="bonus-stats">
 <div class="bonus-stat"><div class="n" id="bonusStreak">0</div><div class="l">連続日数</div></div>
 <div class="bonus-stat"><div class="n" id="bonusPoints">0</div><div class="l">応援ポイント</div></div>
 <div class="bonus-stat"><div class="n" id="bonusTotal">0</div><div class="l">通算受取</div></div>
 </div>
+<div class="lu-bonus-prog">
+<div class="lu-flame-row"><span class="lu-flame" id="luFlame" aria-hidden="true">🔥</span><span class="lu-flame-txt" id="luFlameTxt">連続 0 日</span></div>
+<div class="lu-xp-head"><span>次の称号まで</span><span id="luXpTxt">あと 100 pt</span></div>
+<div class="lu-xp"><div class="lu-xp-fill" id="luXpFill"></div></div>
+</div>
 <div class="desk-sec">直近7日間のスタンプ</div>
 <div class="bonus-stamps" id="bonusStamps"></div>
 <button class="bonus-claim" id="bonusClaim" type="button">ボーナスを受け取る</button>
 <div class="bonus-reward" id="bonusReward" role="status"></div>
 <div class="fortune">
-<div class="desk-sec">今日の運勢（1日1回）</div>
+<div class="desk-sec">本日のラッキーメニュー（今日の運勢・1日1回）</div>
+<div class="lu-scratch" id="luScratch">
+<div class="lu-scratch-under">
+<div class="f-res" id="fortuneRes">？？？</div>
+<div class="f-line" id="fortuneLine">運勢を引くと、結果はこの下に隠れるよ</div>
+</div>
+<canvas id="luScratchCanvas" aria-label="運勢スクラッチ。ドラッグでこすってめくります"></canvas>
+<div class="lu-scratch-hint" id="luScratchHint">まず「運勢をひく」を押してね</div>
+</div>
 <button type="button" id="fortuneBtn">運勢をひく</button>
-<div class="f-res" id="fortuneRes"></div>
-<div class="f-line" id="fortuneLine"></div>
+<button type="button" id="luScratchReveal" hidden>こすれない時は、タップでめくる</button>
 </div>
 <p class="bonus-next">毎日0時に切り替わります。7日連続で特別報酬、ポイントは100ごとに称号が上がります。この端末にだけ記録されます。</p>
+</div>
 </section>
 
 <script>
@@ -1169,7 +1847,7 @@ room.setAttribute('aria-hidden','false');
 // 入室直後：物が順に1回ずつ光って「触れる」ことを示す
 // 入口（?from=）がある時は、その対象をツアーの先頭にする（最初に光る物＝入口の物）
 var t = highlightTarget();
-var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','sunsun','obj-post','obj-door'];
+var tour = ['obj-tv','obj-game','obj-desk','obj-speaker','chara','obj-post','obj-door'];
 var fromParam = new URLSearchParams(location.search).get('from');
 if (fromParam){
 tour = [t.id].concat(tour.filter(function(id){ return id !== t.id;}));
@@ -1180,21 +1858,16 @@ var el = document.getElementById(id);
 var at = 800 + i * 430;
 setTimeout(function(){ el.classList.add('tour');}, at);
 setTimeout(function(){ el.classList.remove('tour');}, at + 1100);
-// ツアーの案内：テレビでは「まず声と笑い」、スンスンでは声が出ることに触れる
+// ツアーの案内：テレビでは「まず声と笑い」と出す
 if (id === 'obj-tv'){
 setTimeout(function(){ bubbleShow(tvBubble, 'まずはここから。声と笑い');}, at);
 setTimeout(function(){ tvBubble.classList.remove('show');}, at + 2100);
-}
-if (id === 'sunsun'){
-setTimeout(function(){ bubbleShow(sunBubble, 'おすと声がでる');}, at);
-setTimeout(function(){ sunBubble.classList.remove('show');}, at + 1600);
 }
 });
 var start = 800 + tour.length * 430 + 300;
 setTimeout(function(){ t.classList.add('highlight');}, start);
 setTimeout(function(){ t.classList.remove('highlight');}, start + 3600);
 startChara();
-scheduleSunIdle();
 }
 
 var pushedCount = 0;
@@ -1243,11 +1916,12 @@ closePanels(false);
 var heroTrack = document.getElementById('heroTrack');
 var heroFrame = document.getElementById('heroFrame');
 var heroDots = document.querySelectorAll('#heroDots button');
-var HERO_N = 3;
+var HERO_N = heroTrack.children.length;
 var heroIdx = 0;
 function heroGo(i){
 heroIdx = ((i % HERO_N) + HERO_N) % HERO_N;
 heroTrack.style.transform = 'translateX(' + (-heroIdx * 100) + '%)';
+heroTrack.style.setProperty('--lu-hero-x', (-heroIdx * 100) + '%');
 heroDots.forEach(function(d, j){ d.classList.toggle('on', j === heroIdx);});
 }
 document.getElementById('heroPrev').addEventListener('click', function(){ heroGo(heroIdx - 1);});
@@ -1259,11 +1933,13 @@ heroFrame.addEventListener('dragstart', function(e){ e.preventDefault();});
 heroFrame.addEventListener('pointerdown', function(e){
 if (e.target.closest('.hero-arrow')) return; // 矢印は通常のクリックに任せる
 dragX = e.clientX; dragMoved = false;
+heroTrack.classList.add('lu-drag');
 // ※ setPointerCapture は使わない：捕捉すると click の宛先がフレームに変わり、スライドのリンクが開かなくなる
 });
 window.addEventListener('pointermove', function(e){
 if (dragX === null) return;
 if (Math.abs(e.clientX - dragX) > 10) dragMoved = true;
+if (dragMoved) heroTrack.style.setProperty('--lu-hero-x', 'calc(' + (-heroIdx * 100) + '% + ' + (e.clientX - dragX) + 'px)');
 });
 window.addEventListener('pointerup', function(e){
 if (dragX === null) return;
@@ -1271,9 +1947,11 @@ var dx = e.clientX - dragX;
 dragX = null;
 if (dx <= -42) heroGo(heroIdx + 1);
 else if (dx >= 42) heroGo(heroIdx - 1);
+else heroGo(heroIdx);
+heroTrack.classList.remove('lu-drag');
 if (dragMoved) suppressUntil = Date.now() + 400; // 直後のクリックだけ止める（フレーム外で起きたクリックに残留させない）
 });
-window.addEventListener('pointercancel', function(){ dragX = null; dragMoved = false;});
+window.addEventListener('pointercancel', function(){ dragX = null; dragMoved = false; heroTrack.classList.remove('lu-drag'); heroGo(heroIdx);});
 heroFrame.addEventListener('click', function(e){
 if (Date.now() < suppressUntil){ e.preventDefault(); e.stopPropagation(); suppressUntil = 0;}
 }, true);
@@ -1290,16 +1968,16 @@ var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /* スプライトシート定義（n=フレーム数、ar=セル縦横比） */
 var SHEETS = {
-walk:{src:'assets/parts/chara-walk.webp', n:4, ar:'356/560'},
-back:{src:'assets/parts/chara-back.webp', n:4, ar:'356/560'},
-front:{src:'assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
-idle:{src:'assets/parts/chara-idle.webp', n:2, ar:'356/560'},
-wave:{src:'assets/parts/chara-wave.webp', n:2, ar:'356/560'},
-stretch:{src:'assets/parts/chara-stretch.webp', n:2, ar:'356/560'},
-sitgame:{src:'assets/parts/chara-sit-game.webp', n:2, ar:'520/520', w:19},
-sittv:{src:'assets/parts/chara-sit-tv.webp', n:2, ar:'520/520', w:19},
-sitdesk:{src:'assets/parts/chara-sit-desk.webp', n:2, ar:'520/520', w:19},
-sitrelax:{src:'assets/parts/chara-sitrelax.webp', n:2, ar:'520/520', w:19}
+walk:{src:'../assets/parts/chara-walk.webp', n:4, ar:'356/560'},
+back:{src:'../assets/parts/chara-back.webp', n:4, ar:'356/560'},
+front:{src:'../assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
+idle:{src:'../assets/parts/chara-idle.webp', n:2, ar:'356/560'},
+wave:{src:'../assets/parts/chara-wave.webp', n:2, ar:'356/560'},
+stretch:{src:'../assets/parts/chara-stretch.webp', n:2, ar:'356/560'},
+sitgame:{src:'../assets/parts/chara-sit-game.webp', n:2, ar:'520/520', w:19},
+sittv:{src:'../assets/parts/chara-sit-tv.webp', n:2, ar:'520/520', w:19},
+sitdesk:{src:'../assets/parts/chara-sit-desk.webp', n:2, ar:'520/520', w:19},
+sitrelax:{src:'../assets/parts/chara-sitrelax.webp', n:2, ar:'520/520', w:19}
 };
 Object.keys(SHEETS).forEach(function(k){ var im = new Image(); im.src = SHEETS[k].src;});
 var curSheet = null, curFrame = -1;
@@ -1406,13 +2084,13 @@ goIdle(ts, 1200, 2600);
 }
 /* レア出現：イケボ（訪問中1回まで） */
 var ikeboAudio = null;
-window.IKEBO = {played:false, src:'assets/voice/ikebo.mp3'};
+window.IKEBO = {played:false, src:'../assets/voice/ikebo.mp3'};
 function startIkebo(ts){
 C.state = 'ikebo'; C.ikeboDone = true; C.flip = 1; C.dash = false;
 setSheet('wave'); setFrame(1);
 charaEl.classList.add('ikebo');
 if (ikeboAudio){ ikeboAudio.pause();}
-ikeboAudio = new Audio('assets/voice/ikebo.mp3');
+ikeboAudio = new Audio('../assets/voice/ikebo.mp3');
 window.IKEBO.played = true;
 var p = ikeboAudio.play();
 if (p && p.catch) p.catch(function(){});
@@ -1600,9 +2278,8 @@ if (k === 'day') return 'こんにちは';
 return 'こんばんは';
 }
 
-/* ---------- 吹き出し：短い一言だけ。キャラはタップ時＋活動の節目（間引きあり）、スンスンは声と同時のみ ---------- */
+/* ---------- 吹き出し：短い一言だけ。キャラはタップ時＋活動の節目（間引きあり） ---------- */
 var charaBubble = document.getElementById('charaBubble');
-var sunBubble = document.getElementById('sunBubble');
 var charaBubbleTimer = 0, lastCharaSay = 0;
 var ACT_LINES = {game:'ゲームしてる', tv:'テレビ見てる', music:'曲きいてる', desk:'つくってる', sitrelax:'ひとやすみ'};
 function bubbleShow(el, text){
@@ -1620,9 +2297,6 @@ bubbleShow(charaBubble, text);
 clearTimeout(charaBubbleTimer);
 charaBubbleTimer = setTimeout(function(){ charaBubble.classList.remove('show');}, 2500);
 }
-function sunSay(text){ bubbleShow(sunBubble, text);}
-function sunHush(){ sunBubble.classList.remove('show');}
-
 /* ---------- 遊び：床の素の部分をタップすると、キャラがそこまで歩く ---------- */
 var tapmarkEl = document.getElementById('tapmark');
 var charaOpenTimer = 0;
@@ -1661,7 +2335,7 @@ if (!scrim.classList.contains('on') && !storageOpen) openPanel('profile');
    ゾーンで解決する。ゾーンは各オブジェクトの見た目の矩形（live rect）を少し広げた範囲で、
    最小44px相当を確保する。ドアだけは箱ではなく、透視で描かれた四角形そのもので判定する。
    ゾーン外のタップは従来どおり、下の背景ハンドラ（床＝歩行／壁＝ヒント）へ流す。
-   優先順位（手前→奥）：キャラ／スピーカー／スンスン／ポスト／ドア／ゲーム機／植物／机／テレビ */
+   優先順位（手前→奥）：キャラ／スピーカー／ポスト／ドア／ゲーム機／植物／机／テレビ */
 var HIT_MIN = 44, HIT_PAD = 6;
 var zbBusy = false;
 function zbRect(el, pl, pr, pt, pb){
@@ -1687,7 +2361,6 @@ var cr = charaEl.getBoundingClientRect();
 if (x > cr.left + cr.width * 0.08 && x < cr.right - cr.width * 0.08 &&
 y > cr.top + cr.height * 0.03 && y < cr.bottom + 6) return 'chara';
 if (zbIn(zbRect(document.getElementById('obj-speaker'), 7, 7, 7, 7), x, y)) return 'obj-speaker';
-if (zbIn(zbRect(sunsunBtn, HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'sunsun';
 if (zbIn(zbRect(document.getElementById('obj-post'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-post';
 if (zbDoorHit(x, y)) return 'obj-door';
 if (zbIn(zbRect(document.getElementById('obj-game'), HIT_PAD, HIT_PAD, HIT_PAD, HIT_PAD), x, y)) return 'obj-game';
@@ -1743,66 +2416,6 @@ hintRings();
 }
 });
 
-/* ---------- スンスン：押すと喋る ---------- */
-var sunsunBtn = document.getElementById('sunsun');
-var VOICES = ['assets/voice/sun-1.mp3','assets/voice/sun-2.mp3','assets/voice/sun-3.mp3','assets/voice/sun-4.mp3'];
-/* 声クリップの文そのままを吹き出しに出す（VOICES と同じ順） */
-var SUN_LINES = ['僕の名前はやトやです。よろしくお願いします。','今日はみんなに会えてとっても嬉しいです','バンボ、ボンボビ。','あの、皆さんこんばんは。にゃめやです。'];
-var SUN_RARE_LINE = '僕の名前はや乙女咲やです。よろしくお願いします。';
-var sunAudio = null, lastVoice = -1;
-var RARE_VOICE = 'assets/voice/sun-rare.mp3';
-window.SUNSUN = {playing:false, src:'', el:null, rare:false};
-function stopSun(){
-window.SUNSUN.playing = false;
-window.SUNSUN.rare = false;
-sunsunBtn.classList.remove('talking');
-sunsunBtn.classList.remove('rare');
-sunHush();
-}
-/* スンスンのたまの動き：低頻度で、傾く・揺れる・小さく跳ねる。喋っている間は出さない */
-var SUN_IDLES = ['idle-tilt','idle-sway','idle-hop'];
-var sunIdleTimer = 0;
-function scheduleSunIdle(){
-clearTimeout(sunIdleTimer);
-sunIdleTimer = setTimeout(sunIdleTick, 9000 + Math.random() * 8000);
-}
-function sunIdleTick(){
-if (!reduceMotion && entered && !document.hidden && !storageOpen && !sunsunBtn.classList.contains('talking')){
-var cls = SUN_IDLES[Math.floor(Math.random() * SUN_IDLES.length)];
-sunsunBtn.classList.add(cls);
-setTimeout(function(){ sunsunBtn.classList.remove(cls);}, 3600);
-}
-scheduleSunIdle();
-}
-sunsunBtn.addEventListener('click', function(){
-SUN_IDLES.forEach(function(c){ sunsunBtn.classList.remove(c);});
-var isRare = Math.random() < 0.10;
-var src, line;
-if (isRare){
-src = RARE_VOICE;
-line = SUN_RARE_LINE;
-} else {
-var i = Math.floor(Math.random() * VOICES.length);
-if (VOICES.length > 1 && i === lastVoice) i = (i + 1) % VOICES.length;
-lastVoice = i;
-src = VOICES[i];
-line = SUN_LINES[i];
-}
-if (sunAudio){ sunAudio.pause();}
-sunAudio = new Audio(src);
-sunSay(line);
-window.SUNSUN.src = src;
-window.SUNSUN.rare = isRare;
-sunsunBtn.classList.toggle('rare', isRare);
-window.SUNSUN.el = sunAudio;
-window.SUNSUN.playing = true;
-sunsunBtn.classList.add('talking');
-sunAudio.addEventListener('ended', stopSun);
-sunAudio.addEventListener('error', stopSun);
-var p = sunAudio.play();
-if (p && p.catch) p.catch(stopSun);
-});
-
 /* ---------- テレビ：たまにチャンネルが切り替わる（ザッピング） ---------- */
 var tvScreenEl = document.querySelector('#obj-tv .tv-screen');
 var tvScenes = document.querySelectorAll('#obj-tv .tv-scene');
@@ -1832,14 +2445,14 @@ var storageOpen = false, pushedStorage = false, storageTourTimer = 0;
    cat: game=ゲームケース / music=CDケース / site=本・アルバム
    featured: true で「おすすめ」欄入り / date: 'YYYY-MM-DD' があれば最新欄は日付順、無ければ並び順（後ろ＝新しい） */
 var WORKS = [
-{id:'yukagen', title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, date:'2026-11-18', href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'assets/parts/work-yukagen.webp'},
-{id:'kani', title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'assets/parts/work-kani.webp'},
-{id:'ebikani', title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', date:'2026-10-18', href:'https://sakiyayoi.github.io/ebi-kani/', img:'assets/parts/work-ebi.webp'},
-{id:'sobaniite', title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'assets/parts/hero-song-real.webp'},
-{id:'karappo', title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'assets/parts/work-ai.webp'},
-{id:'anniv', title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'assets/parts/work-anniv.webp'},
-{id:'usagori', title:'うさぎ、ゴリラを殴る。3D', kind:'ゲーム', cat:'game', tag:'', featured:true, isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/usagori3d/', img:'assets/parts/work-usagori.webp'},
-{id:'fairytale', title:'童話キャラ16タイプ診断', kind:'診断', cat:'site', tag:'', isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/fairytale-type16/', img:'assets/parts/work-fairytale.webp'}
+{id:'yukagen', title:'ちょうどいい湯かげん', kind:'ゲーム', cat:'game', tag:'', featured:true, date:'2026-11-18', href:'https://sakiyayoi.github.io/chodoii-yukagen/', img:'../assets/parts/work-yukagen.webp'},
+{id:'kani', title:'カニ飛ばし', kind:'ゲーム', cat:'game', tag:'', href:'https://sakiyayoi.github.io/sakiya-crab-flight-play/', img:'../assets/parts/work-kani.webp'},
+{id:'ebikani', title:'EBI KANI?', kind:'ゲーム', cat:'game', tag:'', date:'2026-10-18', href:'https://sakiyayoi.github.io/ebi-kani/', img:'../assets/parts/work-ebi.webp'},
+{id:'sobaniite', title:'そばにいて', kind:'曲・MV', cat:'music', tag:'pink', featured:true, href:'https://youtube.com/watch?v=i6zgNb9RhZI', img:'../assets/parts/hero-song-real.webp'},
+{id:'karappo', title:'空っぽの愛', kind:'曲', cat:'music', tag:'pink', href:'https://youtube.com/watch?v=ABf9efnTBhI', img:'../assets/parts/work-ai.webp'},
+{id:'anniv', title:'1周年記念サイト', kind:'サイト', cat:'site', tag:'dark', href:'https://sakiya-anniversary-album-v2.sakiyayoi.chatgpt.site', img:'../assets/parts/work-anniv.webp'},
+{id:'usagori', title:'うさぎ、ゴリラを殴る。3D', kind:'ゲーム', cat:'game', tag:'', featured:true, isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/usagori3d/', img:'../assets/parts/work-usagori.webp'},
+{id:'fairytale', title:'童話キャラ16タイプ診断', kind:'診断', cat:'site', tag:'', isNew:true, date:'2026-11-23', href:'https://sakiyayoi.github.io/fairytale-type16/', img:'../assets/parts/work-fairytale.webp'}
 ];
 var KANI_SVG = '<svg width="34" height="34" viewBox="0 0 34 34"><ellipse cx="17" cy="21" rx="8" ry="5.5" fill="#fff"/><circle cx="12" cy="16" r="2" fill="#fff"/><circle cx="22" cy="16" r="2" fill="#fff"/><path d="M6 15 q-4-4 0-7 q5 2 3 7 M28 15 q4-4 0-7 q-5 2-3 7" fill="#fff"/></svg>';
 var CAT_LABEL = {game:'ゲーム', music:'曲・MV', site:'サイト'};
@@ -1847,7 +2460,7 @@ var CAT_ORDER = ['game', 'music', 'site'];
 var KIND_TO_CAT = {'ゲーム':'game', '曲・MV':'music', '曲':'music', 'サイト':'site'};
 function catOf(w){ return w.cat || KIND_TO_CAT[w.kind] || 'game'; }
 var CAT_FORM = {game:'game', music:'cd', site:'book'};
-function workHTML(w){
+function workHTML(w, big){
 var cat = catOf(w);
 var form = CAT_FORM[cat] || 'game';
 var face = w.img
@@ -1856,22 +2469,35 @@ var face = w.img
 var disc = cat === 'music' ? '<span class="disc" aria-hidden="true"></span>' : '';
 var cheer = w.id ? '<button type="button" class="cheer" data-cheer="' + w.id + '" aria-label="' + w.title + 'を応援する"><span class="c-heart" aria-hidden="true">♥</span>応援<span class="cheer-n">…</span></button>' : '';
 var badge = '';
-var wdate = w.date ? '<span class="wdate">' + w.date.replace(/-/g,'.') + ' 公開</span>' : '';
-return '<div class="work">'
+var wdate = '<span class="wdate">' + (w.date ? w.date.replace(/-/g,'.') + ' 公開' : '') + '</span>';
+return '<div class="work' + (big ? ' big' : '') + '">'
 + '<a class="wlink" href="' + w.href + '" target="_blank" rel="noopener" aria-label="' + w.title + '">'
 + '<span class="obj3d o-' + form + '">' + disc + '<span class="cover">' + face + '</span></span>' + badge
 + '<span class="wttl">' + w.title + '</span>'
-+ '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' + wdate + '</a>'
++ (curCat === 'all' ? '<span class="wtag"><span class="tag ' + w.tag + '">' + w.kind + '</span></span>' : '') + wdate + '</a>'
 + cheer + '</div>';
 }
 function shelvesHTML(list){
 var html = '';
-for (var i = 0; i < list.length; i += 3){
+for (var i = 0; i < list.length; i += 2){
 html += '<div class="shelf"><div class="shelf-items">'
-+ list.slice(i, i + 3).map(workHTML).join('')
++ list.slice(i, i + 2).map(function(w){ return workHTML(w); }).join('')
 + '</div><div class="shelf-board"></div></div>';
 }
 return html;
+}
+function featHTML(list){
+var sorted = list.slice().sort(function(a, b){
+var da = a.date || '', db = b.date || '';
+if (da && db) return da < db ? 1 : -1;
+if (da) return -1;
+if (db) return 1;
+return 0;
+});
+var html = '<div class="storage-sec"><div class="sec-head"><b>おすすめ</b></div>';
+html += '<div class="shelf feat-shelf"><div class="shelf-items">' + workHTML(sorted[0], true) + '</div><div class="shelf-board"></div></div>';
+if (sorted.length > 1) html += shelvesHTML(sorted.slice(1));
+return html + '</div>';
 }
 function sectionHTML(label, list){
 return '<div class="storage-sec"><div class="sec-head">' + label + '</div>' + shelvesHTML(list) + '</div>';
@@ -1900,12 +2526,28 @@ cats.forEach(function(c){
 html += '<button type="button" data-cat="' + c + '"' + (curCat === c ? ' class="on"' : '') + '>' + CAT_LABEL[c] + '</button>';
 });
 tabsEl.innerHTML = html;
+var luFresh = false;
+if (!luPill){ luPill = document.createElement('span'); luPill.className = 'lu-tab-pill lu-noanim'; luPill.setAttribute('aria-hidden','true'); luFresh = true; }
+tabsEl.appendChild(luPill);
+luMovePill();
+if (luFresh){ requestAnimationFrame(function(){ requestAnimationFrame(function(){ if (luPill) luPill.classList.remove('lu-noanim'); }); }); }
+}
+var luPill = null;
+function luMovePill(){
+if (!luPill) return;
+var on = tabsEl.querySelector('button.on');
+if (!on){ luPill.style.opacity = '0'; return; }
+luPill.style.opacity = '1';
+luPill.style.left = on.offsetLeft + 'px';
+luPill.style.top = on.offsetTop + 'px';
+luPill.style.width = on.offsetWidth + 'px';
+luPill.style.height = on.offsetHeight + 'px';
 }
 function renderStorage(){
 var html = '';
 if (curCat === 'all'){
 var feat = WORKS.filter(function(w){ return w.featured; });
-if (feat.length) html += sectionHTML('<b>おすすめ</b>', feat);
+if (feat.length) html += featHTML(feat);
 html += sectionHTML('<b>最新</b>', latestWorks());
 html += sectionHTML('ぜんぶの作品', WORKS);
 html += '<p class="bonus-next">最終更新 2026.11.23｜新作2本追加</p>';
@@ -1924,6 +2566,8 @@ if (!btn) return;
 curCat = btn.getAttribute('data-cat');
 renderStorage();
 });
+window.addEventListener('resize', function(){ if (luPill){ luPill.classList.add('lu-noanim'); luMovePill(); requestAnimationFrame(function(){ if (luPill) luPill.classList.remove('lu-noanim'); }); } });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if (luPill){ luPill.classList.add('lu-noanim'); luMovePill(); requestAnimationFrame(function(){ if (luPill) luPill.classList.remove('lu-noanim'); }); } });
 renderStorage();
 function showStorage(){
 if (storageOpen) return;
@@ -1955,6 +2599,10 @@ showStorage();
 /* プロフィールの「作品置き場へ」：パネルを閉じて置き場へ（遷移は hash 連動 syncFromHash に任せる） */
 document.getElementById('profWorks').addEventListener('click', function(){ goStorage(); });
 document.getElementById('storageDoor').addEventListener('click', function(){
+var d = this;
+if (d.classList.contains('leaving')) return;
+d.classList.add('leaving');
+setTimeout(function(){ d.classList.remove('leaving'); }, 700);
 if (pushedStorage){
 pushedStorage = false;
 history.back();
@@ -1979,9 +2627,14 @@ var doorBusy = false;
 doorBtn.addEventListener('click', function(){
 if (doorBusy || storageOpen) return;
 doorBusy = true;
-doorBtn.classList.add('opening');
-setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 820);
-setTimeout(function(){ doorBtn.classList.remove('opening'); doorBusy = false;}, 1500);
+var stageEl = document.getElementById('stage');
+if (!reduceMotion) {
+var sr = stageEl.getBoundingClientRect(); var dr = doorBtn.getBoundingClientRect();
+stageEl.style.transformOrigin = (((dr.left + dr.width / 2 - sr.left) / sr.width) * 100) + '% ' + (((dr.top + dr.height / 2 - sr.top) / sr.height) * 100) + '%';
+stageEl.classList.add('to-shelf');
+}
+setTimeout(function(){ goStorage();}, reduceMotion ? 60 : 950);
+setTimeout(function(){ stageEl.classList.remove('to-shelf'); doorBusy = false;}, 1800);
 });
 
 /* ---------- 隠し要素：植物を5回タップで花 ---------- */
@@ -2029,6 +2682,50 @@ if (timer) clearTimeout(timer);
 throw err;
 });
 }
+var luCarIdx = 0, luCarTimer = 0, luCarCount = 0;
+function luBuildCarousel(list, msgs){
+var n = Math.min(5, msgs.length);
+if (!n) return; /* 0件の時はカルーセルを出さない */
+luCarCount = n; luCarIdx = 0;
+var html = '<div class="lu-carousel" id="luCarousel"><div class="lu-car-head">PICK UP｜応援メッセージ</div>';
+for (var k = 0; k < n; k++){
+var m = msgs[msgs.length - 1 - k];
+var initial = (m.name || 'ななしさん').charAt(0);
+html += '<div class="lu-car-slide' + (k === 0 ? ' on' : '') + '"><div class="lu-car-top"><span class="lu-face" aria-hidden="true">' + escHTML(initial) + '</span><span class="msg-name">' + escHTML(m.name || 'ななしさん') + '</span>' + (m.to ? '<span class="msg-to">' + escHTML(m.to) + '</span>' : '') + '</div><div class="msg-text">' + escHTML(m.text || '') + '</div>' + (m.date ? '<div class="msg-date">' + escHTML(m.date) + '</div>' : '') + '</div>';
+}
+html += '<div class="lu-car-nav"><button type="button" class="lu-car-btn" data-lu-car="-1" aria-label="前のメッセージ">‹</button><button type="button" class="lu-car-btn" data-lu-car="1" aria-label="次のメッセージ">›</button><span class="lu-car-dots">';
+for (var d = 0; d < n; d++) html += '<button type="button" class="lu-car-dot' + (d === 0 ? ' on' : '') + '" data-lu-dot="' + d + '" aria-label="' + (d + 1) + '件目を表示"></button>';
+html += '</span></div></div>';
+list.insertAdjacentHTML('afterbegin', html);
+var car = document.getElementById('luCarousel');
+car.addEventListener('click', function(e){
+var nb = e.target.closest ? e.target.closest('[data-lu-car]') : null;
+var dt = e.target.closest ? e.target.closest('[data-lu-dot]') : null;
+if (nb) luCarGo(luCarIdx + parseInt(nb.getAttribute('data-lu-car'), 10), true);
+else if (dt) luCarGo(parseInt(dt.getAttribute('data-lu-dot'), 10), true);
+});
+luCarAuto();
+}
+function luCarGo(i, manual){
+var car = document.getElementById('luCarousel'); if (!car || !luCarCount) return;
+luCarIdx = ((i % luCarCount) + luCarCount) % luCarCount;
+car.querySelectorAll('.lu-car-slide').forEach(function(sl, k){ sl.classList.toggle('on', k === luCarIdx); });
+car.querySelectorAll('.lu-car-dot').forEach(function(dt, k){ dt.classList.toggle('on', k === luCarIdx); });
+if (manual) luCarAuto();
+}
+function luCarAuto(){
+clearInterval(luCarTimer);
+if (!luCarCount || luCarCount < 2) return;
+if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+luCarTimer = setInterval(function(){
+if (window.__lu4CarHold && window.__lu4CarHold()) return; /* lu4: 停止/ホバー/フォーカス中は送らない */
+if (document.hidden) return;
+var panel = document.getElementById('panel-post');
+if (panel && !panel.classList.contains('on')) return;
+luCarGo(luCarIdx + 1, false);
+}, 6000);
+}
+window.__lu4CarRestart = luCarAuto; /* lu4: 停止/再生トグルからの再開用 */
 function loadMessages(){
 var list = document.getElementById('msgList');
 if (!list || !window.fetch) return;
@@ -2046,6 +2743,7 @@ html += '<div class="msg-card"><div class="msg-head">'
 + '</div>';
 }
 list.innerHTML = html;
+luBuildCarousel(list, msgs);
 }).catch(function(){ /* 読めなくても空表示のまま（本体は壊れない） */ });
 }
 var cheerState = {};
@@ -2161,15 +2859,26 @@ status.classList.remove('ok');
 return;
 }
 if (btn.disabled) return;
+/* lu: ボタンの表示状態だけを送信処理の成否に連動させる（送信ロジック自体は既存のまま） */
+function luSetSend(state){
+btn.classList.remove('lu-sending','lu-done');
+var label = btn.querySelector('.lu-send-label');
+if (state === 'sending'){ btn.classList.add('lu-sending'); if (label) label.textContent = '送信中…'; }
+else if (state === 'done'){ btn.classList.add('lu-done'); if (label) label.textContent = '送信できたよ'; }
+else if (label) label.textContent = '壁に貼る（送る）';
+}
 btn.disabled = true;
+luSetSend('sending');
 status.textContent = '送っています…';
 status.classList.remove('ok');
 apiFetch('/api/messages', {method:'POST', body:{name:(nameEl.value || '').trim(), text:text}}).then(function(){
-btn.disabled = false;
 textEl.value = '';
+luSetSend('done');
 status.textContent = 'ありがとう！内容を確認してから、ここに飾られます。';
 status.classList.add('ok');
+setTimeout(function(){ luSetSend('idle'); btn.disabled = false; }, 2400);
 }).catch(function(){
+luSetSend('idle');
 btn.disabled = false;
 status.textContent = '今は送れなかったみたい。時間をおいて、もう一度試してみてね。';
 status.classList.remove('ok');
@@ -2185,6 +2894,14 @@ function bonusTodayStr(){ var d=new Date(); return d.getFullYear()+'-'+String(d.
 function bonusLoad(){ try{ return JSON.parse(localStorage.getItem(BONUS_KEY))||{}; }catch(e){ return {}; } }
 function bonusSave(s){ try{ localStorage.setItem(BONUS_KEY, JSON.stringify(s)); }catch(e){} }
 function bonusState(){ var s=bonusLoad(); return {last:s.last||'', streak:s.streak||0, points:s.points||0, total:s.total||0, days:s.days||[]}; }
+var luJustClaimed=false;
+function luCountUp(el, from, to){
+  if(!el) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ el.textContent=to; return; }
+  var start=null, dur=600;
+  function step(ts){ if(!start) start=ts; var pr=Math.min(1,(ts-start)/dur); el.textContent=Math.round(from+(to-from)*pr); if(pr<1) requestAnimationFrame(step); else el.textContent=to; }
+  requestAnimationFrame(step);
+}
 function bonusRender(){
   var st=bonusState(); var today=bonusTodayStr(); var claimed=st.last===today;
   var t=document.getElementById('bonusToday'); if(t) t.textContent='今日は '+today.replace(/-/g,'.')+'。'+(claimed?'今日の分は受取済みだよ。':'まだ受け取れるよ！');
@@ -2192,13 +2909,14 @@ function bonusRender(){
   document.getElementById('bonusPoints').textContent=st.points;
   document.getElementById('bonusTotal').textContent=st.total;
   var wrap=document.getElementById('bonusStamps'); var html='';
-  for(var i=6;i>=0;i--){ var d=new Date(); d.setDate(d.getDate()-i); var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); var got=st.days.indexOf(ds)>=0; html+='<div class="bonus-stamp'+(got?' got':'')+(i===0?' today':'')+'"><span class="s-emoji">'+(got?'🎁':'・')+'</span>'+(d.getMonth()+1)+'/'+d.getDate()+(got?'<span class="getlbl">GET!</span>':'')+'</div>'; }
+  for(var i=6;i>=0;i--){ var d=new Date(); d.setDate(d.getDate()-i); var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); var got=st.days.indexOf(ds)>=0; html+='<div class="bonus-stamp'+(got?' got':'')+(i===0?' today':'')+(luJustClaimed&&got&&i===0?' lu-just':'')+'"><span class="s-emoji">'+(got?'🎁':'・')+'</span>'+(d.getMonth()+1)+'/'+d.getDate()+(got?'<span class="getlbl">GET!</span>':'')+'</div>'; }
   wrap.innerHTML=html;
   var btn=document.getElementById('bonusClaim'); btn.disabled=claimed; btn.textContent=claimed?'受取済み｜明日また来てね':'🎁 ボーナスを受け取る！';
   var bb=document.getElementById('bonusBtn'); if(bb) bb.classList.toggle('claimed', claimed);
 }
 document.getElementById('bonusClaim').addEventListener('click', function(){
   var st=bonusState(); var today=bonusTodayStr(); if(st.last===today){ bonusRender(); return; }
+  var luPrevStreak=st.streak;
   var y=new Date(); y.setDate(y.getDate()-1); var ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0');
   st.streak = (st.last===ys) ? st.streak+1 : 1;
   var pts = st.streak>=7 ? 100 : [10,20,30,50][Math.floor(Math.random()*4)];
@@ -2207,7 +2925,10 @@ document.getElementById('bonusClaim').addEventListener('click', function(){
   var line = st.streak>=7 ? '7日連続！特別報酬100ポイント！' : BONUS_LINES[Math.floor(Math.random()*BONUS_LINES.length)];
   var r=document.getElementById('bonusReward'); r.innerHTML='<b>+'+pts+'ポイント</b>（'+st.streak+'日連続）<br>'+line+'<br><a href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener" style="color:var(--pink);font-weight:800">今夜22時 Mirrativで会う →</a>';
   r.classList.remove('show'); void r.offsetWidth; r.classList.add('show');
+  luJustClaimed=true;
   bonusRender();
+  luCountUp(document.getElementById('bonusStreak'), luPrevStreak, st.streak);
+  setTimeout(function(){ luJustClaimed=false; }, 800);
 });
 bonusRender();
 
@@ -2221,18 +2942,98 @@ op.addEventListener('click', hide); setTimeout(hide, 2100); })();
 var reqBtn=document.getElementById('reqCopy');
 if(reqBtn) reqBtn.addEventListener('click', function(){
   var txt='【歌リクエスト】曲名： ／ アーティスト： ';
-  function done(){ document.getElementById('reqDone').textContent='コピーしたよ'; }
+  function done(){ document.getElementById('reqDone').textContent='コピーしたよ';
+    var label=reqBtn.querySelector('.lu-copy-label');
+    reqBtn.classList.add('lu-copied'); if(label) label.textContent='コピーしたよ';
+    clearTimeout(reqBtn._luT);
+    reqBtn._luT=setTimeout(function(){ reqBtn.classList.remove('lu-copied'); if(label) label.textContent='リクエスト文をコピー'; }, 2000); }
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, done); } else { done(); }
+});
+
+/* ---------- レコードプレーヤー（lu）: 押した時だけ盤が出て回る ---------- */
+var luPlayBtn = document.getElementById('luPlayBtn');
+if (luPlayBtn) luPlayBtn.addEventListener('click', function(){
+  var pl = document.getElementById('luPlayer'); if (!pl) return;
+  var on = pl.classList.toggle('lu-playing');
+  luPlayBtn.textContent = on ? '■ 止める' : '▶ レコードを回す';
+  luPlayBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
 });
 
 /* ---------- 今日の運勢（1日1回・大吉で+10pt） ---------- */
 var FORTUNES=[['大吉','今日は配信も創作も絶好調。まず1つ動かそう。'],['中吉','いい流れ。手をつけた分だけ進む日。'],['小吉','小さく勝てる日。1つ終わらせると気持ちいい。'],['吉','穏やかな日。無理せず、でも止まらずに。'],['末吉','後半に運が来る日。夜の配信が山場かも。']];
+/* lu スクラッチ: 決定済みの結果の「出し方」だけを変える。結果の決定・保存は従来どおり */
+var luScratchArmed=false, luScratchRevealed=false, luScratchMoves=0;
+function luScratchEls(){ return {box:document.getElementById('luScratch'), cv:document.getElementById('luScratchCanvas'), hint:document.getElementById('luScratchHint'), alt:document.getElementById('luScratchReveal')}; }
+function luPaintCover(){
+  var e=luScratchEls(); if(!e.cv || !e.box) return;
+  var r=e.box.getBoundingClientRect(); if(r.width<10) return;
+  var dpr=window.devicePixelRatio||1;
+  e.cv.width=Math.round(r.width*dpr); e.cv.height=Math.round(r.height*dpr);
+  var ctx=e.cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle='#FFD9E8'; ctx.fillRect(0,0,r.width,r.height);
+  ctx.fillStyle='rgba(255,46,136,.20)';
+  var row=0;
+  for(var y=12;y<r.height;y+=26,row++){ for(var x=12+(row%2)*13;x<r.width;x+=26){ ctx.beginPath(); ctx.arc(x,y,3,0,7); ctx.fill(); } }
+  ctx.fillStyle='#33262E'; ctx.textAlign='center';
+  ctx.font='900 15px "Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif';
+  ctx.fillText('★ LUCKY MENU ★', r.width/2, r.height/2-4);
+  ctx.font='700 11px "Zen Maru Gothic","Hiragino Maru Gothic ProN",sans-serif';
+  ctx.fillStyle='rgba(51,38,46,.65)';
+  ctx.fillText('こすって めくってね', r.width/2, r.height/2+16);
+}
+function luScratchArm(){
+  var e=luScratchEls(); if(!e.box) return;
+  luScratchArmed=true; luScratchRevealed=false; luScratchMoves=0;
+  e.box.classList.add('lu-armed'); e.box.classList.remove('lu-revealed');
+  if(e.alt) e.alt.hidden=false;
+  if(e.hint){ e.hint.style.opacity='1'; e.hint.textContent='コインでこすってね（指のドラッグでもOK）'; }
+  luPaintCover();
+}
+function luScratchRevealNow(){
+  if(luScratchRevealed) return;
+  luScratchRevealed=true; luScratchArmed=false;
+  var e=luScratchEls(); if(!e.box) return;
+  e.box.classList.add('lu-revealed'); e.box.classList.remove('lu-armed');
+  if(e.alt) e.alt.hidden=true;
+}
+function luScratchRatio(){
+  var e=luScratchEls(); if(!e.cv) return 0;
+  var ctx=e.cv.getContext('2d'); var w=e.cv.width, h=e.cv.height; if(!w||!h) return 0;
+  var data; try{ data=ctx.getImageData(0,0,w,h).data; }catch(err){ return 0; }
+  var clear=0, total=0;
+  for(var i=3;i<data.length;i+=24){ total++; if(data[i]===0) clear++; }
+  return total ? clear/total : 0;
+}
+(function(){
+  var e=luScratchEls(); if(!e.cv) return;
+  var drawing=false, last=null;
+  function pos(ev){ var r=e.cv.getBoundingClientRect(); return {x:ev.clientX-r.left, y:ev.clientY-r.top}; }
+  function scratchTo(pt){
+    var ctx=e.cv.getContext('2d'); var dpr=window.devicePixelRatio||1;
+    ctx.save(); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.globalCompositeOperation='destination-out';
+    ctx.lineWidth=42; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath();
+    if(last){ ctx.moveTo(last.x,last.y); ctx.lineTo(pt.x,pt.y); } else { ctx.moveTo(pt.x,pt.y); ctx.lineTo(pt.x+0.1,pt.y+0.1); }
+    ctx.stroke(); ctx.restore(); last=pt;
+    if(e.hint) e.hint.style.opacity='0';
+    if(++luScratchMoves%12===0 && luScratchRatio()>0.45) luScratchRevealNow();
+  }
+  e.cv.addEventListener('pointerdown', function(ev){ if(!luScratchArmed||luScratchRevealed) return; drawing=true; last=null; try{ e.cv.setPointerCapture(ev.pointerId); }catch(err){} scratchTo(pos(ev)); ev.preventDefault(); });
+  e.cv.addEventListener('pointermove', function(ev){ if(!drawing||!luScratchArmed||luScratchRevealed) return; scratchTo(pos(ev)); });
+  function endScratch(){ if(drawing && luScratchArmed && luScratchRatio()>0.45) luScratchRevealNow(); drawing=false; last=null; }
+  e.cv.addEventListener('pointerup', endScratch);
+  e.cv.addEventListener('pointercancel', endScratch);
+  if(e.alt) e.alt.addEventListener('click', function(){ if(luScratchArmed) luScratchRevealNow(); });
+})();
 function fortuneRender(){
   var s=bonusLoad(); var f=s.fortune||{}; var today=bonusTodayStr();
   var btn=document.getElementById('fortuneBtn'); if(!btn) return;
   if(f.date===today){ btn.disabled=true; btn.textContent='今日はもう引いたよ';
     document.getElementById('fortuneRes').textContent=f.result;
-    document.getElementById('fortuneLine').textContent=f.line||''; }
+    document.getElementById('fortuneLine').textContent=f.line||'';
+    luScratchRevealed=true;
+    var e=luScratchEls(); if(e.box) e.box.classList.add('lu-revealed'); if(e.alt) e.alt.hidden=true; }
+  else { luPaintCover(); }
 }
 var fBtn=document.getElementById('fortuneBtn');
 if(fBtn) fBtn.addEventListener('click', function(){
@@ -2242,7 +3043,9 @@ if(fBtn) fBtn.addEventListener('click', function(){
   s.fortune={date:today, result:pick[0], line:pick[1]}; bonusSave(s);
   document.getElementById('fortuneRes').textContent=pick[0];
   document.getElementById('fortuneLine').textContent=line;
-  bonusRender(); fortuneRender();
+  bonusRender();
+  fBtn.disabled=true; fBtn.textContent='あとは こすってめくるだけ！';
+  luScratchArm();
 });
 fortuneRender();
 
@@ -2272,6 +3075,1434 @@ window.addEventListener('hashchange', syncFromHash);
 var params = new URLSearchParams(location.search);
 if (location.hash || params.get('enter') === '1') enter();
 syncFromHash();
+})();
+</script>
+
+<script>
+/* preview-only: ?panel=tv などで実寸検証用に自動で開く */
+(function(){ var pn=new URLSearchParams(location.search).get('panel'); if(!pn) return;
+var op=document.getElementById('opening'); if(op) op.remove();
+var tries=0;
+var iv=setInterval(function(){ tries++;
+  var panel=document.getElementById('panel-'+pn);
+  if(panel && panel.classList.contains('on')){ clearInterval(iv); return; }
+  var room=document.getElementById('room');
+  if(!room.classList.contains('on')){ var eb=document.getElementById('enterBtn'); if(eb) eb.click(); }
+  else { var b=document.querySelector('[data-panel="'+pn+'"]'); if(b) b.click(); }
+  if(tries>25) clearInterval(iv);
+}, 800);
+})();
+</script>
+
+<button type="button" class="lu-sound" id="luSoundBtn" aria-pressed="true" aria-label="音のオン・オフ">♪</button>
+<div class="lu-lightbox" id="luLightbox" aria-hidden="true" role="dialog" aria-label="作品の拡大表示">
+<div class="lu-lb-backdrop"></div>
+<figure class="lu-lb-card">
+<button type="button" class="lu-lb-x" id="luLbX" aria-label="閉じる">✕</button>
+<img id="luLbImg" alt="">
+<div class="lu-lb-body"><div class="lu-lb-ttl" id="luLbTtl"></div><div class="lu-lb-date" id="luLbDate"></div>
+<a class="lu-lb-go" id="luLbGo" href="#" target="_blank" rel="noopener">この作品をひらく →</a></div>
+</figure>
+</div>
+<script>
+/* ===== Lucian第2弾 (lu-) : カウントダウン／展開カード／統計／XP・炎／ハート／ライトボックス／音 ===== */
+(function(){
+"use strict";
+var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+function $(id){ return document.getElementById(id); }
+
+/* ---------- 音レイヤー（WebAudio合成のみ・外部ファイルなし） ---------- */
+var LU_SOUND_KEY = 'lu_sound_v1';
+var luSoundOn = true;
+try { luSoundOn = localStorage.getItem(LU_SOUND_KEY) !== '0'; } catch(e){}
+var luAC = null, luMaster = null, luNoiseBuf = null;
+var luStats = {ctxCreated:0, started:0, byKind:{}};
+window.__luSoundStats = luStats;
+window.__luAudioState = function(){ return luAC ? luAC.state : 'none'; };
+function luCtx(){
+  if (!luSoundOn) return null;
+  if (!luAC){
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    luAC = new AC();
+    luMaster = luAC.createGain();
+    luMaster.gain.value = 0.16;
+    luMaster.connect(luAC.destination);
+    luStats.ctxCreated++;
+  }
+  if (luAC.state === 'suspended') luAC.resume();
+  return luAC;
+}
+function luEnv(g, t0, peak, dur){
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t0 + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+}
+function luTone(o){
+  var ac = luCtx(); if (!ac) return;
+  var t0 = ac.currentTime + (o.delay || 0);
+  var osc = ac.createOscillator(), g = ac.createGain();
+  osc.type = o.type || 'sine';
+  osc.frequency.setValueAtTime(o.f, t0);
+  if (o.slide) osc.frequency.exponentialRampToValueAtTime(o.slide, t0 + o.dur);
+  luEnv(g, t0, o.vol || 0.5, o.dur);
+  osc.connect(g); g.connect(luMaster);
+  osc.start(t0); osc.stop(t0 + o.dur + 0.05);
+  luStats.started++; luStats.byKind[o.kind] = (luStats.byKind[o.kind] || 0) + 1;
+}
+function luNoiseHit(o){
+  var ac = luCtx(); if (!ac) return;
+  if (!luNoiseBuf){
+    var len = ac.sampleRate;
+    luNoiseBuf = ac.createBuffer(1, len, ac.sampleRate);
+    var d = luNoiseBuf.getChannelData(0);
+    for (var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  }
+  var t0 = ac.currentTime + (o.delay || 0);
+  var s = ac.createBufferSource(); s.buffer = luNoiseBuf; s.playbackRate.value = o.rate || 1;
+  var f = ac.createBiquadFilter(); f.type = o.ftype || 'bandpass'; f.frequency.value = o.ffreq || 1800; f.Q.value = o.q || 0.9;
+  var g = ac.createGain();
+  luEnv(g, t0, o.vol || 0.3, o.dur);
+  s.connect(f); f.connect(g); g.connect(luMaster);
+  s.start(t0, Math.random() * 0.4); s.stop(t0 + o.dur + 0.05);
+  luStats.started++; luStats.byKind[o.kind] = (luStats.byKind[o.kind] || 0) + 1;
+}
+function luBell(n, kind){
+  for (var i = 0; i < n; i++){
+    luTone({f:1567.98, dur:0.5, vol:0.45, delay:i * 0.17, kind:kind});
+    luTone({f:2093.0, dur:0.3, vol:0.16, delay:i * 0.17, kind:kind});
+  }
+}
+function luPop(){ luTone({f:520, slide:170, dur:0.1, vol:0.5, kind:'pop'}); }
+function luStampSnd(){
+  luTone({f:130, slide:48, dur:0.2, vol:0.9, kind:'stamp'});
+  luNoiseHit({dur:0.09, vol:0.22, ffreq:500, ftype:'lowpass', kind:'stamp'});
+}
+function luNeedle(){
+  luNoiseHit({dur:0.08, vol:0.32, ffreq:3200, ftype:'highpass', kind:'needle'});
+  luTone({f:2400, dur:0.03, vol:0.12, kind:'needle'});
+}
+document.addEventListener('pointerdown', function(){ luCtx(); }, {once:true, capture:true});
+var luSndBtn = $('luSoundBtn');
+function luPaintSnd(){
+  if (!luSndBtn) return;
+  luSndBtn.classList.toggle('lu-off', !luSoundOn);
+  luSndBtn.setAttribute('aria-pressed', luSoundOn ? 'true' : 'false');
+}
+luPaintSnd();
+if (luSndBtn) luSndBtn.addEventListener('click', function(){
+  luSoundOn = !luSoundOn;
+  try { localStorage.setItem(LU_SOUND_KEY, luSoundOn ? '1' : '0'); } catch(e){}
+  luPaintSnd();
+  if (luSoundOn){ luCtx(); luBell(1, 'confirm'); }
+  else if (luAC){ luAC.suspend(); }
+});
+var eb = $('enterBtn'); if (eb) eb.addEventListener('click', function(){ luBell(2, 'doorbell'); });
+document.querySelectorAll('[data-panel]').forEach(function(el){ el.addEventListener('click', luPop); });
+document.querySelectorAll('[data-close]').forEach(function(el){ el.addEventListener('click', luPop); });
+var scr = $('scrim'); if (scr) scr.addEventListener('click', luPop);
+var doorB = $('obj-door'); if (doorB) doorB.addEventListener('click', luPop);
+var sdB = $('storageDoor'); if (sdB) sdB.addEventListener('click', luPop);
+var claimB = $('bonusClaim'); if (claimB) claimB.addEventListener('click', luStampSnd);
+var fB = $('fortuneBtn'); if (fB) fB.addEventListener('click', function(){ luBell(1, 'confirm'); });
+var rcB = $('reqCopy'); if (rcB) rcB.addEventListener('click', function(){ luBell(1, 'confirm'); });
+var pb = $('luPlayBtn');
+if (pb) pb.addEventListener('click', function(){
+  var pl = $('luPlayer');
+  if (pl && pl.classList.contains('lu-playing')) luNeedle();
+});
+var msBtn = $('msgSubmit');
+if (msBtn && window.MutationObserver){
+  var msObs = new MutationObserver(function(){
+    if (msBtn.classList.contains('lu-done')) luBell(1, 'confirm');
+  });
+  msObs.observe(msBtn, {attributes:true, attributeFilter:['class']});
+}
+var scv = $('luScratchCanvas'), luScrLast = 0;
+if (scv){
+  var scSnd = function(){
+    var box = $('luScratch');
+    if (!box || !box.classList.contains('lu-armed')) return;
+    var n = Date.now();
+    if (n - luScrLast < 85) return;
+    luScrLast = n;
+    luNoiseHit({dur:0.035, vol:0.1, ffreq:2600, kind:'scratch'});
+  };
+  scv.addEventListener('pointerdown', scSnd);
+  scv.addEventListener('pointermove', scSnd);
+}
+
+/* ---------- 光沢（押下で1回だけ流れる） ---------- */
+if (!RM){
+  document.addEventListener('pointerdown', function(e){
+    var t = e.target.closest ? e.target.closest('.dn-btn, .bonus-claim, #enterBtn, .lu-play, .lu-game-play, .lu-lb-go, #fortuneBtn') : null;
+    if (!t) return;
+    t.classList.remove('lu-sheen-on');
+    void t.offsetWidth;
+    t.classList.add('lu-sheen-on');
+    setTimeout(function(){ t.classList.remove('lu-sheen-on'); }, 650);
+  }, true);
+}
+
+/* ---------- 3. フリップ式カウントダウン（日本時間の次の22:00・端末TZ非依存） ---------- */
+var luCountEl = $('luCount');
+var luFlipState = {};
+var LU_JST_OFFSET = 9 * 3600 * 1000;
+function luJstParts(d){
+  var o = {};
+  new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Tokyo', year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d).forEach(function(p){ o[p.type] = parseInt(p.value, 10); });
+  return o;
+}
+function luNext22(now){
+  var p = luJstParts(now);
+  var t = Date.UTC(p.year, p.month - 1, p.day, 22, 0, 0, 0) - LU_JST_OFFSET;
+  if (now.getTime() >= t) t += 24 * 3600 * 1000;
+  return new Date(t);
+}
+function luSetFlip(unit, val){
+  var box = document.querySelector('[data-lu-flip="' + unit + '"]');
+  if (!box) return;
+  if (luFlipState[unit] === val) return;
+  luFlipState[unit] = val;
+  var num = box.querySelector('.lu-flip-num');
+  if (RM){ num.textContent = val; return; }
+  box.classList.remove('lu-flip-go');
+  void box.offsetWidth;
+  setTimeout(function(){ num.textContent = val; }, 130);
+  box.classList.add('lu-flip-go');
+}
+function luTickCount(){
+  if (!luCountEl) return;
+  var now = new Date();
+  var target = luNext22(now);
+  var diff = Math.max(0, Math.floor((target - now) / 1000));
+  var pad = function(n){ return String(n).padStart(2, '0'); };
+  luSetFlip('h', pad(Math.floor(diff / 3600)));
+  luSetFlip('m', pad(Math.floor(diff % 3600 / 60)));
+  luSetFlip('s', pad(diff % 60));
+  var jp = luJstParts(now), tp = luJstParts(target);
+  var sameJstDay = (jp.year === tp.year && jp.month === tp.month && jp.day === tp.day);
+  $('luCountLabel').textContent = sameJstDay ? '今夜22:00（日本時間）まで' : '明日22:00（日本時間）まで';
+  luCountEl.dataset.target = String(target.getTime());
+}
+if (luCountEl){ luTickCount(); setInterval(luTickCount, 250); }
+
+/* ---------- 4. ゲーム：広がる詳細カード ---------- */
+document.querySelectorAll('.lu-game-head').forEach(function(head){
+  head.addEventListener('click', function(){
+    var card = head.closest('.lu-game');
+    var wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.lu-game.open').forEach(function(c){
+      c.classList.remove('open');
+      var h = c.querySelector('.lu-game-head');
+      if (h) h.setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen){
+      card.classList.add('open');
+      head.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+/* ---------- 6. プロフィール：カウントアップ統計 ---------- */
+var luStatsRan = false, luTickPlayed = false;
+function luRunStats(){
+  if (luStatsRan) return;
+  luStatsRan = true;
+  document.querySelectorAll('[data-lu-count]').forEach(function(el){
+    var to = parseInt(el.getAttribute('data-lu-count'), 10) || 0;
+    if (RM){ el.textContent = to; return; }
+    var start = null;
+    function step(ts){
+      if (!start) start = ts;
+      var p = Math.min(1, (ts - start) / 900);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+      else {
+        el.textContent = to;
+        if (!luTickPlayed){ luTickPlayed = true; luTone({f:1900, dur:0.05, vol:0.2, kind:'tick'}); }
+      }
+    }
+    requestAnimationFrame(step);
+  });
+}
+var profPanel = $('panel-profile');
+if (profPanel && window.MutationObserver){
+  new MutationObserver(function(){
+    if (profPanel.classList.contains('on')) luRunStats();
+  }).observe(profPanel, {attributes:true, attributeFilter:['class']});
+  if (profPanel.classList.contains('on')) luRunStats();
+}
+
+/* ---------- 7. ボーナス：XPバー＋炎（sakiya_bonus_v1 を読むだけ） ---------- */
+function luBonusSync(){
+  var fill = $('luXpFill'); if (!fill) return;
+  var s = {};
+  try { s = JSON.parse(localStorage.getItem('sakiya_bonus_v1')) || {}; } catch(e){}
+  var pts = s.points || 0, streak = s.streak || 0;
+  var prog = pts % 100;
+  fill.style.width = prog + '%';
+  $('luXpTxt').textContent = 'あと ' + (100 - prog) + ' pt';
+  var flame = $('luFlame');
+  flame.style.transform = 'scale(' + (0.65 + Math.min(streak, 15) * 0.05) + ')';
+  flame.style.filter = streak > 0 ? 'none' : 'grayscale(1)';
+  flame.style.opacity = streak > 0 ? '1' : '.45';
+  $('luFlameTxt').textContent = '連続 ' + streak + ' 日';
+}
+luBonusSync();
+var bonusPanel = $('panel-bonus');
+if (bonusPanel && window.MutationObserver){
+  new MutationObserver(function(){
+    if (bonusPanel.classList.contains('on')) luBonusSync();
+  }).observe(bonusPanel, {attributes:true, attributeFilter:['class']});
+}
+if (claimB) claimB.addEventListener('click', function(){ setTimeout(luBonusSync, 80); });
+if (fB) fB.addEventListener('click', function(){ setTimeout(luBonusSync, 80); });
+
+/* ---------- 8. 応援ハートバースト＋ポップ音 ---------- */
+var shelvesEl2 = $('shelves');
+if (shelvesEl2) shelvesEl2.addEventListener('click', function(e){
+  var btn = e.target.closest ? e.target.closest('button.cheer') : null;
+  if (!btn || btn.classList.contains('done') || btn.classList.contains('off')) return;
+  luPop();
+  if (RM) return;
+  for (var i = 0; i < 6; i++){
+    var s = document.createElement('span');
+    s.className = 'lu-heart-pop';
+    s.textContent = '♥';
+    s.style.setProperty('--lu-tx', (Math.random() * 56 - 28) + 'px');
+    s.style.setProperty('--lu-ty', (-(26 + Math.random() * 30)) + 'px');
+    s.style.setProperty('--lu-rot', (Math.random() * 50 - 25) + 'deg');
+    s.style.animationDelay = (i * 0.03) + 's';
+    btn.appendChild(s);
+    (function(el){ setTimeout(function(){ el.remove(); }, 950); })(s);
+  }
+});
+
+/* ---------- 9c. ライトボックス＋拡大ボタン ---------- */
+var lb = $('luLightbox');
+function luLbOpen(work){
+  if (!lb) return;
+  var link = work.querySelector('.wlink');
+  var img = work.querySelector('.cover img');
+  var ttl = work.querySelector('.wttl');
+  var date = work.querySelector('.wdate');
+  var lbImg = $('luLbImg');
+  if (img && img.getAttribute('src')){ lbImg.src = img.getAttribute('src'); lbImg.style.display = ''; }
+  else { lbImg.removeAttribute('src'); lbImg.style.display = 'none'; }
+  $('luLbTtl').textContent = ttl ? ttl.textContent : '';
+  $('luLbDate').textContent = date ? date.textContent : '';
+  $('luLbGo').href = link ? link.href : '#';
+  lb.classList.add('on');
+  lb.setAttribute('aria-hidden', 'false');
+}
+function luLbClose(){
+  if (!lb) return;
+  lb.classList.remove('on');
+  lb.setAttribute('aria-hidden', 'true');
+}
+if (lb){
+  $('luLbX').addEventListener('click', luLbClose);
+  lb.querySelector('.lu-lb-backdrop').addEventListener('click', luLbClose);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') luLbClose(); });
+}
+function luAddZoom(){
+  if (!shelvesEl2) return;
+  shelvesEl2.querySelectorAll('.work').forEach(function(w){
+    if (w.querySelector('.lu-zoom')) return;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lu-zoom';
+    b.setAttribute('aria-label', '作品を拡大して見る');
+    b.textContent = '＋';
+    b.addEventListener('click', function(ev){
+      ev.preventDefault(); ev.stopPropagation();
+      luLbOpen(w);
+    });
+    w.appendChild(b);
+  });
+}
+luAddZoom();
+if (shelvesEl2 && window.MutationObserver){
+  new MutationObserver(luAddZoom).observe(shelvesEl2, {childList:true, subtree:true});
+}
+})();
+</script>
+<script>
+/* ===== Lucian第4弾 (lu4) : 応援カルーセルの停止手段 =====
+   既存タイマーには触らず、既存JS側の1行フック（window.__lu4CarHold）経由で
+   「停止中は自動送りをスキップ」させる。トグル／ホバー／フォーカスで保持する。 */
+(function(){
+'use strict';
+var lu4Paused = false, lu4Hover = false, lu4Focus = false;
+window.__lu4CarHold = function(){ return lu4Paused || lu4Hover || lu4Focus; };
+function lu4Setup(car){
+if (!car || car.querySelector('.lu-car-toggle')) return;
+var nav = car.querySelector('.lu-car-nav');
+if (!nav) return;
+var btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'lu-car-toggle';
+btn.setAttribute('aria-label', '自動送りを止める');
+btn.setAttribute('aria-pressed', 'false');
+btn.textContent = '❚❚';
+var dots = nav.querySelector('.lu-car-dots');
+nav.insertBefore(btn, dots || null);
+btn.addEventListener('click', function(){
+lu4Paused = !lu4Paused;
+btn.setAttribute('aria-pressed', lu4Paused ? 'true' : 'false');
+btn.setAttribute('aria-label', lu4Paused ? '自動送りを再開する' : '自動送りを止める');
+btn.textContent = lu4Paused ? '▶' : '❚❚';
+if (!lu4Paused && window.__lu4CarRestart) window.__lu4CarRestart();
+});
+car.addEventListener('mouseenter', function(){ lu4Hover = true; });
+car.addEventListener('mouseleave', function(){ lu4Hover = false; });
+car.addEventListener('focusin', function(){ lu4Focus = true; });
+car.addEventListener('focusout', function(e){ if (!car.contains(e.relatedTarget)) lu4Focus = false; });
+}
+var lu4Tries = 0;
+var lu4Iv = setInterval(function(){
+lu4Tries++;
+var car = document.getElementById('luCarousel');
+if (car){ lu4Setup(car); clearInterval(lu4Iv); }
+else if (lu4Tries > 120) clearInterval(lu4Iv);
+}, 300);
+})();
+
+</script>
+<script>
+/* ===== Lucian第5弾 (lu5) : 棚の再設計 =====
+   本体スクリプトは IIFE のため、lu5 は描画済み DOM を再構成する方式を取る。
+   並びは「イチオシ→おすすめ→ほかの作品」。同じ作品を複数セクションに重ねない。
+   カテゴリ表示はそのカテゴリの全作品（並び替え＋先頭1作をワイド表示）。
+   ひとこと・状態・日付・分類は既存データ（WORKS／既存パネル文）の写しだけを使う。 */
+(function(){
+'use strict';
+var LU5_META = {
+  yukagen:   {kind: 'ゲーム',   date: '2026-11-18', featured: true,  isNew: false, order: 0, desc: 'お湯の温度を合わせる'},
+  kani:      {kind: 'ゲーム',   date: '',           featured: false, isNew: false, order: 1, desc: 'カニをぶっ飛ばすゲーム', status: '仕込み中'},
+  ebikani:   {kind: 'ゲーム',   date: '2026-10-18', featured: false, isNew: false, order: 2, desc: '写真でエビかカニかを判定する裁判ゲーム', img: '../assets/parts/work-ebi.webp'},
+  sobaniite: {kind: '曲・MV',   date: '',           featured: true,  isNew: false, order: 3, desc: '最新の歌ってみた／AIソング（MV）'},
+  karappo:   {kind: '曲',       date: '',           featured: false, isNew: false, order: 4},
+  anniv:     {kind: 'サイト',   date: '',           featured: false, isNew: false, order: 5},
+  usagori:   {kind: 'ゲーム',   date: '2026-11-23', featured: true,  isNew: true,  order: 6, desc: '巨大ゴリラと75秒ボス戦'},
+  fairytale: {kind: '診断',     date: '2026-11-23', featured: false, isNew: true,  order: 7, desc: '20問でわかる童話診断'}
+};
+function lu5Sort(list){
+  return list.slice().sort(function(a, b){
+    var ma = LU5_META[a.id] || {}, mb = LU5_META[b.id] || {};
+    var fa = ma.featured ? 1 : 0, fb = mb.featured ? 1 : 0;
+    if (fb !== fa) return fb - fa;
+    var da = ma.date || '', db = mb.date || '';
+    if (da && db) return da < db ? 1 : (da > db ? -1 : 0);
+    if (da) return -1;
+    if (db) return 1;
+    return (ma.order || 0) - (mb.order || 0);
+  });
+}
+function lu5Decorate(rec, mode){
+  var node = rec.node, meta = LU5_META[rec.id] || {};
+  if (mode === 'hero') node.classList.add('lu5-hero');
+  if (mode === 'lead') node.classList.add('lu5-lead');
+  if (meta.img){
+    var img = node.querySelector('.cover img');
+    if (img) img.src = meta.img;
+  }
+  if (node.querySelector('.lu5-tags')) return;
+  var ttl = node.querySelector('.wttl');
+  if (!ttl) return;
+  var tags = document.createElement('span');
+  tags.className = 'lu5-tags';
+  var html = '<span class="lu5-kind">' + (meta.kind || '') + '</span>';
+  if (meta.isNew) html += '<span class="lu5-flag new">NEW</span>';
+  if (meta.status) html += '<span class="lu5-flag wip">' + meta.status + '</span>';
+  if (meta.featured && mode !== 'hero') html += '<span class="lu5-flag pick">おすすめ</span>';
+  tags.innerHTML = html;
+  ttl.after(tags);
+  if (meta.desc){
+    var d = document.createElement('span');
+    d.className = 'lu5-desc';
+    d.textContent = meta.desc;
+    tags.after(d);
+  }
+}
+function lu5Section(label, countLabel, recs, leadFirst){
+  var sec = document.createElement('div');
+  sec.className = 'storage-sec';
+  var head = document.createElement('div');
+  head.className = 'sec-head';
+  head.innerHTML = '<span></span><span class="lu5-count"></span>';
+  head.firstChild.textContent = label;
+  head.lastChild.textContent = countLabel;
+  sec.appendChild(head);
+  var grid = document.createElement('div');
+  grid.className = 'lu5-grid';
+  recs.forEach(function(rec, i){
+    lu5Decorate(rec, leadFirst && i === 0 && recs.length > 1 ? 'lead' : '');
+    grid.appendChild(rec.node);
+  });
+  sec.appendChild(grid);
+  var board = document.createElement('div');
+  board.className = 'lu5-board';
+  board.setAttribute('aria-hidden', 'true');
+  sec.appendChild(board);
+  return sec;
+}
+function lu5Collect(shelves){
+  var byId = {};
+  var allSec = null;
+  shelves.querySelectorAll('.storage-sec').forEach(function(sec){
+    var h = sec.querySelector('.sec-head');
+    if (h && h.textContent.indexOf('ぜんぶ') >= 0) allSec = sec;
+  });
+  var scope = allSec || shelves;
+  scope.querySelectorAll('.work').forEach(function(node){
+    var btn = node.querySelector('button.cheer[data-cheer]');
+    var ttl = node.querySelector('.wttl');
+    var id = btn ? btn.getAttribute('data-cheer') : (ttl ? ttl.textContent : '');
+    if (id && !byId[id]) byId[id] = {id: id, node: node};
+  });
+  return byId;
+}
+function lu5Transform(){
+  var shelves = document.getElementById('shelves');
+  if (!shelves || shelves.querySelector('.lu5-grid')) return;
+  var secs = shelves.querySelectorAll('.storage-sec');
+  if (!secs.length) return;
+  var onBtn = document.querySelector('#storageTabs button.on');
+  var cat = onBtn ? onBtn.getAttribute('data-cat') : 'all';
+  var byId = lu5Collect(shelves);
+  var recs = Object.keys(byId).map(function(k){ return byId[k]; });
+  if (!recs.length) return;
+  var footer = shelves.querySelector('.bonus-next');
+  var frag = document.createDocumentFragment();
+  if (cat === 'all'){
+    var feat = lu5Sort(recs.filter(function(r){ return (LU5_META[r.id] || {}).featured; }));
+    var rest = lu5Sort(recs.filter(function(r){ return !(LU5_META[r.id] || {}).featured; }));
+    if (feat.length){
+      var heroSec = document.createElement('div');
+      heroSec.className = 'storage-sec';
+      var hh = document.createElement('div');
+      hh.className = 'sec-head';
+      hh.innerHTML = '<span>イチオシ</span><span class="lu5-count">まずこれ</span>';
+      heroSec.appendChild(hh);
+      var hg = document.createElement('div');
+      hg.className = 'lu5-grid';
+      lu5Decorate(feat[0], 'hero');
+      hg.appendChild(feat[0].node);
+      heroSec.appendChild(hg);
+      var hb = document.createElement('div');
+      hb.className = 'lu5-board';
+      hb.setAttribute('aria-hidden', 'true');
+      heroSec.appendChild(hb);
+      frag.appendChild(heroSec);
+      if (feat.length > 1) frag.appendChild(lu5Section('おすすめ', (feat.length - 1) + '作品', feat.slice(1), false));
+    }
+    if (rest.length) frag.appendChild(lu5Section('ほかの作品', rest.length + '作品', rest, false));
+  } else {
+    var sorted = lu5Sort(recs);
+    var label = onBtn ? onBtn.textContent : cat;
+    frag.appendChild(lu5Section(label, sorted.length + '作品', sorted, true));
+  }
+  shelves.innerHTML = '';
+  shelves.appendChild(frag);
+  if (footer) shelves.appendChild(footer);
+}
+var lu5Busy = false;
+function lu5Run(){
+  if (lu5Busy) return;
+  lu5Busy = true;
+  try { lu5Transform(); } catch (e) { /* 変換に失敗しても旧表示のまま使う */ }
+  lu5Busy = false;
+}
+/* 第6弾（lu6）が棚の再構成を引き継いだため、lu5 の棚変換は発動させない。
+   lu5Transform / lu5Run は互換のために残置するが、監視も初回実行も行わない。
+   （タブの aria-pressed 付与＝B機能はこの後ろで引き続き動作する） */
+function lu5Press(){
+  document.querySelectorAll('#storageTabs button[data-cat]').forEach(function(b){
+    b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false');
+  });
+}
+var tabsEl5 = document.getElementById('storageTabs');
+if (tabsEl5 && window.MutationObserver){
+  new MutationObserver(lu5Press).observe(tabsEl5, {childList: true, attributes: true, attributeFilter: ['class']});
+}
+lu5Press();
+})();
+</script>
+<script>
+/* ===== Lucian第6弾 (lu6) : 棚の再々設計「店の什器で並べる」 =====
+   第5弾の棚（Featured＋均等グリッド＋札）は本人の「AIスロップ」却下を受けて置き換える。
+   形式は実在のダイナー什器から起こす（実物リサーチは第6弾報告に記載）：
+   ゲーム＝アーケード筐体の列／曲＝ジュークボックス選曲ストリップ＋レコードビン／
+   サイト＝壁の額装とレターボード。作品ごとに形を変え、同一カード形式にしない。
+   本体・lu〜lu5 の描画済み .work ノードをそのまま移動して使うため、
+   絞り込み・ライトボックス・応援ボタン・作品リンクの動作は従来どおり。 */
+(function(){
+'use strict';
+var LU6_META = {
+  yukagen:   {cat:'game'},
+  kani:      {cat:'game', note:'仕込み中'},
+  ebikani:   {cat:'game'},
+  usagori:   {cat:'game'},
+  sobaniite: {cat:'music', code:'A1', kind:'曲・MV'},
+  karappo:   {cat:'music', code:'A2', kind:'曲'},
+  anniv:     {cat:'site'},
+  fairytale: {cat:'site'}
+};
+var LU6_GAME_ORDER = ['usagori', 'yukagen', 'ebikani', 'kani'];
+var LU6_SUB_ORDER = {music:['sobaniite', 'karappo'], site:['anniv', 'fairytale']};
+var LU6_PLATE = {game:'ゲーム', music:'曲・MV', site:'サイト'};
+function lu6Collect(shelves){
+  var byId = {};
+  var allSec = null;
+  shelves.querySelectorAll('.storage-sec').forEach(function(sec){
+    var h = sec.querySelector('.sec-head');
+    if (h && h.textContent.indexOf('ぜんぶ') >= 0) allSec = sec;
+  });
+  var scope = allSec || shelves;
+  scope.querySelectorAll('.work').forEach(function(node){
+    var btn = node.querySelector('button.cheer[data-cheer]');
+    var ttl = node.querySelector('.wttl');
+    var id = btn ? btn.getAttribute('data-cheer') : (ttl ? ttl.textContent : '');
+    if (id && !byId[id]) byId[id] = {id: id, node: node};
+  });
+  return byId;
+}
+function lu6Order(ids, cat){
+  var rank = {};
+  var list = cat === 'game' ? LU6_GAME_ORDER : (LU6_SUB_ORDER[cat] || []);
+  list.forEach(function(id, i){ rank[id] = i; });
+  return ids.slice().sort(function(a, b){
+    var ra = (a in rank) ? rank[a] : 99, rb = (b in rank) ? rank[b] : 99;
+    return ra - rb;
+  });
+}
+function lu6Plate(cat){
+  var p = document.createElement('div');
+  p.className = 'lu6-plate';
+  p.textContent = LU6_PLATE[cat] || cat;
+  return p;
+}
+function lu6Fixture(cat, recs){
+  var wrap = document.createElement('div');
+  if (cat === 'game'){
+    wrap.className = 'lu6-fx lu6-arcade';
+    wrap.appendChild(lu6Plate('game'));
+    var cabs = document.createElement('div');
+    cabs.className = 'lu6-cabs';
+    recs.forEach(function(rec){
+      rec.node.classList.add('lu6-cab', 'lu6-cab-' + rec.id);
+      var meta = LU6_META[rec.id] || {};
+      if (meta.note && !rec.node.querySelector('.lu6-note')){
+        var note = document.createElement('span');
+        note.className = 'lu6-note';
+        note.textContent = meta.note;
+        rec.node.appendChild(note);
+      }
+      cabs.appendChild(rec.node);
+    });
+    wrap.appendChild(cabs);
+  } else if (cat === 'music'){
+    wrap.className = 'lu6-fx lu6-juke';
+    wrap.appendChild(lu6Plate('music'));
+    recs.forEach(function(rec){
+      rec.node.classList.add('lu6-strip');
+      if (rec.id === 'sobaniite') rec.node.classList.add('lu6-strip-on');
+      var meta = LU6_META[rec.id] || {};
+      var ttl = rec.node.querySelector('.wttl');
+      if (ttl){
+        if (meta.code) ttl.setAttribute('data-code', meta.code);
+        if (meta.kind) ttl.setAttribute('data-kind', meta.kind);
+      }
+      wrap.appendChild(rec.node);
+    });
+  } else {
+    wrap.className = 'lu6-fx lu6-wall';
+    wrap.appendChild(lu6Plate('site'));
+    recs.forEach(function(rec){
+      rec.node.classList.add(rec.id === 'anniv' ? 'lu6-frame' : 'lu6-board');
+      wrap.appendChild(rec.node);
+    });
+  }
+  return wrap;
+}
+function lu6Transform(){
+  var shelves = document.getElementById('shelves');
+  if (!shelves || shelves.querySelector('.lu6-fx')) return;
+  var secs = shelves.querySelectorAll('.storage-sec');
+  if (!secs.length) return;
+  var onBtn = document.querySelector('#storageTabs button.on');
+  var cat = onBtn ? onBtn.getAttribute('data-cat') : 'all';
+  var byId = lu6Collect(shelves);
+  var ids = Object.keys(byId);
+  if (!ids.length) return;
+  var cats = cat === 'all' ? ['game', 'music', 'site'] : [cat];
+  var footer = shelves.querySelector('.bonus-next');
+  var frag = document.createDocumentFragment();
+  var built = false;
+  cats.forEach(function(c){
+    var cids = lu6Order(ids.filter(function(id){ return (LU6_META[id] || {}).cat === c; }), c);
+    if (!cids.length) return;
+    frag.appendChild(lu6Fixture(c, cids.map(function(id){ return byId[id]; })));
+    built = true;
+  });
+  if (!built) return;
+  shelves.innerHTML = '';
+  shelves.appendChild(frag);
+  if (footer) shelves.appendChild(footer);
+}
+var lu6Busy = false;
+function lu6Run(){
+  if (lu6Busy) return;
+  lu6Busy = true;
+  try { lu6Transform(); } catch (e) { /* 変換に失敗しても旧表示のまま使う */ }
+  lu6Busy = false;
+}
+var shelvesEl6 = document.getElementById('shelves');
+if (shelvesEl6 && window.MutationObserver){
+  new MutationObserver(lu6Run).observe(shelvesEl6, {childList: true});
+}
+lu6Run();
+})();
+</script>
+<script>
+/* ===== Lucian第7弾 (lu7) : ドック中心の操作骨格 =====
+   下段メインドックから主要行き先へ1タップ。パネル表示中は閉じずに切替、
+   開いている行き先の再タップで閉じる。現在地はドック側に .on で示す。
+   入店（gate.gone）までは上下段とも出さない */
+(function(){
+var dock7 = document.getElementById('lu7Dock');
+if (!dock7) return;
+var gate = document.getElementById('gate');
+var storageView = document.getElementById('storageView');
+var bonusBtn = document.getElementById('bonusBtn');
+var items = {};
+dock7.querySelectorAll('[data-lu7-to]').forEach(function(b){ items[b.getAttribute('data-lu7-to')] = b; });
+
+function panelOn(id){
+  var p = document.getElementById('panel-' + id);
+  return !!(p && p.classList.contains('on'));
+}
+function storageOn(){
+  return !!(storageView && storageView.classList.contains('on'));
+}
+/* 本体スクリプトはクロージャ内のため、遷移はサイト自身の公開経路を使う：
+   hash 変更（syncFromHash が置き場を閉じ／パネルを開く）と既存ボタンの click */
+function go(id){
+  try { if (typeof luPop === 'function') luPop(); } catch(e){}
+  if (id === 'storage'){
+    if (storageOn()) return;
+    if (location.hash === '#storage'){
+      var door = document.getElementById('obj-door');
+      if (door) door.click();
+    } else location.hash = 'storage';
+    return;
+  }
+  if (panelOn(id)){
+    var p = document.getElementById('panel-' + id);
+    var cb = p ? p.querySelector('.closeBtn') : null;
+    if (cb) cb.click();
+    return;
+  }
+  if (location.hash === '#' + id){
+    var obj = document.querySelector('[data-panel="' + id + '"]');
+    if (obj) obj.click();
+  } else location.hash = id;
+}
+Object.keys(items).forEach(function(id){
+  items[id].addEventListener('click', function(){ go(id); });
+});
+
+function sync(){
+  var cur = null;
+  var on = document.querySelector('.panel.on');
+  if (on) cur = on.id.replace('panel-', '');
+  else if (storageOn()) cur = 'storage';
+  Object.keys(items).forEach(function(id){
+    var b = items[id], sel = (id === cur);
+    b.classList.toggle('on', sel);
+    if (sel) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
+  });
+  if (bonusBtn){
+    var bOn = (cur === 'bonus');
+    bonusBtn.classList.toggle('lu7-on', bOn);
+    if (bOn) bonusBtn.setAttribute('aria-current', 'true'); else bonusBtn.removeAttribute('aria-current');
+  }
+}
+function syncEntered(){
+  if (gate && gate.classList.contains('gone')) document.body.classList.add('lu7-entered');
+}
+var mo = new MutationObserver(function(){ syncEntered(); sync(); });
+document.querySelectorAll('.panel').forEach(function(p){ mo.observe(p, {attributes: true, attributeFilter: ['class']}); });
+if (storageView) mo.observe(storageView, {attributes: true, attributeFilter: ['class']});
+if (gate) mo.observe(gate, {attributes: true, attributeFilter: ['class']});
+syncEntered();
+sync();
+})();
+</script>
+<script>
+/* ===== Lucian第8弾 (lu8) : 統合ドックの「スタンプ」配線と現在地表示 =====
+   スタンプ項目は、DOMに残した既存 #bonusBtn の click をそのまま使う
+   （本体の data-panel ハンドラでボーナスパネルが開く）。開いている間の
+   再タップはパネル側の閉じるボタンで閉じ、第7弾の操作仕様に揃える */
+(function(){
+var stamp = document.querySelector('[data-lu8-bonus]');
+var bonusBtn = document.getElementById('bonusBtn');
+var bp = document.getElementById('panel-bonus');
+if (!stamp || !bonusBtn) return;
+stamp.addEventListener('click', function(){
+  try { if (typeof luPop === 'function') luPop(); } catch(e){}
+  if (bp && bp.classList.contains('on')){
+    var cb = bp.querySelector('.closeBtn');
+    if (cb){ cb.click(); return; }
+  }
+  bonusBtn.click();
+});
+function sync(){
+  var on = !!(bp && bp.classList.contains('on'));
+  stamp.classList.toggle('on', on);
+  if (on) stamp.setAttribute('aria-current', 'true'); else stamp.removeAttribute('aria-current');
+}
+if (bp) new MutationObserver(sync).observe(bp, {attributes: true, attributeFilter: ['class']});
+sync();
+})();
+</script>
+<style>
+/* ===== Lucian第9弾 (lu9-) : 「生きてる部屋」の可愛さを伸ばす =====
+   キャラの反応レイヤー。本体キャラ（IIFE内の状態機械）には触らず、
+   charaEl の transform（本体は未使用）と追加クラス／吹き出し文字だけを使う。
+   パネル連動の人形劇は本体が凍結している間（パネル表示中）にだけDOMを動かし、
+   閉じる時は本体自身の床タップ歩行（walkToTap）を座標クリックで呼び戻して
+   状態の整合を保つ（詳細はスクリプト側コメント） */
+#chara{transform-origin:50% 100%}
+@keyframes lu9Wiggle{0%{transform:rotate(0deg)}25%{transform:rotate(-2.6deg) scale(1.02,.98)}55%{transform:rotate(2.4deg)}80%{transform:rotate(-1.2deg)}100%{transform:rotate(0deg)}}
+#chara.lu9-wiggle{animation:lu9Wiggle .55s ease-in-out}
+@keyframes lu9Yawn{0%{transform:scale(1,1)}35%{transform:scale(1.03,.93) rotate(-1.2deg)}70%{transform:scale(.99,1.02)}100%{transform:scale(1,1)}}
+#chara.lu9-yawn{animation:lu9Yawn 1.8s ease-in-out}
+@keyframes lu9Lean{0%{transform:translateX(0) rotate(0deg)}30%,70%{transform:translateX(5px) rotate(2.2deg)}100%{transform:translateX(0) rotate(0deg)}}
+#chara.lu9-lean{animation:lu9Lean 1.6s ease-in-out}
+@keyframes lu9LeanL{0%{transform:translateX(0) rotate(0deg)}30%,70%{transform:translateX(-5px) rotate(-2.2deg)}100%{transform:translateX(0) rotate(0deg)}}
+#chara.lu9-lean-l{animation:lu9LeanL 1.6s ease-in-out}
+@keyframes lu9Sway{0%,100%{transform:rotate(-1.8deg)}50%{transform:rotate(1.8deg)}}
+#chara.lu9-sway{animation:lu9Sway 1.3s ease-in-out 2}
+@keyframes lu9GlanceL{0%{transform:rotate(0deg)}30%,70%{transform:rotate(-3.2deg) translateX(-2px)}100%{transform:rotate(0deg)}}
+#chara.lu9-glance-l{animation:lu9GlanceL .48s ease-in-out}
+@keyframes lu9GlanceR{0%{transform:rotate(0deg)}30%,70%{transform:rotate(3.2deg) translateX(2px)}100%{transform:rotate(0deg)}}
+#chara.lu9-glance-r{animation:lu9GlanceR .48s ease-in-out}
+.lu9-mark{position:absolute; left:50%; top:-15%; transform:translateX(-50%); font-weight:900; font-size:19px; line-height:1; color:var(--pink); text-shadow:0 1px 0 #FFF6EC, 0 0 7px rgba(255,246,236,.95); opacity:0; pointer-events:none; z-index:6}
+.lu9-mark.pop{animation:lu9Mark .9s ease-out}
+@keyframes lu9Mark{0%{opacity:0; transform:translate(-50%,4px) scale(.6)}25%{opacity:1; transform:translate(-50%,-2px) scale(1.15)}60%{opacity:1}100%{opacity:0; transform:translate(-50%,-9px) scale(1)}}
+@media (prefers-reduced-motion: reduce){
+#chara.lu9-wiggle, #chara.lu9-yawn, #chara.lu9-lean, #chara.lu9-lean-l, #chara.lu9-sway, #chara.lu9-glance-l, #chara.lu9-glance-r, .lu9-mark.pop{animation:none !important}
+}
+</style>
+<script>
+/* ===== Lucian第9弾 (lu9) : キャラの反応を足す（タップ反応／パネル連動／小さな仕草／ドックへの目線） =====
+   本体の状態機械（歩行・活動・吹き出し）はクロージャ内で触れないため、連携は3経路だけ：
+   ① charaEl の transform と追加クラス（本体は charaEl の transform を使わない）
+   ② #charaBubble の文字差し替え（本体 charaSay と同じ見せ方）
+   ③ パネルを閉じた直後、本体自身の「床タップで歩く」入口へ座標つき合成クリックを渡し、
+      本体の歩行で帰宅させる（C の座標と DOM がずれない＝スナップしない） */
+(function(){
+"use strict";
+var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var charaEl = document.getElementById('chara');
+var bobEl = charaEl.querySelector('.bob');
+var bubbleEl = document.getElementById('charaBubble');
+var stageEl = document.getElementById('stage');
+var gateEl = document.getElementById('gate');
+var storageView = document.getElementById('storageView');
+var dockEl = document.getElementById('lu7Dock');
+if (!charaEl || !bobEl || !stageEl) return;
+
+var markEl = document.createElement('span');
+markEl.className = 'lu9-mark';
+markEl.setAttribute('aria-hidden', 'true');
+markEl.textContent = '！';
+charaEl.appendChild(markEl);
+
+function entered(){ return !!(gateEl && gateEl.classList.contains('gone')); }
+function panelOpenId(){
+  var p = document.querySelector('.panel.on');
+  return p ? p.id.replace('panel-', '') : null;
+}
+function storageOpen(){ return !!(storageView && storageView.classList.contains('on')); }
+function stageRect(){ return stageEl.getBoundingClientRect(); }
+function charaPos(){
+  var sr = stageRect(), r = charaEl.getBoundingClientRect();
+  return { x: (r.left - sr.left) / sr.width * 100, y: (sr.bottom - r.bottom) / sr.height * 100 };
+}
+
+/* ---------- 吹き出し（本体 bubbleShow と同じ見せ方） ---------- */
+var bubTimer = 0;
+function say(text, ms){
+  if (!text) return;
+  bubbleEl.textContent = text;
+  bubbleEl.classList.remove('show');
+  void bubbleEl.offsetWidth;
+  bubbleEl.classList.add('show');
+  clearTimeout(bubTimer);
+  bubTimer = setTimeout(function(){ bubbleEl.classList.remove('show'); }, ms || 2200);
+}
+
+/* ---------- ① タップ反応：本体の hop＋あいさつに、ランダムな小反応とセリフのバリエーションを足す ---------- */
+var GREETINGS = ['おはよう', 'こんにちは', 'こんばんは'];
+var TAP_LINES = ['呼んだ？', 'なあに？', 'えへへ', 'びっくりした', 'どうしたの', 'こっちだよ'];
+var tapLockUntil = 0, tapTimer = 0, heartsByLu9 = false;
+function clearTapFx(){
+  charaEl.classList.remove('lu9-wiggle');
+  markEl.classList.remove('pop');
+  if (heartsByLu9){ charaEl.classList.remove('ikebo'); heartsByLu9 = false; }
+}
+function tapReact(force){
+  var now = performance.now();
+  if (!force && now < tapLockUntil) return;
+  tapLockUntil = now + 900;
+  clearTimeout(tapTimer);
+  clearTapFx();
+  var r = Math.random();
+  if (r < 0.34){
+    heartsByLu9 = true;
+    charaEl.classList.add('ikebo');
+    tapTimer = setTimeout(clearTapFx, 1150);
+  } else if (r < 0.67){
+    charaEl.classList.add('lu9-wiggle');
+    tapTimer = setTimeout(clearTapFx, 600);
+  } else {
+    markEl.classList.remove('pop');
+    void markEl.offsetWidth;
+    markEl.classList.add('pop');
+    tapTimer = setTimeout(clearTapFx, 950);
+  }
+  /* 本体が出したあいさつを、7割でタップ専用セリフに差し替える（表示中の時だけ） */
+  setTimeout(function(){
+    if (!bubbleEl.classList.contains('show')) return;
+    if (GREETINGS.indexOf(bubbleEl.textContent) < 0) return;
+    if (Math.random() < 0.7) bubbleEl.textContent = TAP_LINES[Math.floor(Math.random() * TAP_LINES.length)];
+  }, 320);
+}
+document.addEventListener('click', function(e){
+  if (RM || !e.clientX) return;
+  if (!entered() || panelOpenId() || storageOpen()) return;
+  var r = charaEl.getBoundingClientRect();
+  if (e.clientX > r.left + r.width * 0.08 && e.clientX < r.right - r.width * 0.08 &&
+      e.clientY > r.top + r.height * 0.03 && e.clientY < r.bottom + 6) tapReact(false);
+}, true);
+
+/* ---------- ④ ドックへの目線：押した側へ一瞬だけ傾く ---------- */
+var glanceTimer = 0;
+function glance(left){
+  if (gestureTimer){ clearTimeout(gestureTimer); gestureTimer = 0; }
+  clearGestureFx();
+  charaEl.classList.remove('lu9-glance-l', 'lu9-glance-r');
+  void charaEl.offsetWidth;
+  charaEl.classList.add(left ? 'lu9-glance-l' : 'lu9-glance-r');
+  clearTimeout(glanceTimer);
+  glanceTimer = setTimeout(function(){ charaEl.classList.remove('lu9-glance-l', 'lu9-glance-r'); }, 520);
+}
+if (dockEl){
+  dockEl.addEventListener('click', function(e){
+    if (RM || !entered()) return;
+    var btn = e.target && e.target.closest ? e.target.closest('[data-lu7-to],[data-lu8-bonus]') : null;
+    if (!btn) return;
+    var items = Array.prototype.slice.call(dockEl.querySelectorAll('[data-lu7-to],[data-lu8-bonus]'));
+    var idx = items.indexOf(btn);
+    if (idx < 0) return;
+    glance(idx < items.length / 2);
+  }, true);
+}
+
+/* ---------- ③ 日常の小さな仕草：静止が続いた時だけ、間隔を空けてそっと出す ---------- */
+var lastGestureAt = 0, gestureTimer = 0, gestureMusic = false;
+function clearGestureFx(){
+  charaEl.classList.remove('lu9-yawn', 'lu9-lean', 'lu9-lean-l', 'lu9-sway');
+  if (gestureMusic){ charaEl.classList.remove('music'); gestureMusic = false; }
+}
+function doGesture(now, force){
+  lastGestureAt = now || performance.now();
+  if (gestureTimer){ clearTimeout(gestureTimer); gestureTimer = 0; }
+  clearGestureFx();
+  var r = Math.random();
+  if (r < 0.4){
+    charaEl.classList.add('lu9-yawn');
+    if (Math.random() < 0.4) say('ねむい', 1800);
+    gestureTimer = setTimeout(clearGestureFx, 1900);
+  } else if (r < 0.7){
+    var p = charaPos();
+    charaEl.classList.add(p.x > 52 ? 'lu9-lean-l' : 'lu9-lean');
+    gestureTimer = setTimeout(clearGestureFx, 1700);
+  } else {
+    gestureMusic = true;
+    charaEl.classList.add('music');
+    charaEl.classList.add('lu9-sway');
+    if (Math.random() < 0.3) say('ふんふん', 1800);
+    gestureTimer = setTimeout(clearGestureFx, 2700);
+  }
+}
+var lastPos = null, stillSince = 0;
+setInterval(function(){
+  if (RM || !entered() || panelOpenId() || storageOpen() || document.hidden || P.active){ lastPos = null; stillSince = 0; return; }
+  var p = charaPos(), now = performance.now();
+  if (lastPos && Math.abs(p.x - lastPos.x) < 0.15 && Math.abs(p.y - lastPos.y) < 0.15){
+    if (!stillSince) stillSince = now;
+  } else stillSince = 0;
+  lastPos = p;
+  if (!stillSince || now - stillSince < 5000) return;
+  if (now - lastGestureAt < 28000) return;
+  if (Math.random() > 0.45) return;
+  doGesture(now, false);
+}, 6000);
+
+/* ---------- ② パネル連動：開いている間は物の前へ歩いて見上げ、閉じたら反応して本体の歩行で帰る ---------- */
+var SH = {
+  walk:  {src:'../assets/parts/chara-walk.webp', n:4, ar:'356/560', w:14.5},
+  back:  {src:'../assets/parts/chara-back.webp', n:4, ar:'356/560', w:14.5},
+  front: {src:'../assets/parts/chara-walkfront.webp', n:4, ar:'430/560', w:17.5},
+  idle:  {src:'../assets/parts/chara-idle.webp', n:2, ar:'356/560', w:14.5},
+  wave:  {src:'../assets/parts/chara-wave.webp', n:2, ar:'356/560', w:14.5}
+};
+Object.keys(SH).forEach(function(k){ var im = new Image(); im.src = SH[k].src; });
+var PANEL_OBJ = { tv:'obj-tv', game:'obj-game', speaker:'obj-speaker', desk:'obj-desk', post:'obj-post' };
+var LINES = { tv:'テレビ見てる', game:'ゲームしてる', speaker:'曲きいてる', desk:'つくってる', post:'おてがみ読んでる', bonus:'スタンプの日', profile:null };
+var P = { active:false, mode:'', panel:null, home:null, x:0, y:0, tx:0, ty:0, dist:0, flip:1,
+          sheet:'', attNext:0, attFrame:0, reactUntil:0, walkStart:0, musicByLu9:false, raf:0 };
+function setSh(name){
+  var s = SH[name]; if (!s) return;
+  P.sheet = name;
+  bobEl.style.backgroundImage = "url('" + s.src + "')";
+  bobEl.style.backgroundSize = (s.n * 100) + '% 100%';
+  bobEl.style.aspectRatio = s.ar;
+  charaEl.style.width = s.w + '%';
+}
+function setFr(i){
+  var s = SH[P.sheet]; if (!s) return;
+  bobEl.style.backgroundPosition = (s.n === 1 ? 0 : (i * 100 / (s.n - 1))) + '% 0';
+}
+function depthAt(y){ return 1.07 - (y - 6) * (0.19 / 10.5); }
+function faceFor(dx, dy){
+  var dyPx = dy * 1.326;
+  if (dyPx > 0 && dyPx > Math.abs(dx) * 1.15) return { sh:'back', flip:1 };
+  if (dyPx < 0 && -dyPx > Math.abs(dx) * 1.15) return { sh:'front', flip:1 };
+  return { sh:'walk', flip: dx >= 0 ? -1 : 1 };
+}
+function objTarget(panel){
+  if (panel === 'bonus') return { x:40, y:8 };
+  var id = PANEL_OBJ[panel]; if (!id) return null;
+  var o = document.getElementById(id); if (!o) return null;
+  var sr = stageRect(), r = o.getBoundingClientRect();
+  var cx = (r.left + r.width / 2 - sr.left) / sr.width * 100;
+  return { x: Math.max(2, Math.min(58, cx - 7.25)), y: 10 };
+}
+function restoreSprite(){
+  setSh('idle'); setFr(0);
+  bobEl.style.transform = '';
+  if (P.musicByLu9){ charaEl.classList.remove('music'); P.musicByLu9 = false; }
+}
+function puppetLoop(ts){
+  if (!P.active) return;
+  P.raf = requestAnimationFrame(puppetLoop);
+  var dt = Math.min(0.05, P.lastTs ? (ts - P.lastTs) / 1000 : 0.016);
+  P.lastTs = ts;
+  /* 本体の凍結処理が割り込んでも、想定スプライトを取り戻す */
+  var want = SH[P.sheet];
+  if (want && bobEl.style.backgroundImage.indexOf(want.src) < 0) setSh(P.sheet);
+  var d = depthAt(P.y);
+  if (P.mode === 'walk' || P.mode === 'return'){
+    var dx = P.tx - P.x, dy = P.ty - P.y;
+    var distPx = Math.sqrt(dx * dx + Math.pow(dy * 1.326, 2));
+    if (distPx < 0.4){
+      P.x = P.tx; P.y = P.ty;
+      charaEl.style.left = P.x + '%'; charaEl.style.bottom = P.y + '%';
+      if (P.mode === 'return'){ finishReturn(); return; }
+      beginAttend(ts);
+    } else {
+      var sp = (P.mode === 'return' && ts - P.walkStart > 900) ? 30 : (P.mode === 'return' ? 16 : 13);
+      var step = Math.min(distPx, sp * dt), f = step / distPx;
+      P.x += dx * f; P.y += dy * f; P.dist += step;
+      var fc = faceFor(dx, dy);
+      if (fc.sh !== P.sheet) setSh(fc.sh);
+      P.flip = fc.flip;
+      setFr(Math.floor(P.dist / 2.25) % SH[P.sheet].n);
+      charaEl.style.left = P.x + '%'; charaEl.style.bottom = P.y + '%';
+      var bob = -Math.abs(Math.sin(P.dist * 1.396)) * 1.7;
+      bobEl.style.transform = 'translateY(' + bob + '%) scale(' + (P.flip * d) + ',' + d + ')';
+    }
+    return;
+  }
+  if (P.mode === 'attend'){
+    if (P.panel === 'speaker'){
+      bobEl.style.transform = 'translateY(' + (-Math.abs(Math.sin(ts / 205)) * 5.5) + '%) rotate(' + (Math.sin(ts / 210) * 2.6) + 'deg) scale(' + d + ',' + d + ')';
+    } else if (P.panel === 'bonus'){
+      var ph = (ts % 950) / 950;
+      var hy = ph < 0.45 ? -Math.sin(ph / 0.45 * Math.PI) * 9 : 0;
+      bobEl.style.transform = 'translateY(' + hy + '%) scale(' + d + ',' + d + ')';
+    } else if (P.panel === 'profile'){
+      if (ts >= P.attNext){ P.attFrame = (P.attFrame + 1) % 2; setFr(P.attFrame); P.attNext = ts + 210; }
+      bobEl.style.transform = 'scale(' + d + ',' + d + ')';
+    } else {
+      var ph2 = (ts % 2300) / 2300;
+      var ly = ph2 < 0.18 ? -Math.sin(ph2 / 0.18 * Math.PI) * 5 : 0;
+      bobEl.style.transform = 'translateY(' + ly + '%) scale(' + d + ',' + d + ')';
+    }
+    return;
+  }
+  if (P.mode === 'react'){
+    var rp = Math.min(1, (P.reactUntil - ts > 0 ? (520 - (P.reactUntil - ts)) : 520) / 520);
+    var ry = -Math.sin(Math.PI * rp) * 7;
+    bobEl.style.transform = 'translateY(' + ry + '%) scale(' + d + ',' + d + ')';
+    if (ts >= P.reactUntil){
+      dispatchHome();
+      P.mode = 'return';
+      P.walkStart = ts;
+      P.tx = P.home.x; P.ty = P.home.y; P.dist = 0;
+    }
+    return;
+  }
+}
+function beginAttend(ts){
+  var panel = P.panel;
+  P.mode = 'attend';
+  P.attFrame = 0; P.attNext = ts + 210;
+  if (panel === 'speaker'){
+    setSh('wave'); setFr(0);
+    if (!charaEl.classList.contains('music')){ charaEl.classList.add('music'); P.musicByLu9 = true; }
+  } else if (panel === 'bonus'){
+    setSh('front'); setFr(0);
+  } else if (panel === 'profile'){
+    setSh('wave'); setFr(0);
+  } else {
+    setSh('back'); setFr(0);
+  }
+  P.flip = 1;
+  if (Math.random() < 0.5) say(LINES[panel], 2000);
+}
+function startPuppet(panel){
+  if (RM || !entered() || storageOpen()) return;
+  if (!P.active){
+    var p = charaPos();
+    P.home = p; P.x = p.x; P.y = p.y;
+    P.active = true; P.lastTs = 0;
+    P.raf = requestAnimationFrame(puppetLoop);
+  }
+  P.panel = panel;
+  clearTapFx();
+  if (panel === 'profile'){ beginAttend(performance.now()); return; }
+  var t = objTarget(panel); if (!t){ P.active = false; P.home = null; return; }
+  P.tx = t.x; P.ty = t.y; P.dist = 0;
+  P.mode = 'walk'; P.walkStart = performance.now();
+}
+function dispatchHome(){
+  if (!P.home) return false;
+  var sr = stageRect();
+  var cx = P.home.x + 7.25, cy = P.home.y;
+  var px = sr.left + cx / 100 * sr.width, py = sr.bottom - cy / 100 * sr.height;
+  var r = charaEl.getBoundingClientRect();
+  if (px > r.left + r.width * 0.08 && px < r.right - r.width * 0.08 &&
+      py > r.top + r.height * 0.03 && py < r.bottom + 6) return false;
+  var ev = new MouseEvent('click', { bubbles:true, cancelable:true, clientX:px, clientY:py, view:window });
+  stageEl.dispatchEvent(ev);
+  return true;
+}
+function endPuppet(){
+  if (!P.active) return;
+  /* 閉じた瞬間：物の前で小さく跳ねて反応し、セリフを出す（本体の再開＝idle最小600msより短く収める） */
+  if (Math.random() < 0.85) say(LINES[P.panel], 2000);
+  P.mode = 'react';
+  P.reactUntil = performance.now() + 520;
+}
+function finishReturn(){
+  charaEl.style.left = P.home.x + '%'; charaEl.style.bottom = P.home.y + '%';
+  restoreSprite();
+  P.active = false; P.mode = ''; P.panel = null; P.home = null;
+  cancelAnimationFrame(P.raf);
+}
+function cancelPuppetInstant(){
+  if (!P.active) return;
+  cancelAnimationFrame(P.raf);
+  if (P.home){ charaEl.style.left = P.home.x + '%'; charaEl.style.bottom = P.home.y + '%'; }
+  restoreSprite();
+  P.active = false; P.mode = ''; P.panel = null; P.home = null;
+}
+var lastPanel = null;
+function onPanelChange(){
+  if (storageOpen()){ cancelPuppetInstant(); lastPanel = null; return; }
+  var id = panelOpenId();
+  if (id === lastPanel) return;
+  if (id) startPuppet(id);
+  else if (lastPanel) endPuppet();
+  lastPanel = id;
+}
+var pmo = new MutationObserver(onPanelChange);
+document.querySelectorAll('.panel').forEach(function(p){ pmo.observe(p, { attributes:true, attributeFilter:['class'] }); });
+if (storageView) pmo.observe(storageView, { attributes:true, attributeFilter:['class'] });
+if (gateEl) pmo.observe(gateEl, { attributes:true, attributeFilter:['class'] });
+
+/* 検証用ハンドル（既存の window.IKEBO と同格） */
+window.__LU9 = {
+  version: 9,
+  pos: charaPos,
+  puppet: function(){ return { active:P.active, mode:P.mode, panel:P.panel, home:P.home }; },
+  gesture: function(){ doGesture(performance.now(), true); },
+  react: function(){ tapReact(true); }
+};
+})();
+</script>
+<style>
+/* ===== Lucian第10弾 (lu10-) : モーダル（下部シート）をやめ「物の中で開く」
+   閲覧系パネルは、部屋の物の場所から広がる「物の表面」になる。
+   位置・大きさの連続は lu10 JS が FLIP で作る（transform の付け替えのみ、
+   開閉の本体ロジック＝.on の付け外し・hash・ドック連動には触らない）。
+   （第10弾時点では用事系はシートのままだったが、第11弾で全て物の中で開く形に統一） ===== */
+.panel.lu10-view{
+left:10px; right:10px; top:max(10px, env(safe-area-inset-top));
+bottom:calc(84px + env(safe-area-inset-bottom));
+max-height:none;
+border-radius:28px;
+padding:12px;
+overflow:hidden;
+display:flex; flex-direction:column;
+box-shadow:0 18px 50px rgba(43,36,48,.35);
+}
+.panel.lu10-view .grab{display:none}
+.panel.lu10-view .dn-root{
+flex:1 1 auto; min-height:0;
+overflow-y:auto; overscroll-behavior:contain;
+background:var(--lu-paper);
+border-radius:18px;
+padding:16px 14px calc(18px + env(safe-area-inset-bottom));
+}
+.panel.lu10-view .closeBtn{
+z-index:6;
+background:rgba(255,250,252,.94);
+box-shadow:0 2px 9px rgba(43,36,48,.28);
+}
+/* テレビ：ブラウン管のベゼル。画面（.dn-root）の中をスクロールする */
+#panel-tv.lu10-view{
+background:linear-gradient(165deg,#41304a,#241d22 58%,#16121a);
+border:3px solid #0f0c11;
+}
+#panel-tv.lu10-view .dn-root{box-shadow:inset 0 0 0 2px rgba(15,12,17,.4), inset 0 0 38px rgba(15,12,17,.16)}
+/* ゲーム機：筐体のフレーム＋上部のネオンライン（マーキー灯） */
+#panel-game.lu10-view{
+background:linear-gradient(165deg,#4b2a6e,#2b2430 55%,#3a1e50);
+border:3px solid #1d1526;
+}
+#panel-game.lu10-view::before{
+content:''; display:block; flex:none; height:10px; border-radius:99px; margin-bottom:10px;
+background:linear-gradient(90deg,var(--lu-pink),var(--lu-mint),var(--lu-cherry),var(--lu-pink));
+box-shadow:0 0 12px rgba(255,46,136,.55);
+}
+/* スピーカー／ジュークボックス：クリームの筐体にクロームとティールの縁 */
+#panel-speaker.lu10-view{
+background:linear-gradient(170deg,var(--lu-cream),#FFE0EE);
+border:3px solid var(--lu-chrome);
+box-shadow:0 18px 50px rgba(43,36,48,.35), inset 0 0 0 2px rgba(14,149,148,.55);
+}
+/* 机：木の天板の上に紙（コンテンツ）が載る */
+#panel-desk.lu10-view{
+background:linear-gradient(170deg,#eccfa3,#cfa06e 70%,#bd8f57);
+border:3px solid #a1763f;
+}
+/* プロフィール：キャラが出す自己紹介カード（ピンクの厚紙＋白縁） */
+#panel-profile.lu10-view{
+background:linear-gradient(165deg,var(--lu-pink-soft),var(--lu-cream));
+border:3px solid #fff;
+box-shadow:0 18px 50px rgba(43,36,48,.35), inset 0 0 0 2px rgba(255,46,136,.35);
+}
+/* 応援（閲覧）：お客さまノート。左にピンクの背表紙 */
+#panel-post.lu10-view{
+background:linear-gradient(90deg,#D81B74 0 16px,#F3A8C6 16px 19px,var(--lu-paper) 19px);
+border:3px solid #F3C6DA;
+}
+#panel-post.lu10-view .dn-root{background:transparent; padding-left:22px}
+/* 応援フォームの専用シート（#lu10FormSheet）は第11弾で廃止し、フォームはノートの中へ戻した */
+/* 作品置き場：棚（右のドア）の位置から前面へ広がる */
+#storageView{
+transform:scale(.93);
+transform-origin:var(--lu10-sox,88%) var(--lu10-soy,55%);
+transition:opacity var(--t-enter) var(--ease-expo), transform .55s var(--lu-ease), visibility 0s linear var(--t-enter);
+}
+#storageView.on{
+transform:scale(1);
+transition:opacity var(--t-enter) var(--ease-expo), transform .55s var(--lu-ease), visibility 0s;
+}
+@media (prefers-reduced-motion: reduce){
+#storageView{transform:none}
+}
+</style>
+<script>
+/* ===== Lucian第10弾 (lu10) : 「物の中で開く」配線
+   ① 閲覧系パネル（tv/game/speaker/desk/profile/post）に .lu10-view を付け、
+      開く瞬間にアンカー（部屋の物）の矩形から FLIP で広げ、閉じる時に戻す。
+      アンカー対応：tv→テレビ／game→ゲーム機／speaker→スピーカー／desk→机／
+      profile→キャラ本人／post→ポスト。
+   ② 作品置き場は右の棚ドアを起点に広がるよう transform-origin を合わせる。
+   ※ 第10弾で導入した応援フォームの専用シート分離（旧③）と、ボーナスのシート維持は
+     第11弾で廃止：フォームはノートの中へ戻し、ボーナスは台帳として開く（lu11 層）。 */
+(function(){
+"use strict";
+var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var VIEW = { tv:'obj-tv', game:'obj-game', speaker:'obj-speaker', desk:'obj-desk', profile:'chara', post:'obj-post' };
+
+function anchorOf(id){ return document.getElementById(VIEW[id]); }
+function fromTransform(p, anchor){
+  var r = anchor.getBoundingClientRect();
+  var dx = r.left - p.offsetLeft;
+  var dy = r.top - p.offsetTop;
+  var sx = Math.max(.02, r.width / Math.max(1, p.offsetWidth));
+  var sy = Math.max(.02, r.height / Math.max(1, p.offsetHeight));
+  return 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
+}
+function grow(p, anchor){
+  if (RM || !anchor) return;
+  p.style.transition = 'none';
+  p.style.transformOrigin = '0 0';
+  p.style.transform = fromTransform(p, anchor);
+  void p.offsetWidth;
+  p.style.transition = '';
+  p.style.transform = '';
+}
+function shrink(p, anchor){
+  if (RM || !anchor) return;
+  p.style.transformOrigin = '0 0';
+  p.style.transform = fromTransform(p, anchor);
+  setTimeout(function(){
+    if (!p.classList.contains('on')){ p.style.transform = ''; p.style.transition = ''; }
+  }, 560);
+}
+Object.keys(VIEW).forEach(function(id){
+  var p = document.getElementById('panel-' + id);
+  if (!p) return;
+  p.classList.add('lu10-view');
+  var wasOn = p.classList.contains('on');
+  new MutationObserver(function(){
+    var on = p.classList.contains('on');
+    if (on === wasOn) return;
+    wasOn = on;
+    if (on) grow(p, anchorOf(id)); else shrink(p, anchorOf(id));
+  }).observe(p, { attributes:true, attributeFilter:['class'] });
+});
+
+/* ② 作品置き場：棚ドア起点 */
+var storageView = document.getElementById('storageView');
+function setStorageOrigin(){
+  var d = document.getElementById('obj-door');
+  if (!d || !storageView) return;
+  var r = d.getBoundingClientRect();
+  if (!r.width) return;
+  storageView.style.setProperty('--lu10-sox', (r.left + r.width / 2).toFixed(1) + 'px');
+  storageView.style.setProperty('--lu10-soy', (r.top + r.height / 2).toFixed(1) + 'px');
+}
+if (storageView){
+  setStorageOrigin();
+  new MutationObserver(function(){ if (storageView.classList.contains('on')) setStorageOrigin(); })
+    .observe(storageView, { attributes:true, attributeFilter:['class'] });
+  window.addEventListener('resize', setStorageOrigin);
+}
+
+window.__LU10 = { version:10, views:Object.keys(VIEW) };
+})();
+</script>
+<style>
+/* ===== Lucian第11弾 (lu11-) : 掃除回
+   ・スンスン削除／部屋のラベル・タグ文字の全廃（本体コード側で除去済み）
+   ・ポストを棚ドア（部屋の入口）の脇へ移動（#obj-post の配置側で実施済み）
+   ・残っていた下部シート2件を「物の中で開く」に統一する：
+     ボーナス＝カウンター（中央の机）に置かれたスタンプ台帳として開く。
+     部屋に独立したカウンター要素は無いため、店の中央で店主が立つ机を
+     カウンター相当のアンカーにする。
+     応援フォーム＝専用シートを廃止し、お客さまノートのページの中で書く。 ===== */
+/* ボーナス台帳：幾何は lu10-view と同じ「物の表面」 */
+.panel.lu11-view{
+left:10px; right:10px; top:max(10px, env(safe-area-inset-top));
+bottom:calc(84px + env(safe-area-inset-bottom));
+max-height:none;
+border-radius:28px;
+padding:12px;
+overflow:hidden;
+display:flex; flex-direction:column;
+box-shadow:0 18px 50px rgba(43,36,48,.35);
+}
+.panel.lu11-view .grab{display:none}
+.panel.lu11-view .dn-root{
+flex:1 1 auto; min-height:0;
+overflow-y:auto; overscroll-behavior:contain;
+border-radius:18px;
+padding:16px 14px calc(18px + env(safe-area-inset-bottom));
+}
+.panel.lu11-view .closeBtn{
+z-index:6;
+background:rgba(255,250,252,.94);
+box-shadow:0 2px 9px rgba(43,36,48,.28);
+}
+/* 台帳の identity：濃ピンクの布表紙＋罫線の入った帳面（.dn-root） */
+#panel-bonus.lu11-view{
+background:linear-gradient(165deg,#B3125F,#D81B74 55%,#A30E54);
+border:3px solid #7E0B42;
+}
+#panel-bonus.lu11-view .dn-root{
+background-color:var(--lu-paper);
+background-image:repeating-linear-gradient(180deg, transparent 0 27px, rgba(103,94,110,.13) 27px 28px);
+box-shadow:inset 0 0 0 2px rgba(126,11,66,.25);
+}
+/* 応援フォーム：ノートのページの中で書く（罫と破線枠で「書く面」を示す） */
+#panel-post .msg-form{
+background:rgba(255,255,255,.55);
+background-image:repeating-linear-gradient(180deg, transparent 0 27px, rgba(103,94,110,.10) 27px 28px);
+border:1.5px dashed rgba(216,27,116,.40);
+border-radius:12px;
+padding:12px;
+margin-bottom:16px;
+}
+</style>
+<script>
+/* ===== Lucian第11弾 (lu11) : ボーナス台帳の FLIP 配線
+   panel-bonus に .lu11-view を付け、開く瞬間にカウンター（#obj-desk）の
+   矩形から FLIP で広げ、閉じる時に戻す。開閉の本体ロジックには触らない。
+   応援フォームは lu10 のシート分離を廃止したため、元の HTML の位置
+   （ノートの中）にあるものがそのまま使われる。 */
+(function(){
+"use strict";
+var RM = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var p = document.getElementById('panel-bonus');
+var anchor = document.getElementById('obj-desk');
+if (p && anchor){
+  p.classList.add('lu11-view');
+  function fromTransform(){
+    var r = anchor.getBoundingClientRect();
+    var dx = r.left - p.offsetLeft;
+    var dy = r.top - p.offsetTop;
+    var sx = Math.max(.02, r.width / Math.max(1, p.offsetWidth));
+    var sy = Math.max(.02, r.height / Math.max(1, p.offsetHeight));
+    return 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
+  }
+  function grow(){
+    if (RM) return;
+    p.style.transition = 'none';
+    p.style.transformOrigin = '0 0';
+    p.style.transform = fromTransform();
+    void p.offsetWidth;
+    p.style.transition = '';
+    p.style.transform = '';
+  }
+  function shrink(){
+    if (RM) return;
+    p.style.transformOrigin = '0 0';
+    p.style.transform = fromTransform();
+    setTimeout(function(){
+      if (!p.classList.contains('on')){ p.style.transform = ''; p.style.transition = ''; }
+    }, 560);
+  }
+  var wasOn = p.classList.contains('on');
+  new MutationObserver(function(){
+    var on = p.classList.contains('on');
+    if (on === wasOn) return;
+    wasOn = on;
+    if (on) grow(); else shrink();
+  }).observe(p, { attributes:true, attributeFilter:['class'] });
+}
+window.__LU11 = { version:11, bonusAnchor:'obj-desk', formInNote:true, sunsunRemoved:true, labelsRemoved:true };
 })();
 </script>
 </body>
