@@ -761,6 +761,7 @@ background-image:repeating-linear-gradient(#241D22 0 24px, rgba(255,246,236,.055
 .dn-neon{font-family:"Quicksand",sans-serif; font-size:11px; font-weight:700; letter-spacing:.18em; color:#FFD9E8; border:1.5px solid var(--dn-pink); border-radius:999px; padding:3px 10px; text-shadow:0 0 6px var(--dn-pink), 0 0 14px rgba(255,46,136,.7); box-shadow:0 0 10px rgba(255,46,136,.45), inset 0 0 6px rgba(255,46,136,.35); white-space:nowrap}
 .dn-sched .dn-big{font-size:clamp(22px,6vw,26px); font-weight:900; letter-spacing:.06em; line-height:1.25; margin-top:var(--dn-s2)}
 .dn-sched .dn-time{font-family:"Barlow Condensed",sans-serif; font-size:clamp(52px,15vw,64px); font-weight:600; letter-spacing:.04em; line-height:1.05; color:#fff}
+.dn-sched .dn-time-jst{font-family:"Zen Maru Gothic",sans-serif; font-size:.30em; font-weight:700; letter-spacing:.06em; white-space:nowrap; vertical-align:.35em}
 .dn-sched .dn-note{overflow-wrap:anywhere; font-size:12px; color:var(--dn-pink-soft); margin-top:var(--dn-s1)}
 .dn-week{list-style:none; display:flex; gap:4px; margin:var(--dn-s4) 0 0; padding:0}
 .dn-week li{flex:1 1 0; min-width:0; overflow:hidden; text-align:center; font-size:10.5px; background:rgba(255,246,236,.07); border:1px solid rgba(255,246,236,.22); border-radius:6px; padding:5px 0; color:#F6DCE9; font-weight:700}
@@ -1577,12 +1578,17 @@ transition:transform var(--t-press) var(--ease-out);
 <button class="closeBtn" type="button" data-close aria-label="閉じる">✕</button>
 <div class="dn-root">
 <h2 class="dn-head"><div class="dn-en">STREAM</div><div class="dn-jp">配信と動画</div><div class="dn-rule"></div></h2>
+<a class="dn-btn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ で会いにいく →</a>
+<a class="dn-card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
+<img class="dn-thumb" src="../assets/parts/mirrativ-emomo-banner.webp" alt="八乙女さきやのエモモ">
+<div class="dn-cbody"><div class="dn-cttl">Mirrativ｜八乙女さきや</div><div class="dn-csub">フォロワー 596人（2026.11.23時点）</div></div>
+</a>
 <div class="dn-sched">
-<div class="dn-top"><div class="dn-en">EVERY NIGHT</div><div class="dn-neon">ON AIR</div></div>
+<div class="dn-top"><div class="dn-en">EVERY NIGHT</div><div class="dn-neon">MIRRATIV</div></div>
 <div class="dn-big">毎晩</div>
-<div class="dn-time">22:00〜</div>
+<div class="dn-time">22:00〜<span class="dn-time-jst">（日本時間）</span></div>
 <div class="lu-count" id="luCount">
-<div class="lu-count-label" id="luCountLabel">今夜22:00まで</div>
+<div class="lu-count-label" id="luCountLabel">今夜22:00（日本時間）まで</div>
 <div class="lu-flips" role="timer" aria-label="配信までのカウントダウン">
 <div class="lu-flip-col"><div class="lu-flip" data-lu-flip="h"><span class="lu-flip-num">--</span></div><div class="lu-flip-unit">HOURS</div></div>
 <span class="lu-flip-sep">:</span>
@@ -1592,17 +1598,10 @@ transition:transform var(--t-press) var(--ease-out);
 </div>
 </div>
 <div class="dn-note">連続配信 445日（2026.11.23時点）｜雑談・ゲーム・歌</div>
-<ul class="dn-week" id="weekList">
-<li><b>月</b>22時</li><li><b>火</b>22時</li><li><b>水</b>22時</li><li><b>木</b>22時</li><li><b>金</b>22時</li><li><b>土</b>22時</li><li><b>日</b>22時</li>
-</ul>
 </div>
-<a class="dn-btn" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">Mirrativ で会いにいく →</a>
-<a class="dn-card" href="https://www.mirrativ.com/user/150564080" target="_blank" rel="noopener">
-<img class="dn-thumb" src="../assets/parts/mirrativ-emomo-banner.webp" alt="八乙女さきやのエモモ">
-<div class="dn-cbody"><span class="dn-badge">LIVE</span><div class="dn-cttl">Mirrativ｜八乙女さきや</div><div class="dn-csub">フォロワー 596人（2026.11.23時点）</div></div>
-</a>
 <div class="dn-sec">お知らせ</div>
-<a class="dn-row" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」と「童話キャラ16タイプ診断」を公開しました</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/usagori3d/" target="_blank" rel="noopener"><time>2026.11.23</time><span>ゲーム「うさぎ、ゴリラを殴る。3D」を公開しました</span></a>
+<a class="dn-row" href="https://sakiyayoi.github.io/fairytale-type16/" target="_blank" rel="noopener"><time>2026.11.23</time><span>診断「童話キャラ16タイプ診断」を公開しました</span></a>
 <a class="dn-row" href="https://sakiyayoi.github.io/chodoii-yukagen/" target="_blank" rel="noopener"><time>2026.11.18</time><span>ゲーム「ちょうどいい湯かげん」を公開しました</span></a>
 <div class="dn-sec">切り抜き</div>
 <a class="dn-card" href="https://www.youtube.com/watch?v=Am6hFXN9PB4" target="_blank" rel="noopener">
@@ -1656,10 +1655,10 @@ transition:transform var(--t-press) var(--ease-out);
 <div class="dn-card lu-game">
 <button type="button" class="lu-game-head" aria-expanded="false" aria-controls="luGameDetail4">
 <img class="dn-thumb" src="../assets/parts/work-ebi.webp" alt="">
-<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">EBI KANI?</span></span><span class="dn-csub">エビかカニかのリズムゲーム</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
+<span class="lu-game-row"><span class="dn-cbody"><span class="dn-menu-line"><span class="dn-cttl">EBI KANI?</span></span><span class="dn-csub">写真でエビかカニかを判定する裁判ゲーム</span></span><span class="lu5-acc-state" aria-hidden="true"></span><span class="lu-game-arrow" aria-hidden="true">▾</span></span>
 </button>
 <div class="lu-game-detail" id="luGameDetail4"><div class="lu-game-detail-in"><div class="lu-game-detail-body">
-<div class="lu-game-desc">エビかカニかのリズムゲーム</div>
+<div class="lu-game-desc">写真でエビかカニかを判定する裁判ゲーム</div>
 <a class="lu-game-play" href="https://sakiyayoi.github.io/ebi-kani/" target="_blank" rel="noopener">あそぶ →</a>
 </div></div></div>
 </div>
@@ -3080,10 +3079,6 @@ syncFromHash();
 </script>
 
 <script>
-/* dn: 週間グリッドの今日マーカー（移植時に本体へ移す） */
-(function(){ var wl=document.getElementById('weekList'); if(!wl) return; var idx=(new Date().getDay()+6)%7; if(wl.children[idx]) wl.children[idx].classList.add('today'); })();
-</script>
-<script>
 /* preview-only: ?panel=tv などで実寸検証用に自動で開く */
 (function(){ var pn=new URLSearchParams(location.search).get('panel'); if(!pn) return;
 var op=document.getElementById('opening'); if(op) op.remove();
@@ -3249,13 +3244,20 @@ if (!RM){
   }, true);
 }
 
-/* ---------- 3. フリップ式カウントダウン（次の22:00・実時刻ベース） ---------- */
+/* ---------- 3. フリップ式カウントダウン（日本時間の次の22:00・端末TZ非依存） ---------- */
 var luCountEl = $('luCount');
 var luFlipState = {};
+var LU_JST_OFFSET = 9 * 3600 * 1000;
+function luJstParts(d){
+  var o = {};
+  new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Tokyo', year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d).forEach(function(p){ o[p.type] = parseInt(p.value, 10); });
+  return o;
+}
 function luNext22(now){
-  var t = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 0, 0, 0);
-  if (now.getTime() >= t.getTime()) t.setDate(t.getDate() + 1);
-  return t;
+  var p = luJstParts(now);
+  var t = Date.UTC(p.year, p.month - 1, p.day, 22, 0, 0, 0) - LU_JST_OFFSET;
+  if (now.getTime() >= t) t += 24 * 3600 * 1000;
+  return new Date(t);
 }
 function luSetFlip(unit, val){
   var box = document.querySelector('[data-lu-flip="' + unit + '"]');
@@ -3278,7 +3280,9 @@ function luTickCount(){
   luSetFlip('h', pad(Math.floor(diff / 3600)));
   luSetFlip('m', pad(Math.floor(diff % 3600 / 60)));
   luSetFlip('s', pad(diff % 60));
-  $('luCountLabel').textContent = (target.getDate() === now.getDate()) ? '今夜22:00まで' : '明日22:00まで';
+  var jp = luJstParts(now), tp = luJstParts(target);
+  var sameJstDay = (jp.year === tp.year && jp.month === tp.month && jp.day === tp.day);
+  $('luCountLabel').textContent = sameJstDay ? '今夜22:00（日本時間）まで' : '明日22:00（日本時間）まで';
   luCountEl.dataset.target = String(target.getTime());
 }
 if (luCountEl){ luTickCount(); setInterval(luTickCount, 250); }
@@ -3477,7 +3481,7 @@ else if (lu4Tries > 120) clearInterval(lu4Iv);
 var LU5_META = {
   yukagen:   {kind: 'ゲーム',   date: '2026-11-18', featured: true,  isNew: false, order: 0, desc: 'お湯の温度を合わせる'},
   kani:      {kind: 'ゲーム',   date: '',           featured: false, isNew: false, order: 1, desc: 'カニをぶっ飛ばすゲーム', status: '仕込み中'},
-  ebikani:   {kind: 'ゲーム',   date: '2026-10-18', featured: false, isNew: false, order: 2, desc: 'エビかカニかのリズムゲーム', img: '../assets/parts/work-ebi.webp'},
+  ebikani:   {kind: 'ゲーム',   date: '2026-10-18', featured: false, isNew: false, order: 2, desc: '写真でエビかカニかを判定する裁判ゲーム', img: '../assets/parts/work-ebi.webp'},
   sobaniite: {kind: '曲・MV',   date: '',           featured: true,  isNew: false, order: 3, desc: '最新の歌ってみた／AIソング（MV）'},
   karappo:   {kind: '曲',       date: '',           featured: false, isNew: false, order: 4},
   anniv:     {kind: 'サイト',   date: '',           featured: false, isNew: false, order: 5},
